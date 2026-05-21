@@ -15,8 +15,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import dev.tohure.muchik_dictionary.core.design.DarkClay
+import dev.tohure.muchik_dictionary.core.design.LocalEmojiFontFamily
 import dev.tohure.muchik_dictionary.core.design.Ocean
 import dev.tohure.muchik_dictionary.core.design.Sand
 import dev.tohure.muchik_dictionary.core.design.categoryColor
@@ -36,30 +38,40 @@ fun WordListHeader(modifier: Modifier = Modifier) {
             style = MaterialTheme.typography.labelSmall,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
             modifier = Modifier.width(48.dp),
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
         )
         Text(
             text = "MUCHIK",
             style = MaterialTheme.typography.labelSmall,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
             modifier = Modifier.weight(1.5f),
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
         )
         Text(
             text = "ESPAÑOL",
             style = MaterialTheme.typography.labelSmall,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
             modifier = Modifier.weight(2f),
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
         )
         Text(
             text = "CATEGORÍA",
             style = MaterialTheme.typography.labelSmall,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
             modifier = Modifier.weight(1.2f),
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
         )
         Text(
             text = "NOTAS",
             style = MaterialTheme.typography.labelSmall,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
             modifier = Modifier.weight(2f),
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
         )
     }
     HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
@@ -68,6 +80,7 @@ fun WordListHeader(modifier: Modifier = Modifier) {
 @Composable
 fun WordListItem(entry: WordEntry, modifier: Modifier = Modifier) {
     val catColor = categoryColor(entry.category)
+    val emojiFont = LocalEmojiFontFamily.current
 
     Row(
         modifier = modifier
@@ -83,6 +96,7 @@ fun WordListItem(entry: WordEntry, modifier: Modifier = Modifier) {
                 Text(
                     text = entry.emoji,
                     style = MaterialTheme.typography.titleLarge,
+                    fontFamily = emojiFont,
                 )
             }
         }

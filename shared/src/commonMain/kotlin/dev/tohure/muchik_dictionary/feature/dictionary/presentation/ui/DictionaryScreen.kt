@@ -1,5 +1,6 @@
 package dev.tohure.muchik_dictionary.feature.dictionary.presentation.ui
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -16,10 +17,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -49,135 +50,80 @@ import org.koin.compose.viewmodel.koinViewModel
 fun DictionaryScreen(viewModel: DictionaryViewModel = koinViewModel()) {
     val state by viewModel.uiState.collectAsState()
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background),
-    ) {
-        val showDashboard = state.query.isBlank() &&
-            state.selectedCategory == WordCategory.ALL &&
-            state.categoryCounts.isNotEmpty()
+    val showDashboard = state.query.isBlank() &&
+        state.selectedCategory == WordCategory.ALL &&
+        state.categoryCounts.isNotEmpty()
 
-        if (showDashboard) {
-            BoxWithConstraints(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp, vertical = 12.dp),
-            ) {
-                if (maxWidth > 500.dp) {
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.spacedBy(12.dp),
-                        verticalAlignment = Alignment.Top,
-                    ) {
-                        StatsCard(
-                            totalCount = state.totalCount,
-                            modifier = Modifier.width(200.dp),
-                        )
-                        DonutChartCard(
-                            categoryCounts = state.categoryCounts,
-                            modifier = Modifier.weight(1f),
-                        )
-                    }
-                } else {
-                    Column(
-                        modifier = Modifier.fillMaxWidth(),
-                        verticalArrangement = Arrangement.spacedBy(12.dp),
-                    ) {
-                        StatsCard(
-                            totalCount = state.totalCount,
-                            modifier = Modifier.fillMaxWidth(),
-                        )
-                        DonutChartCard(
-                            categoryCounts = state.categoryCounts,
-                            modifier = Modifier.fillMaxWidth(),
-                        )
-                    }
+    if (state.isLoading) {
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center,
+        ) {
+            CircularProgressIndicator(color = Clay)
+        }
+        return
+    }
+
+    if (state.viewMode == DictionaryViewMode.LIST) {
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(MaterialTheme.colorScheme.background),
+        ) {
+            if (showDashboard) {
+                item { DashboardSection(state.totalCount, state.categoryCounts) }
+            }
+            item {
+                SearchAndFilterRow(
+                    query = state.query,
+                    selectedCategory = state.selectedCategory,
+                    onQueryChange = viewModel::onQueryChange,
+                    onCategorySelected = viewModel::onCategorySelected,
+                )
+            }
+            item {
+                ViewModeRow(viewMode = state.viewMode, onToggle = viewModel::onViewModeToggle)
+            }
+            if (state.entries.isEmpty()) {
+                item { EmptyStateView(query = state.query) }
+            } else {
+                stickyHeader { WordListHeader() }
+                items(state.entries, key = { it.id }) { entry ->
+                    WordListItem(entry = entry)
                 }
             }
         }
-
-        Row(
+    } else {
+        LazyVerticalGrid(
+            columns = GridCells.Adaptive(minSize = 280.dp),
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp, vertical = 8.dp),
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
-            verticalAlignment = Alignment.CenterVertically,
+                .fillMaxSize()
+                .background(MaterialTheme.colorScheme.background),
+            contentPadding = PaddingValues(bottom = 16.dp),
+            verticalArrangement = Arrangement.spacedBy(12.dp),
+            horizontalArrangement = Arrangement.spacedBy(12.dp),
         ) {
-            OutlinedTextField(
-                value = state.query,
-                onValueChange = viewModel::onQueryChange,
-                modifier = Modifier.weight(1f),
-                placeholder = {
-                    Text(
-                        text = "Buscar en Español, Muchik o buscar notas etimológicas...",
-                        style = MaterialTheme.typography.bodySmall,
-                        maxLines = 1,
-                    )
-                },
-                singleLine = true,
-                colors = OutlinedTextFieldDefaults.colors(
-                    focusedBorderColor = Clay,
-                    unfocusedBorderColor = MaterialTheme.colorScheme.outline,
-                ),
-            )
-            CategoryDropdown(
-                selectedCategory = state.selectedCategory,
-                onCategorySelected = viewModel::onCategorySelected,
-                modifier = Modifier.width(180.dp),
-            )
-        }
-
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp, vertical = 4.dp),
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            Text(
-                text = "Visualización de resultados:",
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-            )
-            Spacer(modifier = Modifier.weight(1f))
-            ViewModeToggle(
-                viewMode = state.viewMode,
-                onToggle = viewModel::onViewModeToggle,
-            )
-        }
-
-        when {
-            state.isLoading -> Box(
-                modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.Center,
-            ) {
-                CircularProgressIndicator(color = Clay)
-            }
-
-            state.entries.isEmpty() -> EmptyStateView(query = state.query)
-
-            state.viewMode == DictionaryViewMode.LIST -> {
-                val listState = rememberLazyListState()
-                LazyColumn(
-                    modifier = Modifier.fillMaxSize(),
-                    state = listState,
-                ) {
-                    stickyHeader {
-                        WordListHeader()
-                    }
-                    items(state.entries, key = { it.id }) { entry ->
-                        WordListItem(entry = entry)
-                    }
+            if (showDashboard) {
+                item(span = { GridItemSpan(maxLineSpan) }) {
+                    DashboardSection(state.totalCount, state.categoryCounts)
                 }
             }
-
-            else -> LazyVerticalGrid(
-                columns = GridCells.Adaptive(minSize = 280.dp),
-                modifier = Modifier.fillMaxSize(),
-                contentPadding = PaddingValues(16.dp),
-                verticalArrangement = Arrangement.spacedBy(12.dp),
-                horizontalArrangement = Arrangement.spacedBy(12.dp),
-            ) {
+            item(span = { GridItemSpan(maxLineSpan) }) {
+                SearchAndFilterRow(
+                    query = state.query,
+                    selectedCategory = state.selectedCategory,
+                    onQueryChange = viewModel::onQueryChange,
+                    onCategorySelected = viewModel::onCategorySelected,
+                )
+            }
+            item(span = { GridItemSpan(maxLineSpan) }) {
+                ViewModeRow(viewMode = state.viewMode, onToggle = viewModel::onViewModeToggle)
+            }
+            if (state.entries.isEmpty()) {
+                item(span = { GridItemSpan(maxLineSpan) }) {
+                    EmptyStateView(query = state.query)
+                }
+            } else {
                 items(state.entries, key = { it.id }) { entry ->
                     WordCard(entry = entry)
                 }
@@ -187,12 +133,97 @@ fun DictionaryScreen(viewModel: DictionaryViewModel = koinViewModel()) {
 }
 
 @Composable
+private fun DashboardSection(totalCount: Int, categoryCounts: Map<String, Int>) {
+    BoxWithConstraints(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp, vertical = 12.dp),
+    ) {
+        if (maxWidth > 500.dp) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(12.dp),
+                verticalAlignment = Alignment.Top,
+            ) {
+                StatsCard(totalCount = totalCount, modifier = Modifier.width(200.dp))
+                DonutChartCard(categoryCounts = categoryCounts, modifier = Modifier.weight(1f))
+            }
+        } else {
+            Column(
+                modifier = Modifier.fillMaxWidth(),
+                verticalArrangement = Arrangement.spacedBy(12.dp),
+            ) {
+                StatsCard(totalCount = totalCount, modifier = Modifier.fillMaxWidth())
+                DonutChartCard(categoryCounts = categoryCounts, modifier = Modifier.fillMaxWidth())
+            }
+        }
+    }
+}
+
+@Composable
+private fun SearchAndFilterRow(
+    query: String,
+    selectedCategory: WordCategory,
+    onQueryChange: (String) -> Unit,
+    onCategorySelected: (WordCategory) -> Unit,
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp, vertical = 8.dp),
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        OutlinedTextField(
+            value = query,
+            onValueChange = onQueryChange,
+            modifier = Modifier.weight(1f),
+            placeholder = {
+                Text(
+                    text = "Buscar en Español, Muchik o buscar notas etimológicas...",
+                    style = MaterialTheme.typography.bodySmall,
+                    maxLines = 1,
+                )
+            },
+            singleLine = true,
+            colors = OutlinedTextFieldDefaults.colors(
+                focusedBorderColor = Clay,
+                unfocusedBorderColor = MaterialTheme.colorScheme.outline,
+            ),
+        )
+        CategoryDropdown(
+            selectedCategory = selectedCategory,
+            onCategorySelected = onCategorySelected,
+            modifier = Modifier.width(180.dp),
+        )
+    }
+}
+
+@Composable
+private fun ViewModeRow(viewMode: DictionaryViewMode, onToggle: () -> Unit) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp, vertical = 4.dp),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Text(
+            text = "Visualización de resultados:",
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+        )
+        Spacer(modifier = Modifier.weight(1f))
+        ViewModeToggle(viewMode = viewMode, onToggle = onToggle)
+    }
+}
+
+@Composable
 private fun StatsCard(totalCount: Int, modifier: Modifier = Modifier) {
     Card(
         modifier = modifier,
         colors = CardDefaults.cardColors(containerColor = Color.White),
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
-        border = androidx.compose.foundation.BorderStroke(1.dp, ClayLight),
+        border = BorderStroke(1.dp, ClayLight),
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text(
@@ -247,8 +278,7 @@ private fun ViewModeToggle(viewMode: DictionaryViewMode, onToggle: () -> Unit) {
     val isCards = viewMode == DictionaryViewMode.CARDS
 
     Row(
-        modifier = Modifier
-            .border(1.dp, ClayLight, RoundedCornerShape(20.dp)),
+        modifier = Modifier.border(1.dp, ClayLight, RoundedCornerShape(20.dp)),
     ) {
         Box(
             modifier = Modifier

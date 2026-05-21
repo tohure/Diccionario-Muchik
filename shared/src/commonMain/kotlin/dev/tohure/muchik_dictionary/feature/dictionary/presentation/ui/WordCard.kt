@@ -19,6 +19,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import dev.tohure.muchik_dictionary.core.design.DarkClay
+import dev.tohure.muchik_dictionary.core.design.LocalEmojiFontFamily
 import dev.tohure.muchik_dictionary.core.design.Ocean
 import dev.tohure.muchik_dictionary.core.design.categoryColor
 import dev.tohure.muchik_dictionary.feature.dictionary.domain.model.WordEntry
@@ -26,6 +27,7 @@ import dev.tohure.muchik_dictionary.feature.dictionary.domain.model.WordEntry
 @Composable
 fun WordCard(entry: WordEntry, modifier: Modifier = Modifier) {
     val catColor = categoryColor(entry.category)
+    val emojiFont = LocalEmojiFontFamily.current
 
     Card(
         modifier = modifier.fillMaxWidth(),
@@ -80,10 +82,11 @@ fun WordCard(entry: WordEntry, modifier: Modifier = Modifier) {
                 Text(
                     text = entry.emoji,
                     fontSize = 52.sp,
+                    fontFamily = emojiFont,
                     modifier = Modifier
                         .align(Alignment.BottomEnd)
                         .padding(end = 8.dp, bottom = 4.dp),
-                    color = Color.Black.copy(alpha = 0.06f),
+                    color = Color.Black.copy(alpha = 0.18f),
                 )
             }
         }

@@ -104,9 +104,13 @@ shared/src/commonMain/kotlin/dev/tohure/muchik_dictionary/
 │   ├── design/
 │   │   ├── MuchikTheme.kt                   # MaterialTheme con tokens Muchik
 │   │   ├── Color.kt                         # Paleta: Arcilla, Arena, Dorado, Océano
-│   │   └── Type.kt                          # Merriweather serif + Noto Sans
+│   │   ├── Type.kt                          # Merriweather serif + Noto Sans
+│   │   ├── CategoryColors.kt                # categoryColorMap + categoryColor()
+│   │   ├── EmojiFont.kt                     # expect fun rememberEmojiFont(): FontFamily
+│   │   └── LocalEmojiFontFamily.kt          # CompositionLocal para font emoji
 │   ├── navigation/
-│   │   └── Screen.kt                        # sealed class con destinations tipadas
+│   │   ├── Screen.kt                        # sealed class con destinations tipadas
+│   │   └── MuchikTopBar.kt                  # TopBar responsivo (FlowRow + BoxWithConstraints)
 │   ├── database/
 │   │   ├── AppDatabase.kt                   # @Database (Room)
 │   │   └── DatabaseBuilder.kt               # expect/actual por plataforma
@@ -138,11 +142,11 @@ shared/src/commonMain/kotlin/dev/tohure/muchik_dictionary/
     │   ├── presentation/
     │   │   ├── ui/
     │   │   │   ├── DictionaryScreen.kt
-    │   │   │   ├── WordCard.kt              # Composable reutilizable
-    │   │   │   ├── WordListItem.kt
+    │   │   │   ├── WordCard.kt              # Tarjeta con emoji watermark
+    │   │   │   ├── WordListItem.kt          # Fila de tabla + WordListHeader
     │   │   │   ├── EmptyStateView.kt        # 🏺 sin resultados
-    │   │   │   ├── SemanticDistributionChart.kt  # gráfico custom
-    │   │   │   └── CategoryFilterChip.kt
+    │   │   │   ├── DonutChart.kt            # Distribución semántica (Canvas)
+    │   │   │   └── CategoryDropdown.kt      # Filtro por categoría
     │   │   ├── viewmodel/DictionaryViewModel.kt
     │   │   └── state/DictionaryUiState.kt
     │   └── di/DictionaryModule.kt
@@ -203,22 +207,31 @@ shared/src/commonMain/kotlin/dev/tohure/muchik_dictionary/
         └── di/SyncModule.kt
 
 shared/src/commonMain/composeResources/
+├── font/
+│   └── NotoEmoji-Regular.ttf               # NotoColorEmoji (COLR/CPAL) — emoji en WASM/Skia
 ├── values/strings.xml                       # Todos los textos de UI en español
 └── files/seed_corpus.json                  # Corpus bundleado (fallback offline)
 
 shared/src/androidMain/kotlin/.../
 ├── Platform.android.kt
-└── database/DatabaseBuilder.android.kt     # actual DatabaseBuilder
+├── database/DatabaseBuilder.android.kt     # actual DatabaseBuilder
+└── core/design/EmojiFont.kt               # actual: FontFamily.Default (sistema tiene emoji)
 
 shared/src/iosMain/kotlin/.../
+├── MainViewController.kt                   # CRÍTICO: initKoin() ANTES de ComposeUIViewController
 ├── Platform.ios.kt
-└── database/DatabaseBuilder.ios.kt
+├── database/DatabaseBuilder.ios.kt
+└── core/design/EmojiFont.kt               # actual: FontFamily.Default
 
 shared/src/jvmMain/kotlin/.../
-└── database/DatabaseBuilder.jvm.kt
+├── database/DatabaseBuilder.jvm.kt
+└── core/design/EmojiFont.kt               # actual: FontFamily.Default
 
 shared/src/wasmJsMain/kotlin/.../
-└── Platform.wasmJs.kt
+├── Platform.wasmJs.kt
+└── core/design/EmojiFont.kt               # actual: FontFamily(Font(Res.font.NotoEmoji_Regular))
+                                            # Skia (WASM) no accede a fuentes del sistema;
+                                            # NotoEmoji se carga directamente en el motor Skia
 ```
 
 **Structure Decision**: Single shared module (`:shared`) con toda la lógica y UI.

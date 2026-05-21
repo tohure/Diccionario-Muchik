@@ -12,9 +12,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import dev.tohure.muchik_dictionary.core.design.LocalEmojiFontFamily
 
 @Composable
 fun EmptyStateView(query: String, modifier: Modifier = Modifier) {
+    val emojiFont = LocalEmojiFontFamily.current
     Column(
         modifier = modifier
             .fillMaxWidth()
@@ -22,7 +24,7 @@ fun EmptyStateView(query: String, modifier: Modifier = Modifier) {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
     ) {
-        Text(text = "🏺", fontSize = 64.sp)
+        Text(text = "🏺", fontSize = 64.sp, fontFamily = emojiFont)
         Text(
             text = if (query.isNotBlank()) "Sin resultados para \"$query\""
                    else "El diccionario está vacío",

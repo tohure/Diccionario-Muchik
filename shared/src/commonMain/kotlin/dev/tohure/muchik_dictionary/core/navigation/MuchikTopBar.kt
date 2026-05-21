@@ -7,11 +7,13 @@ import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.HorizontalDivider
@@ -39,7 +41,8 @@ fun MuchikTopBar(
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .background(OffWhite),
+            .background(OffWhite)
+            .statusBarsPadding(),
     ) {
         DecorativeBar()
 
@@ -132,6 +135,7 @@ private fun NavTabItem(
 ) {
     Column(
         modifier = Modifier
+            .width(IntrinsicSize.Min)
             .clickable(onClick = onClick)
             .padding(horizontal = 8.dp, vertical = 4.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -141,6 +145,7 @@ private fun NavTabItem(
             style = MaterialTheme.typography.labelLarge,
             color = if (isActive) DarkClay else MaterialTheme.colorScheme.onSurfaceVariant,
             fontWeight = if (isActive) FontWeight.Bold else FontWeight.Normal,
+            maxLines = 1,
         )
         Box(
             modifier = Modifier
