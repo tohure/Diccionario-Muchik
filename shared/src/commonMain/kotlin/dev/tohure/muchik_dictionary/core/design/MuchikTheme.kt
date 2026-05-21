@@ -8,11 +8,11 @@ import androidx.compose.ui.graphics.Color
 private val MuchikColorScheme = lightColorScheme(
     primary = Clay,
     onPrimary = OffWhite,
-    primaryContainer = Sand,
+    primaryContainer = ClayContainer,
     onPrimaryContainer = DarkClay,
     secondary = Ocean,
     onSecondary = OffWhite,
-    secondaryContainer = OceanLight,
+    secondaryContainer = OceanContainer,
     onSecondaryContainer = Charcoal,
     tertiary = Gold,
     onTertiary = Charcoal,
@@ -20,9 +20,10 @@ private val MuchikColorScheme = lightColorScheme(
     onBackground = Charcoal,
     surface = OffWhite,
     onSurface = Charcoal,
-    surfaceVariant = Sand,
+    surfaceVariant = SurfaceT1,
     onSurfaceVariant = DarkClay,
     outline = ClayLight,
+    surfaceTint = Clay,
     error = Color(0xFFB00020),
 )
 
@@ -30,7 +31,8 @@ private val MuchikColorScheme = lightColorScheme(
 fun MuchikTheme(content: @Composable () -> Unit) {
     MaterialTheme(
         colorScheme = MuchikColorScheme,
-        typography = MuchikTypography,
+        typography = getMuchikTypography(),
+        shapes = MuchikShapes,
         content = content,
     )
 }

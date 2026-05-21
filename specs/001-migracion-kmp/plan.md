@@ -23,11 +23,12 @@ manual "Actualizar fuentes".
 **Language/Version**: Kotlin 2.3.21 / Compose Multiplatform 1.11.0
 
 **Primary Dependencies**:
-- Compose Multiplatform 1.11.0 (UI)
-- Koin 4.1.1 (DI)
+- Compose Multiplatform 1.11.0 (UI — Material3 exclusivamente; compose.material M2 eliminado)
+- AGP 9.2.1 + `com.android.kotlin.multiplatform.library` plugin en `:shared`; bloque `android {}` dentro de `kotlin {}` (en KMP 2.3.21 `androidLibrary{}` está deprecado — usar `android{}` con este plugin)
+- Koin 4.2.1 (DI)
 - Ktor 3.0.3 (HTTP — Supabase REST sync)
 - Room 2.8.4 + KSP (BD local con FTS4)
-- Navigation Compose 2.9.1 (navegación)
+- Navigation Compose 2.9.2 (navegación)
 - DataStore Preferences Core (metadata de sync)
 - kotlinx.serialization 1.7.3 (JSON)
 - kotlinx.coroutines 1.11.0

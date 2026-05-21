@@ -49,7 +49,7 @@ fun GrammarScreen() {
         item { Block3Postpositions() }
         item { Block4VerbConjugation() }
         item { Block5Syntax() }
-        item { Block6IналienablePossession() }
+        item { Block6InalienablePossession() }
         item { Block7Loanwords() }
         item { Spacer(Modifier.height(8.dp)) }
     }
@@ -361,7 +361,7 @@ private fun SyntaxExampleBox(
 }
 
 @Composable
-private fun Block6IналienablePossession() {
+private fun Block6InalienablePossession() {
     GrammarBlockCard(
         title = "6. Posesión Inalienable",
         containerColor = Color(0xFFFFF1F2),

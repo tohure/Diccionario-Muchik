@@ -1,19 +1,15 @@
 <!--
 SYNC IMPACT REPORT
 ==================
-Version change: [uninitialized] → 1.0.0
-Modified principles: N/A (initial constitution)
+Version change: 1.0.0 → 1.1.0
+Modified principles: Digital & Technical Standards — Security & Best Practices
 Added sections:
-  - Core Principles (I–V)
-  - Digital & Technical Standards
-  - Contribution & Review Workflow
-  - Governance
+  - Compose UI Contracts (NON-NEGOTIABLE) under Digital & Technical Standards
+Rationale: Formaliza las prácticas de State Hoisting, stateless components, decoupling y
+  single responsibility como mandato constitucional, no solo como preferencia de estilo.
 Templates requiring updates:
-  - .specify/templates/plan-template.md ✅ (Constitution Check section present, no changes needed)
-  - .specify/templates/spec-template.md ✅ (structure compatible)
-  - .specify/templates/tasks-template.md ✅ (structure compatible)
-Deferred TODOs:
-  - TODO(RATIFICATION_DATE): Using today's date as project has no prior recorded ratification.
+  - .specify/templates/plan-template.md — Constitution Check table debe incluir fila "Compose UI Contracts"
+  - CLAUDE.md ✅ (§ Compose UI Principles añadida con ejemplos de código)
 -->
 
 # Diccionario Muchik Constitution
@@ -96,8 +92,18 @@ The dictionary MUST function flawlessly in environments with limited connectivit
 
 ### Security & Best Practices
 
-- SOLID principles and DRY methodologies are required. UI components (e.g., Word Cards) must be generic and decoupled from business logic.
+- SOLID principles and DRY methodologies are required.
 - API keys and database credentials (e.g., Supabase anon keys) MUST NOT be hardcoded. Use build configurations or environment variables.
+
+### Compose UI Contracts (NON-NEGOTIABLE)
+
+- **State Hoisting:** State flows down as parameters; events flow up as callbacks. No nested composable may access a ViewModel directly — only screen-level entry points (`*Screen` composables) are permitted to do so.
+- **Stateless components:** Every reusable composable MUST be stateless and accept `modifier: Modifier = Modifier` as a parameter. Business logic (filtering, sorting, mapping) belongs in the ViewModel or UseCase, never in a composable.
+- **Decoupling:** UI components (cards, tables, chips, dialogs) MUST be generic and independent of any specific data source. They receive domain model values as plain parameters.
+- **Single Responsibility:** One composable, one visual job. A composable that renders two fundamentally different layouts depending on a flag MUST be split into two.
+- **Side effects:** Navigation, one-time events, and async triggers MUST use `LaunchedEffect`. No side effects in the composable body outside of `remember`, `derivedStateOf`, or effect APIs.
+
+See `CLAUDE.md § Compose UI Principles` for code examples and enforcement details.
 
 ## Contribution & Review Workflow
 
@@ -126,4 +132,4 @@ Compliance is verified at every plan review (Constitution Check gate in plan.md)
 PR review time. Complexity or deviations from any principle MUST be explicitly justified
 in the plan's Complexity Tracking table.
 
-**Version**: 1.0.0 | **Ratified**: 2026-05-20 | **Last Amended**: 2026-05-20
+**Version**: 1.1.0 | **Ratified**: 2026-05-20 | **Last Amended**: 2026-05-21

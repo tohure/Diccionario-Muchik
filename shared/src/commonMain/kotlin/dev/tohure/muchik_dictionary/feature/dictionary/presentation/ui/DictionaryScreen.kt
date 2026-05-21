@@ -2,12 +2,12 @@ package dev.tohure.muchik_dictionary.feature.dictionary.presentation.ui
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -21,14 +21,15 @@ import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Card
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.ui.draw.clip
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -36,11 +37,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import dev.tohure.muchik_dictionary.core.design.Clay
-import dev.tohure.muchik_dictionary.core.design.ClayLight
 import dev.tohure.muchik_dictionary.core.design.DarkClay
-import dev.tohure.muchik_dictionary.core.design.Sand
 import dev.tohure.muchik_dictionary.feature.dictionary.domain.model.WordCategory
 import dev.tohure.muchik_dictionary.feature.dictionary.presentation.state.DictionaryViewMode
 import dev.tohure.muchik_dictionary.feature.dictionary.presentation.viewmodel.DictionaryViewModel
@@ -64,11 +64,15 @@ fun DictionaryScreen(viewModel: DictionaryViewModel = koinViewModel()) {
         return
     }
 
+    val contentPadding = PaddingValues(horizontal = 16.dp, vertical = 16.dp)
+
     if (state.viewMode == DictionaryViewMode.LIST) {
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
                 .background(MaterialTheme.colorScheme.background),
+            contentPadding = contentPadding,
+            verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             if (showDashboard) {
                 item { DashboardSection(state.totalCount, state.categoryCounts) }
@@ -99,7 +103,7 @@ fun DictionaryScreen(viewModel: DictionaryViewModel = koinViewModel()) {
             modifier = Modifier
                 .fillMaxSize()
                 .background(MaterialTheme.colorScheme.background),
-            contentPadding = PaddingValues(bottom = 16.dp),
+            contentPadding = contentPadding,
             verticalArrangement = Arrangement.spacedBy(12.dp),
             horizontalArrangement = Arrangement.spacedBy(12.dp),
         ) {
@@ -137,21 +141,21 @@ private fun DashboardSection(totalCount: Int, categoryCounts: Map<String, Int>) 
     BoxWithConstraints(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 12.dp),
+            .padding(vertical = 12.dp),
     ) {
-        if (maxWidth > 500.dp) {
+        if (maxWidth > 650.dp) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(12.dp),
-                verticalAlignment = Alignment.Top,
+                horizontalArrangement = Arrangement.spacedBy(16.dp),
+                verticalAlignment = Alignment.CenterVertically,
             ) {
-                StatsCard(totalCount = totalCount, modifier = Modifier.width(200.dp))
+                StatsCard(totalCount = totalCount, modifier = Modifier.width(260.dp))
                 DonutChartCard(categoryCounts = categoryCounts, modifier = Modifier.weight(1f))
             }
         } else {
             Column(
                 modifier = Modifier.fillMaxWidth(),
-                verticalArrangement = Arrangement.spacedBy(12.dp),
+                verticalArrangement = Arrangement.spacedBy(16.dp),
             ) {
                 StatsCard(totalCount = totalCount, modifier = Modifier.fillMaxWidth())
                 DonutChartCard(categoryCounts = categoryCounts, modifier = Modifier.fillMaxWidth())
@@ -170,31 +174,36 @@ private fun SearchAndFilterRow(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 8.dp),
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
+            .padding(vertical = 8.dp),
+        horizontalArrangement = Arrangement.spacedBy(12.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        OutlinedTextField(
+        TextField(
             value = query,
             onValueChange = onQueryChange,
             modifier = Modifier.weight(1f),
             placeholder = {
                 Text(
-                    text = "Buscar en Español, Muchik o buscar notas etimológicas...",
-                    style = MaterialTheme.typography.bodySmall,
+                    text = "Buscar en Muchik o Español...",
+                    style = MaterialTheme.typography.bodyMedium,
                     maxLines = 1,
                 )
             },
             singleLine = true,
-            colors = OutlinedTextFieldDefaults.colors(
-                focusedBorderColor = Clay,
-                unfocusedBorderColor = MaterialTheme.colorScheme.outline,
+            shape = CircleShape,
+            colors = TextFieldDefaults.colors(
+                focusedIndicatorColor = Color.Transparent,
+                unfocusedIndicatorColor = Color.Transparent,
+                disabledIndicatorColor = Color.Transparent,
+                focusedContainerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f),
+                unfocusedContainerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f),
             ),
+            textStyle = MaterialTheme.typography.bodyMedium
         )
         CategoryDropdown(
             selectedCategory = selectedCategory,
             onCategorySelected = onCategorySelected,
-            modifier = Modifier.width(180.dp),
+            modifier = Modifier.width(IntrinsicSize.Min),
         )
     }
 }
@@ -204,12 +213,12 @@ private fun ViewModeRow(viewMode: DictionaryViewMode, onToggle: () -> Unit) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 4.dp),
+            .padding(vertical = 4.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Text(
-            text = "Visualización de resultados:",
-            style = MaterialTheme.typography.bodySmall,
+            text = "Visualización:",
+            style = MaterialTheme.typography.labelMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
         Spacer(modifier = Modifier.weight(1f))
@@ -219,50 +228,54 @@ private fun ViewModeRow(viewMode: DictionaryViewMode, onToggle: () -> Unit) {
 
 @Composable
 private fun StatsCard(totalCount: Int, modifier: Modifier = Modifier) {
-    Card(
+    ElevatedCard(
         modifier = modifier,
-        colors = CardDefaults.cardColors(containerColor = Color.White),
-        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
-        border = BorderStroke(1.dp, ClayLight),
+        colors = CardDefaults.elevatedCardColors(containerColor = MaterialTheme.colorScheme.surface),
+        elevation = CardDefaults.elevatedCardElevation(defaultElevation = 2.dp),
+        shape = MaterialTheme.shapes.large,
     ) {
-        Column(modifier = Modifier.padding(16.dp)) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(24.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
             Text(
                 text = "TOTAL ENTRADAS",
-                style = MaterialTheme.typography.labelSmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                fontWeight = FontWeight.SemiBold,
+                style = MaterialTheme.typography.labelMedium,
+                color = MaterialTheme.colorScheme.primary,
+                fontWeight = FontWeight.ExtraBold,
+                textAlign = TextAlign.Center
             )
-            Row(
-                verticalAlignment = Alignment.Bottom,
-                modifier = Modifier.padding(top = 8.dp),
-            ) {
-                Text(
-                    text = totalCount.toString(),
-                    style = MaterialTheme.typography.displayMedium,
-                    color = DarkClay,
-                    fontWeight = FontWeight.Bold,
-                )
-                Text(
-                    text = " términos\nverificados",
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    modifier = Modifier.padding(bottom = 8.dp, start = 4.dp),
-                )
-            }
+            Spacer(modifier = Modifier.padding(top = 12.dp))
+            Text(
+                text = totalCount.toString(),
+                style = MaterialTheme.typography.displayLarge,
+                color = DarkClay,
+                fontWeight = FontWeight.Black,
+                textAlign = TextAlign.Center
+            )
+            Text(
+                text = "términos verificados",
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                textAlign = TextAlign.Center
+            )
         }
     }
 }
 
 @Composable
 private fun DonutChartCard(categoryCounts: Map<String, Int>, modifier: Modifier = Modifier) {
-    Card(
+    ElevatedCard(
         modifier = modifier,
-        colors = CardDefaults.cardColors(containerColor = Color.White),
-        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
+        colors = CardDefaults.elevatedCardColors(containerColor = MaterialTheme.colorScheme.surface),
+        elevation = CardDefaults.elevatedCardElevation(defaultElevation = 2.dp),
+        shape = MaterialTheme.shapes.large,
     ) {
-        Column(modifier = Modifier.padding(16.dp)) {
+        Column(modifier = Modifier.padding(20.dp)) {
             Text(
-                text = "Distribución Semántica del Léxico",
+                text = "Distribución Semántica",
                 style = MaterialTheme.typography.titleSmall,
                 color = DarkClay,
                 fontWeight = FontWeight.SemiBold,
@@ -278,37 +291,44 @@ private fun ViewModeToggle(viewMode: DictionaryViewMode, onToggle: () -> Unit) {
     val isCards = viewMode == DictionaryViewMode.CARDS
 
     Row(
-        modifier = Modifier.border(1.dp, ClayLight, RoundedCornerShape(20.dp)),
+        modifier = Modifier
+            .background(
+                color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f),
+                shape = CircleShape
+            )
+            .padding(4.dp),
     ) {
         Box(
             modifier = Modifier
+                .clip(CircleShape)
                 .background(
-                    color = if (isCards) Sand else Color.Transparent,
-                    shape = RoundedCornerShape(topStart = 20.dp, bottomStart = 20.dp),
+                    color = if (isCards) MaterialTheme.colorScheme.primaryContainer else Color.Transparent,
+                    shape = CircleShape,
                 )
                 .clickable { if (!isCards) onToggle() }
-                .padding(horizontal = 12.dp, vertical = 6.dp),
+                .padding(horizontal = 16.dp, vertical = 6.dp),
         ) {
             Text(
                 text = "Tarjetas",
                 style = MaterialTheme.typography.labelMedium,
-                color = if (isCards) DarkClay else MaterialTheme.colorScheme.onSurfaceVariant,
+                color = if (isCards) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.onSurfaceVariant,
                 fontWeight = if (isCards) FontWeight.SemiBold else FontWeight.Normal,
             )
         }
         Box(
             modifier = Modifier
+                .clip(CircleShape)
                 .background(
-                    color = if (!isCards) Sand else Color.Transparent,
-                    shape = RoundedCornerShape(topEnd = 20.dp, bottomEnd = 20.dp),
+                    color = if (!isCards) MaterialTheme.colorScheme.primaryContainer else Color.Transparent,
+                    shape = CircleShape,
                 )
                 .clickable { if (isCards) onToggle() }
-                .padding(horizontal = 12.dp, vertical = 6.dp),
+                .padding(horizontal = 16.dp, vertical = 6.dp),
         ) {
             Text(
                 text = "Lista",
                 style = MaterialTheme.typography.labelMedium,
-                color = if (!isCards) DarkClay else MaterialTheme.colorScheme.onSurfaceVariant,
+                color = if (!isCards) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.onSurfaceVariant,
                 fontWeight = if (!isCards) FontWeight.SemiBold else FontWeight.Normal,
             )
         }
