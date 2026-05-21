@@ -9,12 +9,16 @@ You are an AI Assistant operating in the development environment of a Software A
 Before proposing major architectural changes or data schemas, you **MUST** read and strictly adhere to the `constitution.md` file.
 
 ## KMP Project Structure
-This project uses a Single Shared UI model. The main structure is located inside the `composeApp` module:
-- `composeApp/src/commonMain/`: 99% of the code resides here. UI in Compose Multiplatform, Clean Architecture (Domain, Data, Presentation), dependency injection (Koin), and database (Room).
-- `composeApp/src/androidMain/`: Android-specific code (e.g., Room initialization, Ktor engine).
-- `composeApp/src/iosMain/`: iOS-specific code.
-- `composeApp/src/desktopMain/`: JVM/Desktop-specific code.
-- `composeApp/src/wasmJsMain/`: Web-specific code.
+This project uses a multi-module structure with a shared logic module and platform-specific app modules:
+- `shared/src/commonMain/`: 99% of the code resides here. UI in Compose Multiplatform, Clean Architecture (Domain, Data, Presentation), dependency injection (Koin), and database (Room).
+- `shared/src/androidMain/`: Android-specific code (e.g., Room initialization, Ktor engine).
+- `shared/src/iosMain/`: iOS-specific code.
+- `shared/src/desktopMain/`: JVM/Desktop-specific code (consumed by `:desktopApp`).
+- `shared/src/wasmJsMain/`: Web-specific code (consumed by `:webApp`).
+- `androidApp/`: Android application module.
+- `desktopApp/`: Desktop (JVM) application module.
+- `webApp/`: Web (WASM/JS) application module.
+- `iosApp/`: iOS application (Xcode project).
 
 ## Main Tech Stack
 - **UI:** Compose Multiplatform.
@@ -31,10 +35,10 @@ This environment is powered by specific Agent Skills. Before writing code, gener
 
 ## Useful Commands (Gradle)
 Use these terminal commands to build, test, and run the project depending on the target platform:
-- **Android:** `./gradlew :composeApp:installDebug` (Installs on connected emulator/device).
-- **Desktop (JVM):** `./gradlew :composeApp:run` (Runs the desktop app locally).
-- **Web (WASM):** `./gradlew :composeApp:wasmJsBrowserDevelopmentRun` (Deploys locally in the browser).
-- **iOS:** Normally executed via Xcode or Fleet, but you can verify the shared compilation with `./gradlew :composeApp:compileKotlinIosSimulatorArm64`.
+- **Android:** `./gradlew :androidApp:installDebug` (Installs on connected emulator/device).
+- **Desktop (JVM):** `./gradlew :desktopApp:run` (Runs the desktop app locally).
+- **Web (WASM):** `./gradlew :webApp:wasmJsBrowserDevelopmentRun` (Deploys locally in the browser).
+- **iOS:** Normally executed via Xcode or Fleet, but you can verify the shared compilation with `./gradlew :shared:compileKotlinIosSimulatorArm64`.
 - **Clean and Rebuild:** `./gradlew clean build`
 
 ## Code Style & Preferences

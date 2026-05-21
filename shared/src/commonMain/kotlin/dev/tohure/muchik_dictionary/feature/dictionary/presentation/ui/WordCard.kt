@@ -1,9 +1,11 @@
 package dev.tohure.muchik_dictionary.feature.dictionary.presentation.ui
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
@@ -11,42 +13,56 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import dev.tohure.muchik_dictionary.core.design.Clay
 import dev.tohure.muchik_dictionary.core.design.DarkClay
-import dev.tohure.muchik_dictionary.core.design.Sand
+import dev.tohure.muchik_dictionary.core.design.Ocean
+import dev.tohure.muchik_dictionary.core.design.categoryColor
 import dev.tohure.muchik_dictionary.feature.dictionary.domain.model.WordEntry
 
 @Composable
 fun WordCard(entry: WordEntry, modifier: Modifier = Modifier) {
+    val catColor = categoryColor(entry.category)
+
     Card(
         modifier = modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+        colors = CardDefaults.cardColors(containerColor = Color.White),
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
-        border = androidx.compose.foundation.BorderStroke(
-            width = 3.dp,
-            color = Clay,
-        ),
+        shape = RoundedCornerShape(8.dp),
     ) {
         Box(modifier = Modifier.fillMaxWidth()) {
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(16.dp)
+                    .padding(16.dp),
             ) {
+                Box(
+                    modifier = Modifier
+                        .background(catColor.copy(alpha = 0.15f), RoundedCornerShape(4.dp))
+                        .padding(horizontal = 8.dp, vertical = 3.dp),
+                ) {
+                    Text(
+                        text = entry.category.uppercase(),
+                        style = MaterialTheme.typography.labelSmall,
+                        color = catColor,
+                        fontWeight = FontWeight.SemiBold,
+                    )
+                }
+
                 Text(
                     text = entry.muchikTerm,
-                    style = MaterialTheme.typography.headlineMedium,
+                    style = MaterialTheme.typography.headlineSmall,
                     color = DarkClay,
                     fontWeight = FontWeight.Bold,
+                    modifier = Modifier.padding(top = 8.dp),
                 )
                 Text(
                     text = entry.spanishTranslation,
-                    style = MaterialTheme.typography.bodyLarge,
-                    color = MaterialTheme.colorScheme.onSurface,
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = Ocean,
                     modifier = Modifier.padding(top = 4.dp),
                 )
                 if (entry.etymologyNote.isNotBlank()) {
@@ -58,13 +74,8 @@ fun WordCard(entry: WordEntry, modifier: Modifier = Modifier) {
                         modifier = Modifier.padding(top = 6.dp),
                     )
                 }
-                Text(
-                    text = entry.category,
-                    style = MaterialTheme.typography.labelMedium,
-                    color = Clay,
-                    modifier = Modifier.padding(top = 8.dp),
-                )
             }
+
             if (entry.emoji.isNotBlank()) {
                 Text(
                     text = entry.emoji,
@@ -72,7 +83,7 @@ fun WordCard(entry: WordEntry, modifier: Modifier = Modifier) {
                     modifier = Modifier
                         .align(Alignment.BottomEnd)
                         .padding(end = 8.dp, bottom = 4.dp),
-                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.08f),
+                    color = Color.Black.copy(alpha = 0.06f),
                 )
             }
         }
