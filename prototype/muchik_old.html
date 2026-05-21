@@ -1,0 +1,3251 @@
+<!doctype html>
+<html lang="es">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Muchik: El Idioma de los Moche - Enciclopedia Interactiva</title>
+		<!-- Tailwind CSS -->
+		<script src="https://cdn.tailwindcss.com"></script>
+		<!-- Chart.js -->
+		<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+		<style>
+			@import url("https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;1,400&family=Noto+Sans:wght@300;400;600;700&display=swap");
+
+			:root {
+				--color-sand: #f3e5ab;
+				--color-clay: #c06c47;
+				--color-dark-clay: #8a3e26;
+				--color-gold: #d4af37;
+				--color-ocean: #4b8f8c;
+				--color-off-white: #faf9f6;
+				--color-charcoal: #2c2c2c;
+			}
+
+			body {
+				font-family: "Noto Sans", sans-serif;
+				background-color: var(--color-off-white);
+				color: var(--color-charcoal);
+			}
+
+			h1,
+			h2,
+			h3,
+			h4,
+			.font-serif {
+				font-family: "Merriweather", serif;
+			}
+
+			::-webkit-scrollbar {
+				width: 8px;
+			}
+			::-webkit-scrollbar-track {
+				background: #f1f1f1;
+			}
+			::-webkit-scrollbar-thumb {
+				background: var(--color-clay);
+				border-radius: 4px;
+			}
+
+			.chart-container {
+				position: relative;
+				width: 100%;
+				max-width: 600px;
+				height: 300px;
+				max-height: 400px;
+				margin: 0 auto;
+			}
+
+			@media (min-width: 768px) {
+				.chart-container {
+					height: 350px;
+				}
+			}
+
+			/* Card styles */
+			.word-card {
+				transition: all 0.3s ease;
+				border-left: 4px solid var(--color-clay);
+				position: relative;
+				overflow: hidden;
+			}
+			.word-card:hover {
+				transform: translateY(-2px);
+				box-shadow:
+					0 4px 6px -1px rgba(0, 0, 0, 0.1),
+					0 2px 4px -1px rgba(0, 0, 0, 0.06);
+				border-left-color: var(--color-gold);
+			}
+			.watermark-emoji {
+				position: absolute;
+				right: -10px;
+				bottom: -20px;
+				font-size: 6rem;
+				opacity: 0.08;
+				pointer-events: none;
+				line-height: 1;
+			}
+
+			.moche-border-top {
+				background-image:
+					linear-gradient(45deg, var(--color-clay) 25%, transparent 25%),
+					linear-gradient(-45deg, var(--color-clay) 25%, transparent 25%),
+					linear-gradient(45deg, transparent 75%, var(--color-clay) 75%),
+					linear-gradient(-45deg, transparent 75%, var(--color-clay) 75%);
+				background-size: 20px 20px;
+				background-position:
+					0 0,
+					0 10px,
+					10px -10px,
+					-10px 0px;
+				height: 10px;
+				width: 100%;
+				opacity: 0.3;
+			}
+
+			.tab-btn.active {
+				color: var(--color-dark-clay);
+				border-bottom: 2px solid var(--color-dark-clay);
+				font-weight: 700;
+			}
+
+			.grammar-box {
+				background-color: white;
+				border: 1px solid #e5e7eb;
+				border-radius: 0.75rem;
+				padding: 1.5rem;
+				box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+				height: 100%;
+			}
+		</style>
+	</head>
+	<body class="bg-gray-50 flex flex-col min-h-screen">
+		<header class="bg-white shadow-md relative">
+			<div class="moche-border-top"></div>
+			<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+				<div class="flex flex-col md:flex-row justify-between items-center">
+					<div class="mb-4 md:mb-0 text-center md:text-left">
+						<h1 class="text-3xl font-bold text-[#8A3E26]">
+							ENCICLOPEDIA MUCHIK
+						</h1>
+						<p class="text-gray-600 italic mt-1">
+							Léxico, historia y revitalización de la lengua yunga
+						</p>
+					</div>
+					<nav
+						class="flex flex-wrap gap-x-4 gap-y-2 w-full md:w-auto pt-2 text-sm font-medium justify-center md:justify-start"
+					>
+						<button
+							onclick="switchView('dictionary')"
+							id="nav-dictionary"
+							class="tab-btn active text-gray-500 hover:text-[#8A3E26] px-2 py-1 transition"
+						>
+							Diccionario
+						</button>
+						<button
+							onclick="switchView('meaning')"
+							id="nav-meaning"
+							class="tab-btn text-gray-500 hover:text-[#8A3E26] px-2 py-1 transition"
+						>
+							Significado
+						</button>
+						<button
+							onclick="switchView('grammar')"
+							id="nav-grammar"
+							class="tab-btn text-gray-500 hover:text-[#8A3E26] px-2 py-1 transition"
+						>
+							Gramática
+						</button>
+						<button
+							onclick="switchView('numbers')"
+							id="nav-numbers"
+							class="tab-btn text-gray-500 hover:text-[#8A3E26] px-2 py-1 transition"
+						>
+							Números
+						</button>
+						<button
+							onclick="switchView('quiz')"
+							id="nav-quiz"
+							class="tab-btn text-gray-500 hover:text-[#8A3E26] px-2 py-1 transition"
+						>
+							Práctica
+						</button>
+						<button
+							onclick="switchView('credits')"
+							id="nav-credits"
+							class="tab-btn text-gray-500 hover:text-[#8A3E26] px-2 py-1 transition"
+						>
+							Créditos
+						</button>
+						<button
+							onclick="switchView('contact')"
+							id="nav-contact"
+							class="tab-btn text-gray-500 hover:text-[#8A3E26] px-2 py-1 transition"
+						>
+							Contacto
+						</button>
+					</nav>
+				</div>
+			</div>
+		</header>
+
+		<main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
+			<!-- VIEW: DICTIONARY -->
+			<div id="view-dictionary" class="space-y-6 animate-fade-in">
+				<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-4">
+					<div
+						class="bg-white rounded-xl shadow p-6 border-t-4 border-[#C06C47] flex flex-col justify-center"
+					>
+						<div
+							class="text-gray-500 text-sm font-semibold uppercase tracking-wide"
+						>
+							Total Entradas
+						</div>
+						<div class="mt-2 flex items-baseline">
+							<span
+								class="text-5xl font-extrabold text-gray-900"
+								id="total-words-count"
+								>0</span
+							>
+							<span class="ml-2 text-sm text-gray-500"
+								>términos verificados</span
+							>
+						</div>
+					</div>
+					<div
+						class="bg-white rounded-xl shadow p-4 md:col-span-2 flex flex-col justify-between"
+					>
+						<h3 class="text-sm font-semibold text-gray-700 mb-2 pl-2">
+							Distribución Semántica del Léxico
+						</h3>
+						<div class="chart-container">
+							<canvas id="categoryChart"></canvas>
+						</div>
+					</div>
+				</div>
+
+				<!-- Controles -->
+				<div
+					class="bg-white rounded-xl shadow p-5 sticky top-4 z-10 border border-gray-100 flex flex-col gap-4"
+				>
+					<div class="flex flex-col md:flex-row gap-4 w-full">
+						<div class="flex-grow relative">
+							<div
+								class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"
+							>
+								<span class="text-gray-400 font-bold">🔍</span>
+							</div>
+							<input
+								type="text"
+								id="searchInput"
+								class="focus:ring-[#C06C47] focus:border-[#C06C47] block w-full pl-10 sm:text-sm border-gray-300 rounded-md p-3 bg-gray-50"
+								placeholder="Buscar en Español, Muchik o buscar notas etimológicas..."
+							/>
+						</div>
+						<div class="flex-shrink-0 md:w-48">
+							<select
+								id="categoryFilter"
+								class="block w-full pl-3 pr-8 py-3 text-base border-gray-300 focus:outline-none focus:ring-[#C06C47] focus:border-[#C06C47] sm:text-sm rounded-md bg-gray-50"
+							>
+								<option value="all">Todas las Categorías</option>
+							</select>
+						</div>
+					</div>
+					<div
+						class="flex justify-between items-center border-t border-gray-100 pt-3"
+					>
+						<span class="text-sm text-gray-500"
+							>Visualización de resultados:</span
+						>
+						<div class="flex bg-gray-100 rounded-lg p-1">
+							<button
+								onclick="setDictView('cards')"
+								id="btn-view-cards"
+								class="px-4 py-1.5 rounded-md bg-white shadow-sm text-sm font-semibold text-[#8A3E26] transition flex items-center gap-2"
+							>
+								<span>🗂️</span> Tarjetas
+							</button>
+							<button
+								onclick="setDictView('list')"
+								id="btn-view-list"
+								class="px-4 py-1.5 rounded-md text-gray-500 hover:text-gray-700 text-sm font-semibold transition flex items-center gap-2"
+							>
+								<span>📄</span> Lista
+							</button>
+						</div>
+					</div>
+				</div>
+
+				<div
+					class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"
+					id="dictionary-grid"
+				></div>
+
+				<div
+					class="hidden bg-white shadow rounded-lg overflow-hidden border border-gray-200"
+					id="dictionary-list-container"
+				>
+					<div class="overflow-x-auto">
+						<table class="w-full text-left border-collapse">
+							<thead>
+								<tr
+									class="bg-gray-50 border-b border-gray-200 text-sm text-gray-600 uppercase tracking-wider"
+								>
+									<th class="p-4 w-16 text-center">Ícono</th>
+									<th class="p-4">Muchik</th>
+									<th class="p-4">Español</th>
+									<th class="p-4">Categoría</th>
+									<th class="p-4 hidden md:table-cell">Notas</th>
+								</tr>
+							</thead>
+							<tbody
+								id="dictionary-list-body"
+								class="text-gray-800 divide-y divide-gray-100"
+							></tbody>
+						</table>
+					</div>
+				</div>
+
+				<div id="no-results" class="hidden text-center py-12">
+					<div class="text-4xl mb-4">🏺</div>
+					<h3 class="text-lg font-medium text-gray-900">
+						No se encontraron palabras
+					</h3>
+				</div>
+			</div>
+
+			<!-- VIEW: MEANING -->
+			<div id="view-meaning" class="hidden space-y-8 animate-fade-in">
+				<div
+					class="max-w-4xl mx-auto bg-gradient-to-br from-amber-50 to-orange-50 p-8 md:p-12 rounded-3xl shadow-xl border border-amber-200 relative overflow-hidden"
+				>
+					<div
+						class="absolute right-0 top-0 opacity-10 text-[12rem] transform translate-x-10 -translate-y-10 pointer-events-none"
+					>
+						🌅
+					</div>
+
+					<h2
+						class="text-4xl md:text-5xl font-black font-serif text-[#8A3E26] mb-6 relative z-10 text-center"
+					>
+						El Significado de "Muchik"
+					</h2>
+
+					<div
+						class="text-gray-800 space-y-6 relative z-10 text-lg leading-relaxed"
+					>
+						<p class="text-center font-medium text-[#C06C47] mb-8">
+							A menudo usamos las palabras "Mochica", "Muchik" o "Yunga" como
+							sinónimos, pero históricamente tienen orígenes, pesos y
+							significados muy distintos.
+						</p>
+
+						<div class="grid md:grid-cols-2 gap-8 mt-6">
+							<div
+								class="bg-white p-6 rounded-2xl shadow-sm border-t-4 border-[#C06C47]"
+							>
+								<h4
+									class="font-bold text-[#8A3E26] mb-3 text-xl flex items-center gap-2"
+								>
+									<span>1.</span> El nombre impuesto: Yunga
+								</h4>
+								<p class="text-sm text-gray-700">
+									Cuando los Incas y luego los españoles llegaron a la costa
+									norte del Perú, llamaron al idioma y a la gente
+									<strong>"Yunga"</strong>. Sin embargo, esta no es una palabra
+									de nuestro idioma. Es una palabra en
+									<strong>Quechua</strong> (<em>Yunka</em>) que significa "valle
+									cálido" o "tierra de clima caliente". Era un nombre geográfico
+									impuesto desde afuera: <em>los que viven en el calor</em>.
+								</p>
+							</div>
+
+							<div
+								class="bg-white p-6 rounded-2xl shadow-sm border-t-4 border-[#4B8F8C]"
+							>
+								<h4
+									class="font-bold text-[#4B8F8C] mb-3 text-xl flex items-center gap-2"
+								>
+									<span>2.</span> La derivación: Mochica
+								</h4>
+								<p class="text-sm text-gray-700">
+									Cuando los colonos españoles se asentaron en la región, les
+									costaba pronunciar los sonidos exactos de los nativos.
+									Escuchaban el término originario "Muchik" y lo asociaron
+									rápidamente al nombre del valle principal que hoy conocemos
+									como <strong>Moche</strong>. Al castellanizar la palabra, le
+									añadieron la "a" al final, creando el término
+									<strong>"Mochica"</strong>.
+								</p>
+							</div>
+						</div>
+
+						<div
+							class="bg-white p-8 rounded-2xl mt-8 border-2 border-amber-300 shadow-md text-center transform hover:scale-[1.02] transition-transform"
+						>
+							<h4 class="font-black text-[#8A3E26] mb-4 text-3xl">
+								La Autodenominación Verdadera
+							</h4>
+							<p class="text-base mb-6 max-w-2xl mx-auto text-gray-600">
+								<strong>"Muchik"</strong> es cómo los propios hablantes
+								originarios llamaban a su lengua y a su cultura. Según los
+								análisis lingüísticos de documentos históricos (como la Lista
+								del Cónsul Montjoy de 1865 y los registros de F. de la Carrera
+								de 1644), la palabra se compone de una raíz y un sufijo
+								sumamente reveladores:
+							</p>
+
+							<div
+								class="flex flex-col md:flex-row justify-center items-center gap-4 mb-6 font-mono text-xl"
+							>
+								<div
+									class="bg-amber-100 px-6 py-4 rounded-xl border border-amber-200 shadow-inner w-full md:w-auto"
+								>
+									<strong class="text-[#C06C47] text-3xl block mb-1"
+										>Much / Mæich</strong
+									>
+									<span
+										class="text-sm text-gray-600 font-sans uppercase tracking-widest"
+										>La Raíz: "Nosotros"</span
+									>
+								</div>
+								<div class="text-4xl text-gray-300 font-bold hidden md:block">
+									+
+								</div>
+								<div
+									class="bg-amber-100 px-6 py-4 rounded-xl border border-amber-200 shadow-inner w-full md:w-auto"
+								>
+									<strong class="text-[#C06C47] text-3xl block mb-1"
+										>-ik / -c</strong
+									>
+									<span
+										class="text-sm text-gray-600 font-sans uppercase tracking-widest"
+										>El Sufijo: "Pertenencia"</span
+									>
+								</div>
+							</div>
+
+							<div
+								class="bg-amber-50 p-6 rounded-xl border border-amber-200 inline-block w-full"
+							>
+								<p class="text-gray-700 text-lg mb-2">
+									Al unir estas piezas, el consenso de los investigadores nos
+									revela que <strong>"Muchik"</strong> significa literal y
+									poéticamente:
+								</p>
+								<span
+									class="text-3xl md:text-4xl font-black text-[#C06C47] drop-shadow-sm block mt-2"
+									>"Lo nuestro"</span
+								>
+								<span
+									class="text-xl md:text-2xl font-bold text-[#8A3E26] block mt-2 opacity-80"
+									>o "El habla de los nuestros"</span
+								>
+							</div>
+							<p class="mt-6 text-sm text-gray-500 italic">
+								Decir "Yo hablo Muchik" es, en la mente de nuestros ancestros,
+								una forma de decir: "Yo hablo lo nuestro". Una declaración
+								eterna de identidad.
+							</p>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- VIEW: GRAMMAR & USAGE -->
+			<div id="view-grammar" class="hidden space-y-8 animate-fade-in">
+				<div class="text-center mb-8">
+					<h2 class="text-3xl font-serif text-[#8A3E26]">
+						Estructura y Gramática Muchik
+					</h2>
+					<p class="text-gray-600 mt-2 max-w-3xl mx-auto">
+						El Muchik es un idioma aglutinante, con una morfología compleja y
+						marcas verbales de posición estricta (Basado en F. de la Carrera y
+						R. Eloranta).
+					</p>
+				</div>
+				<div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+					<div class="grammar-box">
+						<h3 class="text-xl font-bold text-[#C06C47] mb-4 border-b pb-2">
+							1. Formación de Palabras (Derivación)
+						</h3>
+						<p class="text-sm text-gray-700 mb-4">
+							El idioma crea nuevos sustantivos añadiendo sufijos específicos a
+							una raíz verbal (Ej. raíz <strong>ap-</strong> = aprender):
+						</p>
+						<ul class="space-y-3 text-sm">
+							<li>
+								<span class="text-[#8A3E26] font-bold">-uk</span> (Sufijo
+								Locativo): Indica el lugar. <em>apuk</em> (aula),
+								<em>siaduk</em> (cama).
+							</li>
+							<li>
+								<span class="text-[#8A3E26] font-bold">-ik</span> (Sufijo
+								Instrumental): El objeto usado. <em>apik</em> (útiles),
+								<em>akik</em> (lentes).
+							</li>
+							<li>
+								<span class="text-[#8A3E26] font-bold">-(a)pæk</span> (Sufijo
+								Agente): Quien realiza la acción. <em>apapæk</em> (estudiante).
+							</li>
+							<li>
+								<span class="text-[#8A3E26] font-bold">-ko + pæk</span> (Agente
+								Causativo): Quien hace que otro realice la acción.
+								<em>apkopæk</em> (profesor).
+							</li>
+							<li>
+								<span class="text-[#8A3E26] font-bold">-(i)sæk</span> (Sufijo de
+								Resultado): <em>læmisæk</em> (la muerte), <em>apisæk</em> (la
+								lección).
+							</li>
+						</ul>
+					</div>
+
+					<div class="grammar-box">
+						<h3 class="text-xl font-bold text-[#C06C47] mb-4 border-b pb-2">
+							2. Saludos: La Regla del "Peño"
+						</h3>
+						<p class="text-sm text-gray-700 mb-4">
+							Para expresar buenos deseos, se usa la raíz
+							<strong>Peñ</strong> (bueno) unida al sufijo conector
+							<strong>-o</strong>:
+						</p>
+						<ul class="space-y-3 text-sm">
+							<li class="flex justify-between bg-gray-50 p-2 rounded">
+								<span><strong>¡Peño ænæm!</strong></span>
+								<span class="text-gray-600">¡Buenos días!</span>
+							</li>
+							<li class="flex justify-between bg-gray-50 p-2 rounded">
+								<span><strong>¡Peño nerræm!</strong></span>
+								<span class="text-gray-600">¡Buenas tardes!</span>
+							</li>
+							<li
+								class="flex justify-between bg-emerald-50 p-2 rounded border border-emerald-200"
+							>
+								<span><strong>¡Peño ciamo!</strong></span>
+								<span class="text-emerald-700 font-semibold"
+									>¡Buena vida / Salud!</span
+								>
+							</li>
+							<li class="flex justify-between bg-gray-50 p-2 rounded">
+								<span><strong>¡Peño Tæsæk!</strong></span>
+								<span class="text-gray-600">¡Bienvenidos!</span>
+							</li>
+							<li class="flex justify-between bg-gray-50 p-2 rounded">
+								<span><strong>Loktopan / Loktopanchi</strong></span>
+								<span class="text-gray-600">Adiós (Sing / Plural)</span>
+							</li>
+						</ul>
+					</div>
+
+					<div class="grammar-box">
+						<h3 class="text-xl font-bold text-[#C06C47] mb-4 border-b pb-2">
+							3. Ubicación y Posposiciones Espaciales
+						</h3>
+						<p class="text-sm text-gray-700 mb-4">
+							El Muchik usa <strong>posposiciones</strong> (van
+							<em>después</em> del sustantivo) para indicar ubicación:
+						</p>
+						<ul class="space-y-3 text-sm">
+							<li>
+								<span class="font-bold text-gray-800 w-16 inline-block"
+									>nik</span
+								>
+								(Dentro / En) &rarr; <em class="text-[#8A3E26]">An nik</em> (En
+								la casa).
+							</li>
+							<li>
+								<span class="font-bold text-gray-800 w-16 inline-block"
+									>cápæc</span
+								>
+								(Encima) &rarr;
+								<em class="text-[#8A3E26]">Mesa cápæc</em> (Sobre la mesa).
+							</li>
+							<li>
+								<span class="font-bold text-gray-800 w-16 inline-block"
+									>ssecen</span
+								>
+								(Debajo) &rarr;
+								<em class="text-[#8A3E26]">Hon ssecen</em> (Debajo del árbol).
+							</li>
+							<li>
+								<span class="font-bold text-gray-800 w-16 inline-block"
+									>lucæc</span
+								>
+								(Entre) &rarr; <em class="text-[#8A3E26]">Fær lucæc</em> (Entre
+								la tierra).
+							</li>
+							<li>
+								<span class="font-bold text-gray-800 w-16 inline-block"
+									>tot</span
+								>
+								(Con, animado) &rarr;
+								<em class="text-[#8A3E26]">Ef tot</em> (Junto con el padre).
+							</li>
+							<li>
+								<span class="font-bold text-gray-800 w-16 inline-block"
+									>fæiñ</span
+								>
+								(Con, objeto) &rarr;
+								<em class="text-[#8A3E26]">Tonic fæiñ</em> (Con la piedra).
+							</li>
+						</ul>
+					</div>
+
+					<div class="grammar-box">
+						<h3 class="text-xl font-bold text-[#C06C47] mb-4 border-b pb-2">
+							4. Marcas Verbales (Conjugación)
+						</h3>
+						<p class="text-sm text-gray-700 mb-2">
+							La marca de la persona no va unida al verbo, sino que se engancha
+							<strong>a la primera palabra</strong> de la frase. Ejemplo "Estar
+							bien":
+						</p>
+						<div class="overflow-x-auto mt-3">
+							<table class="w-full text-sm text-left border border-gray-200">
+								<thead class="bg-gray-100 text-gray-600">
+									<tr>
+										<th class="p-2 border-b">Pronombre</th>
+										<th class="p-2 border-b">Marca</th>
+										<th class="p-2 border-b">Ejemplo</th>
+									</tr>
+								</thead>
+								<tbody class="divide-y divide-gray-100">
+									<tr>
+										<td class="p-2 bg-gray-50">Yo</td>
+										<td class="p-2 font-mono text-xs">-eñ / -ñ</td>
+										<td class="p-2">
+											Peñ<span class="text-[#C06C47] font-bold">eñ</span> chi
+										</td>
+									</tr>
+									<tr>
+										<td class="p-2 bg-gray-50">Tú</td>
+										<td class="p-2 font-mono text-xs">-as / -s</td>
+										<td class="p-2">
+											Peñ<span class="text-[#C06C47] font-bold">as</span> chi
+										</td>
+									</tr>
+									<tr>
+										<td class="p-2 bg-gray-50">Él/Ella</td>
+										<td class="p-2 font-mono text-xs">-ang / -ng</td>
+										<td class="p-2">
+											Peñ<span class="text-[#C06C47] font-bold">ang</span> chi
+										</td>
+									</tr>
+									<tr>
+										<td class="p-2 bg-gray-50">Nosotros</td>
+										<td class="p-2 font-mono text-xs">-esh / -sh</td>
+										<td class="p-2">
+											Peñ<span class="text-[#C06C47] font-bold">esh</span> chi
+										</td>
+									</tr>
+									<tr>
+										<td class="p-2 bg-gray-50">Ustedes</td>
+										<td class="p-2 font-mono text-xs">-aschi</td>
+										<td class="p-2">
+											Peñ<span class="text-[#C06C47] font-bold">aschi</span> chi
+										</td>
+									</tr>
+									<tr>
+										<td class="p-2 bg-gray-50">Ellos</td>
+										<td class="p-2 font-mono text-xs">-ænang</td>
+										<td class="p-2">
+											Peñ<span class="text-[#C06C47] font-bold">ænang</span> chi
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+
+					<div class="grammar-box">
+						<h3 class="text-xl font-bold text-[#C06C47] mb-4 border-b pb-2">
+							5. Sintaxis Básica
+						</h3>
+						<p class="text-sm text-gray-700 mb-4">
+							En Muchik
+							<strong>el adjetivo siempre precede al sustantivo</strong>. Es una
+							regla de oro para armar frases descriptivas:
+						</p>
+						<div class="space-y-4 text-sm">
+							<div class="bg-amber-50 p-4 rounded-lg border border-amber-200">
+								<span
+									class="block text-[#8A3E26] mb-2 font-bold border-b border-amber-200 pb-1"
+									>Ejemplo 1: Hombre bueno</span
+								>
+								<strong>Peñ</strong>
+								<span class="text-gray-500">(Bueno)</span> +
+								<strong>Ñofæn</strong>
+								<span class="text-gray-500">(Hombre)</span><br />
+								<span
+									class="italic text-[#C06C47] font-bold text-lg mt-2 inline-block"
+									>&rarr; Peñ ñofæn</span
+								>
+							</div>
+							<div class="bg-teal-50 p-4 rounded-lg border border-teal-200">
+								<span
+									class="block text-teal-800 mb-2 font-bold border-b border-teal-200 pb-1"
+									>Ejemplo 2: Casa grande</span
+								>
+								<strong>Ajpe</strong>
+								<span class="text-gray-500">(Grande)</span> +
+								<strong>An</strong> <span class="text-gray-500">(Casa)</span
+								><br />
+								<span
+									class="italic text-[#4B8F8C] font-bold text-lg mt-2 inline-block"
+									>&rarr; Ajpe an</span
+								>
+							</div>
+						</div>
+					</div>
+
+					<div class="grammar-box bg-rose-50 border-rose-200">
+						<h3
+							class="text-xl font-bold text-[#8A3E26] mb-4 border-b border-rose-200 pb-2"
+						>
+							6. Posesión Inalienable
+						</h3>
+						<p class="text-sm text-gray-700 mb-4">
+							Las partes del cuerpo y los miembros de la familia son
+							"inalienables": siempre deben ir acompañadas de un posesivo (mi,
+							tu, su), porque una "mano" no existe separada de un cuerpo, ni una
+							"madre" sin un hijo.
+						</p>
+						<div class="space-y-4 text-sm">
+							<div
+								class="bg-white p-4 rounded border border-rose-100 shadow-sm"
+							>
+								<span class="font-bold text-[#C06C47] block mb-2"
+									>Uso Incorrecto:</span
+								>
+								Decir simplemente
+								<em class="text-gray-500 line-through">Mæcya</em> (Mano) o
+								<em class="text-gray-500 line-through">Eng</em> (Madre) como
+								conceptos aislados.
+							</div>
+							<div
+								class="bg-white p-4 rounded border border-emerald-200 shadow-sm"
+							>
+								<span class="font-bold text-emerald-700 block mb-2"
+									>Uso Correcto (Con pronombres):</span
+								>
+								Se debe decir: <strong>Mæiñ mæcya</strong> (Mi mano),
+								<strong>Tzhan eng</strong> (Tu madre),
+								<strong>Cio ef</strong> (Su padre).
+							</div>
+						</div>
+					</div>
+
+					<div class="grammar-box lg:col-span-2 bg-blue-50 border-blue-200">
+						<h3
+							class="text-xl font-bold text-[#1E3A8A] mb-4 border-b border-blue-200 pb-2"
+						>
+							7. Préstamos y Evolución Fonética
+						</h3>
+						<p class="text-sm text-gray-700 mb-4">
+							El mochica, como toda lengua viva en su tiempo, interactuó con
+							otros idiomas y adaptó vocabulario foráneo a su propio sistema
+							fonético:
+						</p>
+						<div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+							<div
+								class="bg-white p-4 rounded border border-blue-100 shadow-sm"
+							>
+								<span class="font-bold text-[#1E3A8A] block mb-2"
+									>Contacto con el Quechua:</span
+								>
+								La palabra quechua <em>'wakcha'</em> (pobre / huérfano) fue
+								adoptada y moldeada por los mochicas hasta convertirse en el
+								adjetivo <strong>Faccia</strong>.
+							</div>
+							<div
+								class="bg-white p-4 rounded border border-blue-100 shadow-sm"
+							>
+								<span class="font-bold text-[#1E3A8A] block mb-2"
+									>Contacto con el Español:</span
+								>
+								El modismo onomatopéyico español <em>'michi'</em>, usado para
+								llamar a los felinos domésticos que trajeron los europeos, fue
+								asimilado al fonetismo local como <strong>Miss</strong> (Gato).
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- VIEW: NUMBERS & CLASSIFIERS -->
+			<div id="view-numbers" class="hidden space-y-8 animate-fade-in">
+				<div class="text-center mb-8">
+					<h2 class="text-3xl font-serif text-[#8A3E26]">
+						El Sistema Matemático Moche
+					</h2>
+					<p class="text-gray-600 mt-2 max-w-3xl mx-auto">
+						Un sistema de cuenta altamente avanzado. Los mochicas no decían
+						simplemente "veinte hombres". Usaban una fórmula estructural
+						documentada por Chero Zurita y Peralta Vallejos (2014).
+					</p>
+				</div>
+
+				<div
+					class="bg-white p-6 rounded-xl shadow border-t-4 border-[#4B8F8C] mb-8"
+				>
+					<h3 class="font-bold text-[#4B8F8C] text-xl mb-3">
+						La Fórmula de Construcción (Decenas y Centenas):
+					</h3>
+					<div
+						class="bg-gray-800 text-green-400 font-mono p-4 rounded-lg text-center md:text-lg mb-6 shadow-inner overflow-x-auto whitespace-nowrap"
+					>
+						[Prefijo Base] +
+						<span class="text-yellow-300">[Clasificador]</span> +
+						<span class="text-white">allo</span> + [Unidad] + [Objeto Contado]
+					</div>
+
+					<div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+						<div
+							class="bg-amber-50 p-6 rounded-xl shadow-sm border border-amber-200"
+						>
+							<h4
+								class="font-bold text-[#8A3E26] mb-3 border-b border-amber-200 pb-2"
+							>
+								1. Los Prefijos Base (De 10 en 10)
+							</h4>
+							<div
+								class="grid grid-cols-2 gap-y-2 gap-x-4 text-sm font-mono text-gray-800"
+							>
+								<div>
+									<strong class="text-[#C06C47] text-base">Na-</strong> (10)
+								</div>
+								<div>
+									<strong class="text-[#C06C47] text-base">Tzhaxlltzha-</strong>
+									(60)
+								</div>
+								<div>
+									<strong class="text-[#C06C47] text-base">Pac-</strong> (20)
+								</div>
+								<div>
+									<strong class="text-[#C06C47] text-base">Ñite-</strong> (70)
+								</div>
+								<div>
+									<strong class="text-[#C06C47] text-base">Çoc-</strong> (30)
+								</div>
+								<div>
+									<strong class="text-[#C06C47] text-base">Langæss-</strong>
+									(80)
+								</div>
+								<div>
+									<strong class="text-[#C06C47] text-base">Noc-</strong> (40)
+								</div>
+								<div>
+									<strong class="text-[#C06C47] text-base">Tap-</strong> (90)
+								</div>
+								<div>
+									<strong class="text-[#C06C47] text-base">Exllmætzh-</strong>
+									(50)
+								</div>
+							</div>
+						</div>
+						<div
+							class="bg-teal-50 p-6 rounded-xl shadow-sm border border-teal-200 flex flex-col justify-center"
+						>
+							<h4
+								class="font-bold text-teal-800 mb-3 border-b border-teal-200 pb-2"
+							>
+								Aplicación: Preguntar la Edad
+							</h4>
+							<p class="text-sm text-gray-700 mb-3">
+								El Taller Muchik USS (2013) documenta esta estructura cotidiana:
+							</p>
+							<div
+								class="bg-white p-4 rounded-lg border border-teal-100 text-center shadow-sm"
+							>
+								<span class="block font-black text-lg text-[#8A3E26]"
+									>¿Ep æn fûr æn chefnam az?</span
+								>
+								<span
+									class="text-gray-500 italic text-sm block border-b pb-2 mb-2"
+									>¿Cuántos años tienes?</span
+								>
+								<span class="block font-bold text-[#4B8F8C]"
+									>"Pac ssop fûr æn"</span
+								>
+								<span class="text-gray-500 italic text-xs"
+									>(Veinte años). *Usa 'ssop' porque los años se cuentan como
+									frutos o ciclos.</span
+								>
+							</div>
+						</div>
+					</div>
+
+					<div
+						class="mb-8 bg-amber-50 border border-amber-200 rounded-xl p-6 shadow-sm"
+					>
+						<p
+							class="font-bold text-[#8A3E26] mb-4 text-center text-lg border-b border-amber-200 pb-2"
+						>
+							Ejemplo práctico: ¿Cómo decir "12 hombres"?
+						</p>
+						<div
+							class="flex flex-wrap gap-2 text-sm justify-center items-center font-mono mb-4"
+						>
+							<div
+								class="bg-white p-3 border border-gray-200 rounded-lg shadow-sm text-center min-w-[80px]"
+							>
+								<span class="block font-black text-xl text-[#C06C47]">Na</span>
+								<span class="text-xs text-gray-500 font-sans"
+									>Prefijo (10)</span
+								>
+							</div>
+							<div class="p-2 font-bold text-gray-400 text-xl">+</div>
+							<div
+								class="bg-white p-3 border border-yellow-300 rounded-lg shadow-sm text-center min-w-[80px]"
+							>
+								<span class="block font-black text-xl text-yellow-600"
+									>pong</span
+								>
+								<span class="text-xs text-gray-500 font-sans"
+									>Clas. (Personas)</span
+								>
+							</div>
+							<div class="p-2 font-bold text-gray-400 text-xl">+</div>
+							<div
+								class="bg-white p-3 border border-gray-200 rounded-lg shadow-sm text-center min-w-[80px]"
+							>
+								<span class="block font-black text-xl text-gray-800">allo</span>
+								<span class="text-xs text-gray-500 font-sans"
+									>Conector (y)</span
+								>
+							</div>
+							<div class="p-2 font-bold text-gray-400 text-xl">+</div>
+							<div
+								class="bg-white p-3 border border-teal-200 rounded-lg shadow-sm text-center min-w-[80px]"
+							>
+								<span class="block font-black text-xl text-[#4B8F8C]"
+									>atput</span
+								>
+								<span class="text-xs text-gray-500 font-sans">Unidad (2)</span>
+							</div>
+							<div class="p-2 font-bold text-gray-400 text-xl">+</div>
+							<div
+								class="bg-white p-3 border border-gray-200 rounded-lg shadow-sm text-center min-w-[80px]"
+							>
+								<span class="block font-black text-xl text-gray-800"
+									>ñofæn</span
+								>
+								<span class="text-xs text-gray-500 font-sans"
+									>Sust. (Hombre)</span
+								>
+							</div>
+						</div>
+						<div
+							class="text-center bg-white py-3 rounded-lg border border-amber-100"
+						>
+							<p class="font-black text-2xl text-[#8A3E26]">
+								"Napong allo atput ñofæn"
+							</p>
+							<p class="text-sm text-gray-500 italic mt-1 font-sans">
+								"Diez personas y dos hombres"
+							</p>
+						</div>
+					</div>
+
+					<h4 class="font-bold text-gray-800 mb-3 border-b pb-2">
+						Los Clasificadores Numerales (La clave del idioma):
+					</h4>
+					<p class="text-sm text-gray-600 mb-4">
+						El clasificador cambia dependiendo de <em>qué</em> estás contando.
+					</p>
+					<div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+						<div
+							class="border border-gray-200 p-4 rounded-lg hover:shadow-md transition bg-gray-50"
+						>
+							<div class="text-2xl mb-2">🧑‍🤝‍🧑</div>
+							<strong class="text-[#C06C47] block text-base mb-2"
+								>Para Decenas Generales</strong
+							>
+							<ul class="space-y-2">
+								<li>
+									<span
+										class="font-bold text-gray-800 bg-white px-1 border rounded"
+										>Pong</span
+									>
+									: Para contar personas, animales y objetos.
+								</li>
+								<li>
+									<span
+										class="font-bold text-gray-800 bg-white px-1 border rounded"
+										>Ssop</span
+									>
+									: Para contar monedas, frutos, años de edad.
+								</li>
+								<li>
+									<span
+										class="font-bold text-gray-800 bg-white px-1 border rounded"
+										>Cæss</span
+									>
+									: Exclusivo para contar días.
+								</li>
+							</ul>
+						</div>
+						<div
+							class="border border-gray-200 p-4 rounded-lg hover:shadow-md transition bg-gray-50"
+						>
+							<div class="text-2xl mb-2">💯</div>
+							<strong class="text-[#C06C47] block text-base mb-2"
+								>Para Centenas y Millares</strong
+							>
+							<ul class="space-y-2">
+								<li>
+									<span
+										class="font-bold text-gray-800 bg-white px-1 border rounded"
+										>Palæc</span
+									>
+									: Centenas en general.
+								</li>
+								<li>
+									<span
+										class="font-bold text-gray-800 bg-white px-1 border rounded"
+										>Chiæng</span
+									>
+									: Centenas de frutos/vegetales.
+								</li>
+								<li>
+									<span
+										class="font-bold text-gray-800 bg-white px-1 border rounded"
+										>Cunô</span
+									>
+									: Para todos los millares.
+								</li>
+							</ul>
+						</div>
+						<div
+							class="border border-gray-200 p-4 rounded-lg hover:shadow-md transition bg-gray-50"
+						>
+							<div class="text-2xl mb-2">🦆</div>
+							<strong class="text-[#C06C47] block text-base mb-2"
+								>Sistema Dual (Pares)</strong
+							>
+							<ul class="space-y-2">
+								<li>
+									<span
+										class="font-bold text-gray-800 bg-white px-1 border rounded"
+										>Luc</span
+									>
+									: Para contar pares de objetos redondos, huevos, mates.
+								</li>
+								<li>
+									<span
+										class="font-bold text-gray-800 bg-white px-1 border rounded"
+										>Felæp</span
+									>
+									: Para contar pares de aves o vasijas (potos).
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+
+				<div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+					<div
+						class="bg-white p-8 rounded-xl shadow-lg border border-gray-100 flex flex-col justify-center"
+					>
+						<h3 class="text-lg font-semibold text-gray-800 mb-6 text-center">
+							Unidades Básicas (Práctica)
+						</h3>
+						<div
+							class="flex items-center justify-between bg-amber-50 rounded-2xl p-8 border border-amber-100 shadow-inner"
+						>
+							<button
+								onclick="updateCounter(-1)"
+								class="w-14 h-14 rounded-full bg-white shadow-md text-[#C06C47] font-bold hover:bg-[#C06C47] hover:text-white transition text-2xl flex items-center justify-center"
+							>
+								-
+							</button>
+							<div class="text-center px-4">
+								<span
+									id="counter-num"
+									class="block text-6xl font-black text-[#8A3E26] mb-2 drop-shadow-sm"
+									>1</span
+								>
+								<span
+									id="counter-word"
+									class="block text-3xl text-gray-700 font-serif"
+									>Onæc</span
+								>
+							</div>
+							<button
+								onclick="updateCounter(1)"
+								class="w-14 h-14 rounded-full bg-white shadow-md text-[#4B8F8C] font-bold hover:bg-[#4B8F8C] hover:text-white transition text-2xl flex items-center justify-center"
+							>
+								+
+							</button>
+						</div>
+					</div>
+					<div
+						class="bg-white p-6 rounded-xl shadow border border-gray-100 overflow-y-auto max-h-[450px]"
+					>
+						<h3
+							class="text-lg font-semibold text-gray-800 mb-4 sticky top-0 bg-white pb-2 border-b z-10"
+						>
+							Referencia Numérica
+						</h3>
+						<ul
+							class="space-y-2 text-sm divide-y divide-gray-50"
+							id="number-list"
+						></ul>
+					</div>
+				</div>
+			</div>
+
+			<!-- VIEW: QUIZ -->
+			<div id="view-quiz" class="hidden space-y-8 animate-fade-in">
+				<div class="max-w-2xl mx-auto text-center">
+					<h2 class="text-3xl font-serif text-[#8A3E26]">
+						Práctica de Vocabulario
+					</h2>
+					<p class="text-gray-600 mt-2 mb-8">
+						Refuerza tu memoria visual y lingüística. Selecciona la traducción
+						correcta.
+					</p>
+					<div
+						class="bg-white rounded-2xl shadow-xl overflow-hidden mt-8 border border-gray-100"
+					>
+						<div
+							class="bg-gradient-to-r from-[#8A3E26] to-[#C06C47] p-8 text-white relative shadow-inner"
+						>
+							<span
+								class="text-xs font-bold opacity-75 uppercase tracking-widest bg-black bg-opacity-20 px-3 py-1 rounded-full"
+								>Término Muchik</span
+							>
+							<div
+								class="absolute right-6 top-1/2 transform -translate-y-1/2 text-7xl opacity-20 drop-shadow-lg"
+								id="quiz-emoji"
+							>
+								❓
+							</div>
+							<h3
+								id="quiz-question"
+								class="text-5xl font-black mt-4 drop-shadow-md"
+							>
+								...
+							</h3>
+						</div>
+						<div class="p-8 grid grid-cols-1 gap-4" id="quiz-options"></div>
+						<div
+							id="quiz-feedback"
+							class="p-4 text-center font-bold hidden text-lg"
+						></div>
+						<div
+							class="bg-gray-50 p-5 border-t border-gray-200 flex justify-between items-center"
+						>
+							<div class="text-gray-500 font-medium">
+								Puntaje Acumulado:
+								<span
+									id="quiz-score"
+									class="text-xl font-bold text-[#4B8F8C] ml-2 bg-teal-50 px-3 py-1 rounded-lg border border-teal-100"
+									>0</span
+								>
+							</div>
+							<button
+								onclick="startQuiz()"
+								class="bg-[#C06C47] text-white px-6 py-2 rounded-lg hover:bg-[#8A3E26] font-semibold transition shadow-md active:scale-95"
+							>
+								Siguiente Pregunta &rarr;
+							</button>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- VIEW: CREDITS -->
+			<div id="view-credits" class="hidden space-y-8 animate-fade-in">
+				<div class="text-center mb-8">
+					<h2 class="text-3xl font-serif text-[#8A3E26]">
+						Fuentes y Agradecimientos
+					</h2>
+					<p class="text-gray-600 mt-2 max-w-3xl mx-auto text-lg">
+						Este diccionario es el resultado monumental del esfuerzo de siglos
+						de curas, lingüistas, y, sobre todo, la inquebrantable memoria de
+						nuestros pueblos y la nueva ola de estudiantes universitarios.
+					</p>
+				</div>
+
+				<div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+					<!-- Fuentes Clásicas -->
+					<div
+						class="bg-white p-8 rounded-2xl shadow-md border-t-4 border-[#C06C47] relative overflow-hidden"
+					>
+						<div
+							class="absolute top-0 right-0 text-8xl opacity-5 pointer-events-none mt-4 mr-2"
+						>
+							📜
+						</div>
+						<h3
+							class="text-xl font-bold text-[#8A3E26] mb-6 flex items-center gap-2"
+						>
+							<span class="text-2xl">✒️</span> Archivos Históricos y Coloniales
+						</h3>
+						<ul class="space-y-4 text-sm text-gray-700">
+							<li class="pl-4 border-l-2 border-amber-200">
+								<strong>Fernando de la Carrera Daza (1644):</strong> Su
+								<em>"Arte de la lengua yunga..."</em> es la piedra angular y la
+								gramática madre del idioma.
+							</li>
+							<li class="pl-4 border-l-2 border-amber-200">
+								<strong>Santiago C. Montjoy (1865):</strong> Cónsul
+								estadounidense cuya valiosa lista de palabras de Eten permaneció
+								oculta un siglo.
+							</li>
+							<li class="pl-4 border-l-2 border-amber-200">
+								<strong>Ernst W. Middendorf (1892):</strong> Primer gran
+								investigador de la lingüística costeña.
+							</li>
+							<li class="pl-4 border-l-2 border-amber-200">
+								<strong>Hans Heinrich Brüning (1924):</strong> Etno-lingüista
+								que convivió con los últimos hablantes de Eten.
+							</li>
+							<li class="pl-4 border-l-2 border-amber-200">
+								<strong>Federico Villarreal (1921):</strong> Recopiló
+								vocabularios cruciales de informantes etenanos como don Amadeo
+								Vilches.
+							</li>
+						</ul>
+					</div>
+
+					<!-- Fuentes Modernas y Estudiantes -->
+					<div
+						class="bg-white p-8 rounded-2xl shadow-md border-t-4 border-[#4B8F8C] relative overflow-hidden"
+					>
+						<div
+							class="absolute top-0 right-0 text-8xl opacity-5 pointer-events-none mt-4 mr-2"
+						>
+							🔬
+						</div>
+						<h3
+							class="text-xl font-bold text-[#4B8F8C] mb-6 flex items-center gap-2"
+						>
+							<span class="text-2xl">📚</span> Investigación y Revitalización
+							Actual
+						</h3>
+						<ul class="space-y-4 text-sm text-gray-700">
+							<li class="pl-4 border-l-2 border-teal-200">
+								<strong>Rodolfo Cerrón-Palomino y José A. Salas García:</strong>
+								Máximas autoridades en la reconstrucción fonológica y
+								diccionarios modernos.
+							</li>
+							<li class="pl-4 border-l-2 border-teal-200">
+								<strong>Rita Eloranta (2025):</strong> Sus manuales han
+								corregido errores históricos de sufijos y clarificado el sistema
+								inalienable.
+							</li>
+							<li class="pl-4 border-l-2 border-teal-200">
+								<strong>Docentes USS (2012-2014):</strong> Juan Carlos Chero
+								Zurita, Medali Peralta Vallejos y el arqueólogo Luis Enrique
+								Chero Zurita. Descifradores del brillante sistema matemático
+								Moche (<em>Tük muchik</em>).
+							</li>
+							<li
+								class="pl-4 border-l-4 border-blue-400 bg-blue-50 p-2 rounded"
+							>
+								<strong>Universidad Nacional de Trujillo (UNT):</strong> Un
+								profundo reconocimiento a los estudiantes de la
+								<strong>Promoción XXVIII de Lengua y Literatura</strong>, y a su
+								docente Maribel Pizarro Mostacero, por su labor de difusión y
+								revalorización en redes sociales.
+							</li>
+							<li
+								class="pl-4 border-l-4 border-emerald-400 bg-emerald-50 p-2 rounded"
+							>
+								<strong>Instituto Pedagógico Internacional Elim:</strong>
+								Agradecimiento por los valiosos diccionarios etnolingüísticos
+								recopilados por las investigadoras y estudiantes
+								<strong class="text-emerald-800"
+									>Luz Saraí Ramos Carlos, Rosa Pérez Samillán, Cesia Román
+									Pasapera y Estrella Castillo Rodríguez</strong
+								>, asegurando el futuro del idioma en las aulas.
+							</li>
+						</ul>
+					</div>
+				</div>
+
+				<!-- Mención de Honor: El Sazón Comunitario -->
+				<div
+					class="bg-gradient-to-br from-amber-50 to-orange-50 p-10 rounded-3xl shadow-lg border border-[#D4AF37] relative text-center"
+				>
+					<div class="text-5xl mb-4">🫂 🌱</div>
+					<h3 class="font-black text-[#8A3E26] text-3xl mb-4 font-serif">
+						Mención de Honor a las Comunidades
+					</h3>
+					<p
+						class="text-gray-800 text-lg leading-relaxed max-w-4xl mx-auto mb-4 font-medium"
+					>
+						Nada de esta erudición tendría sentido sin la sangre viva que
+						mantuvo latiendo estas palabras. Nuestro tributo imperecedero a las
+						herederas de
+						<strong class="text-[#C06C47]"
+							>Ciudad Eten, Monsefú, Mórrope y Lambayeque</strong
+						>.
+					</p>
+					<p
+						class="text-gray-700 text-base leading-relaxed max-w-4xl mx-auto mb-6"
+					>
+						A las honorables familias
+						<strong>Quesquén, Nuntón, Isique, Ayasta, Chafloque y Llonto</strong
+						>; y en memoria de don <em>Simón Quesquén</em>, cuyas grabaciones
+						nos devolvieron la voz de los ancestros. Ellos resguardaron el
+						idioma en el calor de los fogones (<em>Tok</em>), en el tejido
+						(<em>Jem</em>) y en sus memorias frente al paso arrollador de los
+						siglos.
+					</p>
+					<div class="bg-white bg-opacity-60 p-4 rounded-xl inline-block">
+						<p class="text-gray-900 font-bold">
+							Un abrazo fraterno a todos los
+							<span class="text-[#4B8F8C]"
+								>alumnos, profesores y gestores culturales</span
+							>
+							que hoy enarbolan la identidad <em>Iñikuk</em> y levantan el
+							movimiento <em>NeoMochica</em>. ¡El idioma vive en ustedes!
+						</p>
+					</div>
+				</div>
+			</div>
+
+			<!-- VIEW: CONTACT -->
+			<div id="view-contact" class="hidden space-y-8 animate-fade-in">
+				<div
+					class="max-w-3xl mx-auto bg-white p-10 rounded-3xl shadow-xl border-t-8 border-[#C06C47] relative overflow-hidden"
+				>
+					<div
+						class="absolute -right-10 -top-10 text-9xl opacity-5 transform rotate-12"
+					>
+						🏺
+					</div>
+
+					<h2 class="text-4xl font-black font-serif text-[#8A3E26] mb-2">
+						¡Escríbeme!
+					</h2>
+					<p class="text-xl text-[#C06C47] font-medium italic mb-8">
+						Construyamos juntos nuestra identidad.
+					</p>
+
+					<div
+						class="space-y-6 text-gray-700 text-lg leading-relaxed relative z-10"
+					>
+						<p>
+							¡<strong>Peño Tæsæk</strong> a este espacio colaborativo! Este
+							diccionario es un ente vivo, igual que nuestra herencia Moche, y
+							requiere del cuidado de todos nosotros para crecer fuerte y
+							preciso.
+						</p>
+						<p>
+							Mi ojo no siempre es perfecto. Si al navegar por estas páginas
+							identificas
+							<strong class="text-gray-900">problemas con la fonética</strong>,
+							crees que alguna palabra pertenece a otra
+							<strong class="text-gray-900">categorización</strong>, o si
+							simplemente has encontrado un viejo apunte, un libro o un recuerdo
+							familiar que pueda aportar nuevos vocablos...
+						</p>
+						<div
+							class="bg-amber-50 p-6 rounded-2xl border border-amber-200 text-center my-8 shadow-inner"
+						>
+							<p
+								class="text-sm font-bold text-amber-800 uppercase tracking-widest mb-3"
+							>
+								Por favor, envíame un mensaje a:
+							</p>
+							<a
+								href="mailto:cr.htorres@gmail.com"
+								class="inline-flex items-center justify-center gap-3 bg-[#8A3E26] text-white font-bold text-2xl py-4 px-10 rounded-full hover:bg-[#C06C47] hover:scale-105 transition-all shadow-lg ring-4 ring-white"
+							>
+								<span>📧</span> cr.htorres@gmail.com
+							</a>
+						</div>
+						<p class="text-center font-medium text-gray-600">
+							Toda nueva ayuda, crítica constructiva o documento es bienvenida.
+							¡Hagamos que el Muchik vuelva a resonar!
+						</p>
+					</div>
+				</div>
+			</div>
+		</main>
+
+		<footer
+			class="bg-[#2C2C2C] text-gray-400 py-8 mt-12 border-t-4 border-[#C06C47]"
+		>
+			<div
+				class="max-w-7xl mx-auto px-4 flex flex-col md:flex-row justify-between items-center text-sm"
+			>
+				<div class="mb-4 md:mb-0">
+					<p class="font-bold text-white text-lg">Diccionario Muchik</p>
+					<p>Desarrollado con fines educativos y de preservación cultural.</p>
+				</div>
+				<div class="text-center md:text-right">
+					<p>
+						Basado en fuentes documentales históricas y trabajos estudiantiles
+						(1644 - 2025).
+					</p>
+					<p class="text-xs mt-1 text-gray-500">cr.htorres@gmail.com</p>
+				</div>
+			</div>
+		</footer>
+
+		<script>
+			// COMPRESIÓN DE LA BASE DE DATOS (>410 PALABRAS - Incluye actualizaciones exhaustivas UNT y Elim)
+			const rawDictData = [
+				// EDUCACIÓN Y DERIVADOS
+				[
+					"Apuk",
+					"Aula / Escuela",
+					"Educación",
+					"🏫",
+					"Raíz 'ap-' + sufijo locativo '-uk'.",
+				],
+				[
+					"Apik",
+					"Útiles escolares",
+					"Educación",
+					"🎒",
+					"Sufijo '-ik' forma sustantivos instrumentales.",
+				],
+				[
+					"Apapæk",
+					"Estudiante / Aprendiz",
+					"Educación",
+					"👨‍🎓",
+					"Sufijo '-(a)pæk' (el que realiza la acción).",
+				],
+				[
+					"Apkopæk",
+					"Profesor / Maestro",
+					"Educación",
+					"👨‍🏫",
+					"Sufijo '-ko' es causativo (el que hace aprender).",
+				],
+				[
+					"Apisæk",
+					"Lección / Aprendizaje",
+					"Educación",
+					"📚",
+					"Sufijo '-(i)sæk' (resultado de la acción).",
+				],
+				[
+					"Manuk",
+					"Cantina / Bebedero",
+					"Educación",
+					"🚰",
+					"Del verbo 'man-' (tomar).",
+				],
+				[
+					"Chimuk",
+					"Lugar de baile / Discoteca",
+					"Educación",
+					"🪩",
+					"Del verbo 'chim-' (bailar).",
+				],
+				[
+					"Siaduk",
+					"Cama / Dormitorio",
+					"Objetos",
+					"🛌",
+					"Del verbo 'siad-' (dormir).",
+				],
+				["Siadik", "Almohada", "Objetos", "🛏️", "Instrumento para dormir."],
+				[
+					"Akapæk",
+					"Observador / Vigilante",
+					"Personas",
+					"👀",
+					"Del verbo 'ak-' (ver) + agente.",
+				],
+				["Akik", "Lentes / Anteojos", "Objetos", "👓", "Instrumento para ver."],
+				["Akisæk", "Visión / Vista", "Conceptos", "👁️", "Resultado de ver."],
+				["Cyumapæk", "Borracho", "Personas", "🥴", "El que se emborracha."],
+				["Famapæk", "Llorón", "Personas", "😭", "El que llora frecuentemente."],
+				["Fañapæk", "Mentiroso", "Personas", "🤥", "El que miente."],
+				[
+					"Fæpisæk",
+					"Sueño / Premonición",
+					"Conceptos",
+					"💭",
+					"El resultado de soñar.",
+				],
+				[
+					"Læmisæk",
+					"La Muerte",
+					"Conceptos",
+					"💀",
+					"Sustantivación del verbo morir.",
+				],
+				[
+					"Ronomsæk",
+					"Sufrimiento / Dolor",
+					"Conceptos",
+					"🤕",
+					"Resultado de sufrir.",
+				],
+				[
+					"Næmisæk",
+					"Audición / El oído",
+					"Conceptos",
+					"👂",
+					"Resultado de oír.",
+				],
+				[
+					"Næmik",
+					"Audífonos / Orejeras",
+					"Objetos",
+					"🎧",
+					"Instrumento para escuchar.",
+				],
+				[
+					"Ayapæk",
+					"Hacedor / Creador",
+					"Personas",
+					"✨",
+					"Deidad o persona que crea.",
+				],
+				[
+					"Ayisæk",
+					"La Acción / Obra",
+					"Conceptos",
+					"🎬",
+					"El resultado de hacer.",
+				],
+				["Filapæk", "Cantante", "Personas", "🎤", "El que canta."],
+
+				// EXPRESIONES Y SALUDOS
+				[
+					"Peño Tæsæk",
+					"¡Bienvenidos!",
+					"Expresiones",
+					"🤝",
+					"Literalmente 'Buen arribo'. Académico.",
+				],
+				[
+					"Ayentaado æn / Chizoer tañeiñ",
+					"Bienvenidos (Neomochica)",
+					"Expresiones",
+					"👋",
+					"Traducción literal moderna popular.",
+				],
+				[
+					"Peño ænæm / Peinar naus",
+					"Buenos días",
+					"Expresiones",
+					"🌅",
+					"Uso del adjetivo 'peñ' + 'o' para mañana.",
+				],
+				[
+					"Peño nerræm / Peinar ners",
+					"Buenas tardes",
+					"Expresiones",
+					"🌇",
+					"Saludo vespertino.",
+				],
+				[
+					"Peño neis / Peinar neiz",
+					"Buenas noches",
+					"Expresiones",
+					"🌃",
+					"Saludo nocturno.",
+				],
+				["Peño Fær", "¡Feliz Año Nuevo!", "Expresiones", "🎆", "Buen año."],
+				[
+					"Peño Navidad",
+					"¡Feliz Navidad!",
+					"Expresiones",
+					"🎄",
+					"Adaptación de festividad.",
+				],
+				[
+					"Peño Engkikær Lun",
+					"¡Feliz Día de la Madre!",
+					"Expresiones",
+					"💐",
+					"Celebración moderna adaptada.",
+				],
+				[
+					"Loktopan / Lokanchi",
+					"¡Hasta luego! / Chau",
+					"Expresiones",
+					"🚶",
+					"Sufijo '-chi' es para plural.",
+				],
+				[
+					"Dios tana",
+					"Adiós",
+					"Expresiones",
+					"🙏",
+					"Literal: Que Dios esté contigo.",
+				],
+				[
+					"Jarnanloc",
+					"¡Cállate la boca!",
+					"Expresiones",
+					"🤫",
+					"Grabaciones de S. Quesquén.",
+				],
+				[
+					"Hechagur",
+					"Está elegante / Muy bien",
+					"Expresiones",
+					"✨",
+					"Frase elogiosa.",
+				],
+				[
+					"Peñeñ chi",
+					"Estoy bien",
+					"Expresiones",
+					"😊",
+					"Conjugación en primera persona (-eñ).",
+				],
+				[
+					"Æntañ chi peño",
+					"No estoy bien",
+					"Expresiones",
+					"🤕",
+					"Negación del estado de bienestar.",
+				],
+				[
+					"Æleñ",
+					"Estoy enfermo(a)",
+					"Expresiones",
+					"🛏️",
+					"Raíz 'Æl-' + marca personal '-eñ'.",
+				],
+				[
+					"Kaf",
+					"Trabajo / Trabajar",
+					"Expresiones",
+					"🛠️",
+					"Vocablo cotidiano (Salas/Estudiantes Elim).",
+				],
+				[
+					"Peño ciamo",
+					"Buena vida / Vida saludable",
+					"Expresiones",
+					"🌱",
+					"Uso correcto del adjetivo en concepto.",
+				],
+				[
+					"Açpec ayen / Tan ayen",
+					"Cuerpo sano / Estar bien",
+					"Expresiones",
+					"🧍",
+					"Uso como estado físico temporal.",
+				],
+				[
+					"Ciamo eiñ",
+					"Yo vivo en...",
+					"Expresiones",
+					"🏠",
+					"Ej. Ciamo eiñ Mórrope kapæk.",
+				],
+				[
+					"Mæiñ por è",
+					"Mi nombre es...",
+					"Expresiones",
+					"🗣️",
+					"Para presentarse.",
+				],
+				[
+					"Eiñ æz poc?",
+					"¿Cómo te llamas?",
+					"Expresiones",
+					"❓",
+					"Pregunta por nombre.",
+				],
+				[
+					"In Ciamo az?",
+					"¿Dónde vives?",
+					"Expresiones",
+					"🗺️",
+					"Pregunta de residencia.",
+				],
+				["Emio chiz?", "¿Cómo estás?", "Expresiones", "🤔", "Saludo casual."],
+				[
+					"Ima / Ha",
+					"Sí",
+					"Expresiones",
+					"✅",
+					"Ha figura en la Lista de Montjoy.",
+				],
+				[
+					"Ænta / Je",
+					"No",
+					"Expresiones",
+					"❌",
+					"Je figura en la Lista de Montjoy.",
+				],
+				[
+					"Mayta Mitsu",
+					"Gracias hermano",
+					"Expresiones",
+					"🙏",
+					"Agradecimiento.",
+				],
+				[
+					"Chizoer æn",
+					"Gracias",
+					"Expresiones",
+					"🙌",
+					"Expresión de gratitud.",
+				],
+				[
+					"Aj Iñikuk",
+					"Soy señorita (Iñikuk)",
+					"Expresiones",
+					"👸",
+					"Presentación femenina.",
+				],
+				[
+					"Mmilac az tük muchik?",
+					"¿Hablas muchik?",
+					"Expresiones",
+					"🗣️",
+					"Pregunta documentada.",
+				],
+				[
+					"Ima mællæc eiñ tük muchik",
+					"Sí, hablo muchik",
+					"Expresiones",
+					"✅",
+					"Respuesta afirmativa.",
+				],
+				[
+					"Metang chrupn",
+					"Dame sal",
+					"Expresiones",
+					"🧂",
+					"Petición alimenticia documentada en UNT.",
+				],
+				[
+					"Metang tu ja",
+					"Dame un poco de agua",
+					"Expresiones",
+					"💧",
+					"Petición básica documentada.",
+				],
+				[
+					"Metang tu saye",
+					"Dame un poco de mote",
+					"Expresiones",
+					"🌽",
+					"Frase cotidiana alimenticia.",
+				],
+
+				// EL TIEMPO
+				[
+					"Neiznana",
+					"Madrugada / De mañanita",
+					"Tiempo",
+					"🌌",
+					"Instantes antes de la luz.",
+				],
+				["Neizna", "Mañana", "Tiempo", "🌅", "Horas de la mañana."],
+				[
+					"Narræm",
+					"Como a las ocho de la mañana",
+					"Tiempo",
+					"🕗",
+					"Medida de tiempo histórica.",
+				],
+				[
+					"Lecyæk xllang",
+					"Mediodía",
+					"Tiempo",
+					"🌞",
+					"Literalmente 'Sol sobre la cabeza'.",
+				],
+				[
+					"Pamana",
+					"Por las tardes",
+					"Tiempo",
+					"⏱️",
+					"Desde el mediodía hasta la oración.",
+				],
+				["Nerr xllang", "Dos de la tarde", "Tiempo", "🕑", "Aproximadamente."],
+				[
+					"Nerrærr",
+					"Atardecer / La Oración",
+					"Tiempo",
+					"🕕",
+					"Entre las 5:30 y 6:30 PM.",
+				],
+				[
+					"Cul xllang",
+					"Puesta de sol",
+					"Tiempo",
+					"🌇",
+					"Literalmente 'Sol rojo'.",
+				],
+				[
+					"Neiz / Neciem",
+					"Noche / Ya de noche",
+					"Tiempo",
+					"🌃",
+					"Neciem (Montjoy).",
+				],
+				[
+					"Cya mæl / Na eiaxll",
+					"Medianoche",
+					"Tiempo",
+					"🕛",
+					"Mitad de la noche.",
+				],
+				[
+					"Ma ilucu",
+					"De madrugadita oscura",
+					"Tiempo",
+					"🌌",
+					"Sin rayos de sol aún.",
+				],
+				[
+					"Tzhiæ cæll",
+					"Amanecer / Canto del gallo",
+					"Tiempo",
+					"🐓",
+					"Hito natural de tiempo.",
+				],
+				[
+					"Ñam lucu",
+					"Alba / Entre dos luces",
+					"Tiempo",
+					"🌅",
+					"Aclarando el cielo.",
+				],
+				["Inen / Ineng", "Día", "Tiempo", "☀️", "La jornada."],
+				["Mulun", "Hoy", "Tiempo", "📅", "El día actual."],
+				["Pelen", "Ayer", "Tiempo", "🔙", "El día anterior."],
+				[
+					"Nézne",
+					"Mañana (Día siguiente)",
+					"Tiempo",
+					"🔜",
+					"El día que vendrá.",
+				],
+				["Fûr", "Año", "Tiempo", "🗓️", "Ciclo anual."],
+				[
+					"Amexxllec",
+					"Ahora / En este momento",
+					"Tiempo",
+					"⏱️",
+					"Instante presente.",
+				],
+				["Nang uss", "Antes", "Tiempo", "⏪", "En el pasado."],
+
+				// CONCEPTOS ABSTRACTOS
+				[
+					"Misgepec",
+					"Dios",
+					"Conceptos",
+					"✨",
+					"Registrado por Montjoy (1865).",
+				],
+				[
+					"Aiapaec",
+					"El Hacedor",
+					"Conceptos",
+					"✨",
+					"Deidad principal (Aia = Hacer).",
+				],
+				[
+					"Chicopaec",
+					"El Creador",
+					"Conceptos",
+					"✨",
+					"Otra advocación de la deidad mayor.",
+				],
+				[
+					"Poschopec",
+					"Diablo / Espíritu maligno",
+					"Conceptos",
+					"👿",
+					"Ser de oscuridad.",
+				],
+				["Chepec", "Alma / Espíritu", "Conceptos", "🕊️", "Esencia vital."],
+				["Ciam / Siamo", "Vida / Vivir", "Conceptos", "🌱", "La existencia."],
+				[
+					"Catu",
+					"Plaza / Mercado",
+					"Conceptos",
+					"⛲",
+					"Mercado de trueque andino.",
+				],
+				[
+					"Jum / Læmiçær",
+					"Muerte / Muerto",
+					"Conceptos",
+					"☠️",
+					"Cese de la vida.",
+				],
+				["Çiziz", "Palabra / Voz", "Conceptos", "💬", "El habla."],
+				["Xamic", "Señal / Marca", "Conceptos", "🔖", "Indicador."],
+				["Çiorna", "Solo / Solitario", "Conceptos", "👤", "Estado de soledad."],
+				["Ezquiech", "Todo", "Conceptos", "♾️", "Totalidad (Montjoy)."],
+				["Tük", "Idioma", "Conceptos", "🗣️", "Lengua o habla."],
+				["Choquiçaec", "Resurrección", "Conceptos", "🌅", "Renacer."],
+				["Iapissäk", "Final", "Conceptos", "🏁", "Término de algo."],
+				[
+					"Ollimquedquid",
+					"Gozo / Alegría",
+					"Conceptos",
+					"😁",
+					"Emoción positiva intensa.",
+				],
+				["Chemlan", "Hambre", "Conceptos", "🍽️", "Necesidad de comer."],
+
+				// NATURALEZA Y GEOGRAFÍA
+				[
+					"Xllang / Gian",
+					"Sol",
+					"Naturaleza",
+					"☀️",
+					"Xllang (Carrera, 1644) / Gian (Montjoy, 1865).",
+				],
+				["Si / Zii", "Luna", "Naturaleza", "🌙", "Satélite nocturno."],
+				[
+					"Sonquic / Chónyic",
+					"Estrella",
+					"Naturaleza",
+					"⭐",
+					"Astros celestes.",
+				],
+				["Kuij / Cuiz", "Cielo", "Naturaleza", "🌌", "Firmamento."],
+				["Ni", "Mar", "Naturaleza", "🌊", "Océano."],
+				["Nech / Neh", "Río", "Naturaleza", "🏞️", "Corriente de agua dulce."],
+				[
+					"Pong / Pon",
+					"Piedra / Huaca / Cerro",
+					"Naturaleza",
+					"🪨",
+					"Término geográfico y sagrado.",
+				],
+				[
+					"Fær / Uiz / Ceiz",
+					"Tierra / Suelo",
+					"Naturaleza",
+					"🌍",
+					"Usado en 'Ejep Muchik' (Tierra Muchik).",
+				],
+				["Ja / Gu", "Agua", "Naturaleza", "💧", "Elemento vital."],
+				["Og", "Lluvia", "Naturaleza", "🌧️", "Precipitación."],
+				["Cuz", "Viento", "Naturaleza", "🌬️", "Corriente de aire."],
+				["Zag / Ssaj", "Oscuridad", "Naturaleza", "🌑", "Falta de luz."],
+				["Jam", "Algodón", "Naturaleza", "☁️", "Cultivo nativo."],
+				["Ol / Oll", "Fuego", "Naturaleza", "🔥", "Elemento calórico."],
+				["Joch", "Hoja", "Naturaleza", "🍃", "Parte de la planta."],
+				["Hon / Nepæt", "Árbol / Madera", "Naturaleza", "🌳", "Planta leñosa."],
+				["Ong", "Algarrobo", "Naturaleza", "🌳", "Árbol nativo del norte."],
+				[
+					"Llenqui",
+					"Cerro / Montaña",
+					"Naturaleza",
+					"⛰️",
+					"Elevación (Montjoy).",
+				],
+				["Facch", "Leña", "Naturaleza", "🪵", "Madera para fuego (Quesquén)."],
+				["Fo chich", "Norte", "Naturaleza", "🧭", "Punto cardinal."],
+				["Fecy Ech", "Oeste", "Naturaleza", "🧭", "Punto cardinal."],
+				["Lo chich", "Sur", "Naturaleza", "🧭", "Punto cardinal."],
+				["Jiron", "Cobre", "Naturaleza", "🪨", "Metal (Montjoy)."],
+				["Cuntzhio", "Remolino", "Naturaleza", "🌪️", "Viento en espiral."],
+				["Pove", "Espuma", "Naturaleza", "🫧", "Burbujas en líquidos."],
+
+				// TOPONIMIA LOCAL
+				[
+					"Firruñap",
+					"Ferreñafe",
+					"Toponimia",
+					"⛰️",
+					"Significa 'rodeado de cerros'.",
+				],
+				["Ñañpaxllæk", "Lambayeque", "Toponimia", "🦅", "Tierra de Naylamp."],
+				["Murrup", "Mórrope", "Toponimia", "🦎", "Tierra de la iguana."],
+				["Yllimo", "Illimo", "Toponimia", "📍", "Pueblo moche."],
+				["Laianca", "Jayanca", "Toponimia", "📍", "Pueblo histórico."],
+				["Xequetepeque", "Jequetepeque", "Toponimia", "📍", "Valle sureño."],
+				["Moccyumi", "Mochumi", "Toponimia", "📍", "Distrito lambayecano."],
+				["Paixan", "Paiján", "Toponimia", "📍", "Zona arqueológica."],
+				[
+					"Shaipi / Chaypi",
+					"Chiclayo",
+					"Toponimia",
+					"📍",
+					"Término popular (Quesquén).",
+				],
+
+				// PRONOMBRES, PREPOSICIONES Y ADVERBIOS
+				["Moiñ / Zan", "Yo", "Pronombres", "🙋", "Zan en la Lista de Montjoy."],
+				[
+					"Tzhang / Tzhamçec",
+					"Tú",
+					"Pronombres",
+					"👉",
+					"Tzhamçec (Ramos/Salas).",
+				],
+				[
+					"Aio / Cio",
+					"Él / Ella",
+					"Pronombres",
+					"👤",
+					"Tercera persona singular.",
+				],
+				[
+					"Mæich / Much",
+					"Nosotros",
+					"Pronombres",
+					"🫂",
+					"Primera persona plural.",
+				],
+				[
+					"Tzhæich",
+					"Ustedes / Vosotros",
+					"Pronombres",
+					"👥",
+					"Segunda persona plural.",
+				],
+				[
+					"Alongan / Cionen",
+					"Ellos / Ellas",
+					"Pronombres",
+					"👥",
+					"Tercera persona plural.",
+				],
+				["Iñez", "Quién", "Pronombres", "👤", "Interrogativo."],
+				["Lec", "A (hacia)", "Pronombres", "➡️", "Preposición de dirección."],
+				["Ich", "De (desde)", "Pronombres", "⬅️", "Preposición de origen."],
+				[
+					"Nic",
+					"En / Dentro de",
+					"Pronombres",
+					"📥",
+					"Locativo interno (posposición).",
+				],
+				[
+					"Cápæc",
+					"Encima de",
+					"Pronombres",
+					"⬆️",
+					"Locativo superior (posposición).",
+				],
+				[
+					"Ssecen",
+					"Debajo de",
+					"Pronombres",
+					"⬇️",
+					"Locativo inferior (posposición).",
+				],
+				["Lucæc", "Entre", "Pronombres", "↔️", "Posición intermedia."],
+				["Pir", "Sin", "Pronombres", "🚫", "Carencia."],
+				["Tim", "Por / A causa de", "Pronombres", "✖️", "Preposición causal."],
+				["Mo", "Éste / Esta", "Pronombres", "📌", "Demostrativo cercano."],
+				["Mongan", "Éstos / Estas", "Pronombres", "📌", "Demostrativo plural."],
+				["Lequich", "Que", "Pronombres", "🔗", "Conector."],
+				["Ssan", "Y", "Pronombres", "➕", "Conjunción copulativa."],
+				[
+					"Cie",
+					"Si (Condicional)",
+					"Pronombres",
+					"🤔",
+					"Para crear condiciones.",
+				],
+				["Xaln", "Pero", "Pronombres", "☝️", "Conjunción adversativa."],
+				["At", "Aunque", "Pronombres", "🤷", "Concesivo."],
+				[
+					"Alesstim",
+					"Por tanto / Por lo cual",
+					"Pronombres",
+					"➡️",
+					"Consecutivo.",
+				],
+				["Oksan", "Después", "Pronombres", "🕒", "Adverbio de tiempo."],
+				["Caxc", "Abajo", "Pronombres", "🔽", "Adverbio de lugar."],
+				["Olecaec", "Arriba", "Pronombres", "🔼", "Adverbio de lugar."],
+				["Ledec", "Afuera", "Pronombres", "🚪", "Adverbio de lugar exterior."],
+				["Olpec", "Adentro", "Pronombres", "🏠", "Adverbio de lugar interior."],
+				["Alin", "Allí", "Pronombres", "👉", "Demostrativo lejano."],
+				["Min", "Aquí", "Pronombres", "👇", "Demostrativo cercano."],
+				["Menana", "Cerca", "Pronombres", "📍", "Adverbio de proximidad."],
+
+				// PERSONAS Y ROLES
+				[
+					"Ñofæn / Noben",
+					"Hombre / Varón",
+					"Personas",
+					"👨",
+					"Adulto masculino.",
+				],
+				["Mechérrec", "Mujer", "Personas", "👩", "Adulta femenina."],
+				[
+					"Tzhiçi / Chisi",
+					"Niño / Niña",
+					"Personas",
+					"🧒",
+					"Infante sin género marcado.",
+				],
+				["Chollñoben", "Muchacho / Joven", "Personas", "👦", "Varón joven."],
+				[
+					"Chah / Chach",
+					"Muchacha / Doncella",
+					"Personas",
+					"👧",
+					"Mujer joven.",
+				],
+				[
+					"Iñikuk",
+					"Representante Cultural / Doncella",
+					"Personas",
+					"👸",
+					"Resignificación moderna y cultural.",
+				],
+				["Secsectane", "Embarazada", "Personas", "🤰", "Mujer en gestación."],
+				[
+					"Cyiklu",
+					"Amigo / Amiga / Discípulo",
+					"Personas",
+					"🤝",
+					"Persona cercana.",
+				],
+				["Çiequic", "Señor / Cacique", "Personas", "👑", "Líder principal."],
+				["Alaec", "Curaca / Principal", "Personas", "🎩", "Noble secundario."],
+				["Fixllca", "Caballero", "Personas", "🎩", "Hombre de respeto."],
+				["Rræmotec", "Loco", "Personas", "🤪", "Persona sin razón."],
+				["Çiadcu", "Dormilón", "Personas", "😴", "Persona que duerme mucho."],
+				["Azchi", "Goloso", "Personas", "🤤", "Que come mucho (Villarreal)."],
+				["Nicopæc", "Bienhechor", "Personas", "🙏", "El que hace el bien."],
+				["Lecychipæc", "Adulto", "Personas", "🧑", "Persona mayor."],
+
+				// FAMILIA
+				["Ef / Ev", "Padre", "Familia", "👨‍👧", "Progenitor."],
+				["Eng / En", "Madre", "Familia", "👩‍👦", "Progenitora."],
+				["Eiz", "Hijo", "Familia", "👦", "Descendiente directo."],
+				["Jopi", "Abuela", "Familia", "👵", "Madre de los padres."],
+				["Mena", "Abuelo", "Familia", "🧓", "Padre de los padres."],
+				["Nan", "Esposo", "Familia", "💍", "Cónyuge masculino."],
+				["Sonen / Ssonæng", "Esposa", "Familia", "👰", "Cónyuge femenino."],
+				["Quesmen", "Hermano", "Familia", "👦", "Familiar consanguíneo."],
+				[
+					"Quesmes",
+					"Hermana",
+					"Familia",
+					"👧",
+					"Familiar consanguíneo femenino.",
+				],
+				["Mitso", "Hermano varón", "Familia", "👦", "Específico para hombres."],
+				["Sarñet", "Nieta", "Familia", "👧", "Hija del hijo/a."],
+				["Roñet", "Nieto", "Familia", "👦", "Hijo del hijo/a."],
+				["Nepos", "Nietos", "Familia", "🧒", "Descendientes en general."],
+				["Nier", "Tío", "Familia", "👨‍🦱", "Hermano de los padres."],
+				["Cocaed", "Tía", "Familia", "👩", "Hermana de los padres."],
+				["Fesien", "Yerno", "Familia", "👨", "Esposo de la hija."],
+
+				// EL CUERPO HUMANO
+				[
+					"Falpæng / Gex",
+					"Cabeza",
+					"Cuerpo",
+					"👤",
+					"Parte superior del cuerpo.",
+				],
+				["Zac", "Cabello / Pelo", "Cuerpo", "💇", "Vello de la cabeza."],
+				["Tot", "Cara / Rostro", "Cuerpo", "🙂", "Parte frontal de la cabeza."],
+				["Sog / Ssol", "Frente", "Cuerpo", "🤕", "Parte superior de la cara."],
+				["Notæn", "Ceja", "Cuerpo", "🤨", "Pelo sobre el ojo."],
+				["Ozn / Joch", "Ojo", "Cuerpo", "👁️", "Órgano visual."],
+				["Meden", "Oreja", "Cuerpo", "👂", "Órgano auditivo."],
+				["Fon", "Nariz", "Cuerpo", "👃", "Órgano olfativo."],
+				["Ssap / Sap", "Boca", "Cuerpo", "👄", "Abertura digestiva."],
+				["Ed", "Lengua", "Cuerpo", "👅", "Órgano bucal."],
+				["Uchan", "Diente", "Cuerpo", "🦷", "Pieza ósea bucal."],
+				["Zenque", "Cuello", "Cuerpo", "👤", "Unión cabeza-torso."],
+				["Ocquen / Ocæn", "Brazo", "Cuerpo", "💪", "Extremidad superior."],
+				["Motzhoæn", "Codo", "Cuerpo", "💪", "Articulación del brazo."],
+				["Mæcya", "Mano", "Cuerpo", "🖐️", "Extremo del brazo."],
+				["Quincos / Llem No", "Dedos", "Cuerpo", "🤌", "Apéndices de la mano."],
+				["Misi", "Dedo Índice", "Cuerpo", "☝️", "Dedo para señalar."],
+				["Leycu", "Dedo Pulgar", "Cuerpo", "👍", "Dedo principal."],
+				["Quich cu", "Dedo Meñique", "Cuerpo", "🤏", "El dedo más pequeño."],
+				[
+					"Medis / Midi",
+					"Uñas / Zarpa",
+					"Cuerpo",
+					"💅",
+					"Cubierta de los dedos.",
+				],
+				["Tan / Ærquic", "Cuerpo", "Cuerpo", "🧍", "El ente físico total."],
+				["Pojan", "Barriga / Vientre", "Cuerpo", "🫃", "Abdomen."],
+				["Tonen", "Pierna", "Cuerpo", "🦵", "Extremidad inferior."],
+				["Pilla lla", "Muslo", "Cuerpo", "🦵", "Parte superior de la pierna."],
+				["Nossæn", "Rodilla", "Cuerpo", "🦵", "Articulación de la pierna."],
+				["Loc / Joc", "Pies", "Cuerpo", "🦶", "Base de la pierna."],
+				["Joti", "Hueso", "Cuerpo", "🦴", "Estructura del esqueleto."],
+				["Chet", "Corazón", "Cuerpo", "❤️", "Órgano vital de bombeo."],
+				["Cul / Cuc", "Sangre", "Cuerpo", "🩸", "Líquido vital."],
+				[
+					"Teb",
+					"Miembro viril",
+					"Cuerpo",
+					"🍆",
+					"Aparato reproductor (Quesquén).",
+				],
+				[
+					"Jiamud",
+					"Peludo en la nariz",
+					"Cuerpo",
+					"👃",
+					"Condición (Quesquén).",
+				],
+				[
+					"Comaen",
+					"Barba",
+					"Cuerpo",
+					"🧔",
+					"Única forma validada (De la Carrera, 1644).",
+				],
+				["Focaltæc", "Hombro", "Cuerpo", "🫷", "Articulación del brazo."],
+				[
+					"Cang Cyu",
+					"Quijada / Mandíbula",
+					"Cuerpo",
+					"🗣️",
+					"Hueso inferior bucal.",
+				],
+				["Tess", "Talón", "Cuerpo", "🦶", "Parte trasera del pie."],
+				["Tzhipa", "Cadera", "Cuerpo", "🧍", "Parte inferior del torso."],
+				["Cuicaca", "Calavera", "Cuerpo", "💀", "Cráneo sin piel."],
+				["Sip", "Escama", "Cuerpo", "🐟", "Capa protectora en peces."],
+				[
+					"Fitako",
+					"Intestino",
+					"Cuerpo",
+					"🩻",
+					"Órgano digestivo grueso (UNT).",
+				],
+				[
+					"Pónkik / Rinque",
+					"Molleja",
+					"Cuerpo",
+					"🐔",
+					"Parte del sistema digestivo aviar.",
+				],
+
+				// FAUNA Y ANIMALES
+				[
+					"Fanu / Fani / Fanun",
+					"Perro",
+					"Animales",
+					"🐕",
+					"Variantes de la misma raíz en diferentes autores.",
+				],
+				["Corren", "Ardilla", "Animales", "🐿️", "Roedor."],
+				[
+					"Chommi",
+					"Foca / Lobo marino",
+					"Animales",
+					"🦭",
+					"Mamífero marino costeño.",
+				],
+				["Kinde", "Colibrí", "Animales", "🐦", "Ave pequeña veloz."],
+				["Cuculi", "Paloma", "Animales", "🕊️", "Ave común costeña."],
+				[
+					"Dsékerketén",
+					"Alacrán / Escorpión",
+					"Animales",
+					"🦂",
+					"Arácnido con aguijón.",
+				],
+				["Lanchæk", "Araña", "Animales", "🕷️", "Arácnido tejedor."],
+				["Müd", "Hormiga", "Animales", "🐜", "Insecto de colonia."],
+				["Raktu", "Murciélago", "Animales", "🦇", "Mamífero volador místico."],
+				[
+					"Chubet",
+					"Culebra / Serpiente",
+					"Animales",
+					"🐍",
+					"Reptil sin patas.",
+				],
+				[
+					"Fellu",
+					"Pato",
+					"Animales",
+					"🦆",
+					"Ave acuática vital para los Moche.",
+				],
+				["Casu", "Pavo", "Animales", "🦃", "Ave de corral."],
+				[
+					"Kol",
+					"Llama / Caballo",
+					"Animales",
+					"🦙",
+					"Animal de carga histórico.",
+				],
+				[
+					"Xllak / Giac",
+					"Pescado / Pez",
+					"Animales",
+					"🐟",
+					"Animal acuático dietético.",
+				],
+				["Chuch / Suh", "Venado", "Animales", "🦌", "Cérvido cazado."],
+				[
+					"Aja",
+					"Gato (Blanco)",
+					"Animales",
+					"⬜",
+					"Literal es blanco, por extensión el gato.",
+				],
+				["Miss", "Gato", "Animales", "🐈", "Préstamo de 'michi' (colonial)."],
+				[
+					"Nañe / Ñañ",
+					"Ave / Gallina / Gallo",
+					"Animales",
+					"🐔",
+					"Término genérico para aves de corral.",
+				],
+				["Poc Poc", "Pájaro", "Animales", "🐦", "Ave silvestre genérica."],
+				["Pucu", "Lechuza / Búho", "Animales", "🦉", "Ave rapaz nocturna."],
+				[
+					"Rak",
+					"Jaguar / Tigrillo / Puma",
+					"Animales",
+					"🐆",
+					"El felino mayor andino/costeño.",
+				],
+				["Javan", "Cerdo", "Animales", "🐷", "Préstamo colonial o adaptación."],
+				["C'harke", "Loro", "Animales", "🦜", "Ave parlanchina."],
+				["Tokji", "Gusano", "Animales", "🐛", "Invertebrado."],
+				["Chojik", "Gaviota", "Animales", "🦤", "Ave costera."],
+
+				// ALIMENTOS Y AGRICULTURA
+				[
+					"Ers / Mang",
+					"Choclo / Maíz",
+					"Alimentos",
+					"🌽",
+					"Base de la dieta andina.",
+				],
+				[
+					"Quersu",
+					"Cancha / Maíz tostado",
+					"Alimentos",
+					"🍿",
+					"Aperitivo tradicional.",
+				],
+				[
+					"Yemeque",
+					"Espesado",
+					"Alimentos",
+					"🍲",
+					"Plato bandera de Lambayeque.",
+				],
+				[
+					"Cúchis / Cutzhio",
+					"Chicha",
+					"Alimentos",
+					"🍺",
+					"Bebida de maíz fermentado.",
+				],
+				["Ohzit", "Guaba / Pacae", "Alimentos", "🫘", "Fruta en vaina dulce."],
+				["Päckke", "Frejol", "Alimentos", "🫘", "Leguminosa nutritiva."],
+				["Usap", "Ají", "Alimentos", "🌶️", "Condimento picante ancestral."],
+				["Conso", "Carne", "Alimentos", "🥩", "Tejido muscular para comer."],
+				["Mellu", "Huevo", "Alimentos", "🥚", "Producto de las aves."],
+				["Ots", "Pallar", "Alimentos", "🫘", "Legumbre moche esencial."],
+				["Err", "Yuca", "Alimentos", "🍠", "Tubérculo fibroso."],
+				["Opæn", "Camote", "Alimentos", "🍠", "Tubérculo dulce."],
+				["Fæss", "Lúcuma", "Alimentos", "🥑", "Fruta de pulpa amarilla."],
+				[
+					"Poch / Hìim",
+					"Calabaza / Zapallo",
+					"Alimentos",
+					"🎃",
+					"Fruto grande de cáscara dura.",
+				],
+				["Masa", "Guanábana", "Alimentos", "🍈", "Fruta blanca por dentro."],
+				["Oquixll", "Fruta", "Alimentos", "🍎", "Término general."],
+				["Cercemet", "Cemita", "Alimentos", "🥖", "Pan tradicional local."],
+				["Fon", "Guayaba", "Alimentos", "🍏", "Homónimo de 'nariz'."],
+				[
+					"Kichoi",
+					"Alga",
+					"Alimentos",
+					"🌿",
+					"Vegetación acuática comestible.",
+				],
+				["Asõna", "Caigua", "Alimentos", "🥒", "Vegetal andino para guisos."],
+				[
+					"Kumo / Kumpas",
+					"Caña de azúcar",
+					"Alimentos",
+					"🎋",
+					"Planta dulce fibrosa.",
+				],
+				["Passak", "Espinaca", "Alimentos", "🥬", "Hoja verde comestible."],
+				[
+					"Ketskets / Kots",
+					"Humitas",
+					"Alimentos",
+					"🌽",
+					"Preparación de maíz molido (UNT).",
+				],
+				[
+					"Löts",
+					"Loche",
+					"Alimentos",
+					"🎃",
+					"Zapallo característico de la costa norte.",
+				],
+				["Chocop", "Maní", "Alimentos", "🥜", "Legumbre subterránea."],
+
+				// OBJETOS COTIDIANOS Y HERRAMIENTAS
+				["An", "Casa / Choza", "Objetos", "🏠", "Vivienda."],
+				["Cyap", "Techo", "Objetos", "🏠", "Parte superior de la casa."],
+				[
+					"Vellus / Villos",
+					"Poto / Vasija",
+					"Objetos",
+					"🧉",
+					"Calabaza seca para chicha.",
+				],
+				["Tevo", "Cuchara", "Objetos", "🥄", "Utensilio para comer."],
+				["Llella", "Manta / Abrigo", "Objetos", "🧥", "Prenda para el frío."],
+				["Hemoyac", "Faja", "Objetos", "🧣", "Cinturón de tela andino."],
+				["Jem", "Tejido / Tela", "Objetos", "🧶", "Obra de telar."],
+				["Napuk", "Escoba", "Objetos", "🧹", "Para limpiar el suelo."],
+				["Neñuc", "Juguete", "Objetos", "🪀", "Objeto para jugar (Neñ)."],
+				[
+					"Cyilpi",
+					"Manta de cama",
+					"Objetos",
+					"🛏️",
+					"Para cubrirse al dormir.",
+				],
+				[
+					"Manic",
+					"Taza / Vaso",
+					"Objetos",
+					"☕",
+					"Recipiente para líquidos calientes.",
+				],
+				[
+					"Palla",
+					"Olla / Caldero",
+					"Objetos",
+					"🍲",
+					"Recipiente para cocinar.",
+				],
+				["Jujuna", "Mantel", "Objetos", "🔲", "Tela de mesa (Quesquén)."],
+				[
+					"Rrel / Lerrep",
+					"Moneda / Real",
+					"Objetos",
+					"🪙",
+					"Dinero o valor metálico.",
+				],
+				[
+					"Zarcilas",
+					"Sortija / Anillo",
+					"Objetos",
+					"💍",
+					"Joya para los dedos.",
+				],
+				["Xllangir", "Tumba / Fosa", "Objetos", "🪦", "Lugar de entierro."],
+				[
+					"Tok",
+					"Fogón / Horno",
+					"Objetos",
+					"🔥",
+					"Piedras para cocinar (Zevallos).",
+				],
+				["Llastu", "Gorro", "Objetos", "🧢", "Para la cabeza (Middendorf)."],
+				["Japanel", "Jabón", "Objetos", "🧼", "Para lavar."],
+				["Japa", "Canasta", "Objetos", "🧺", "Para cargar cosas."],
+				["Mayæc", "Ídolo", "Objetos", "🗿", "Figura sagrada."],
+
+				// ADJETIVOS (CUALIDADES)
+				["Afa / Tsekku", "Blanco", "Adjetivos", "⚪", "Color de luz."],
+				["Chafka / Fag", "Negro", "Adjetivos", "⚫", "Color oscuro."],
+				["Cuj / Kuj", "Rojo", "Adjetivos", "🔴", "Color de sangre."],
+				["Lam / Jam", "Amarillo", "Adjetivos", "🟡", "Color del sol/oro."],
+				[
+					"Iss / Hiz",
+					"Verde",
+					"Adjetivos",
+					"🟢",
+					"Iss (Carrera) / Hiz (Montjoy).",
+				],
+				[
+					"Ciiss / Cliss",
+					"Tierno / Suave",
+					"Adjetivos",
+					"🌱",
+					"Cualidad táctil o edad.",
+				],
+				["Tellpe", "Blando", "Adjetivos", "☁️", "Suave al tacto."],
+				[
+					"Ajpe / Huz",
+					"Grande / Inmenso",
+					"Adjetivos",
+					"🐘",
+					"De gran tamaño.",
+				],
+				["Chut / Tzhuto", "Pequeño", "Adjetivos", "🐁", "De poco tamaño."],
+				["Peñ / Nas", "Bueno / Bien", "Adjetivos", "👍", "Cualidad positiva."],
+				["Costape", "Seco", "Adjetivos", "🍂", "Sin humedad."],
+				[
+					"Teñnet",
+					"Bonito / Hermoso",
+					"Adjetivos",
+					"✨",
+					"Estético al ojo (Montjoy).",
+				],
+				["Miker", "Ágil / Rápido", "Adjetivos", "🏃", "Ligero de cuerpo."],
+				[
+					"Achichone",
+					"Agradable / Simpático",
+					"Adjetivos",
+					"😊",
+					"Cualidad social.",
+				],
+				["Tug", "Alto", "Adjetivos", "🦒", "De gran estatura."],
+				["Cun Cuñ", "Dulce", "Adjetivos", "🍭", "Sabor de frutas."],
+				["Tarr", "Fuerte", "Adjetivos", "💪", "Con mucha fuerza física."],
+				["Chil", "Maduro", "Adjetivos", "🍎", "Fruto listo para comer."],
+				["Purr", "Salado", "Adjetivos", "🧂", "Sabor del mar/sal."],
+				["Quixmic", "Viejo / Anciano", "Adjetivos", "👴", "De mucha edad."],
+				["Charra", "Violeta / Morado", "Adjetivos", "🟣", "Color especial."],
+				[
+					"Tú / Chüve",
+					"Fiebre / Con Viruela",
+					"Adjetivos",
+					"🤒",
+					"Estado de enfermedad.",
+				],
+				["Etestot", "Feo / Desagradable", "Adjetivos", "🧟", "Poco estético."],
+				["Faccia", "Pobre", "Adjetivos", "🥺", "Del quechua 'wakcha'."],
+				["Nub", "Caliente", "Adjetivos", "🥵", "De alta temperatura."],
+				["Tän", "Gordo / Grueso", "Adjetivos", "🫃", "De gran masa corporal."],
+				[
+					"Posan",
+					"Malo / Malvado",
+					"Adjetivos",
+					"😈",
+					"Cualidad negativa ética.",
+				],
+				["Zemzem / Ción", "Frío", "Adjetivos", "🥶", "De baja temperatura."],
+				["Jap", "Nuevo", "Adjetivos", "🆕", "Reciente."],
+				["Cherun", "Recto", "Adjetivos", "📏", "Sin curvas."],
+				["Petès", "Izquierdo", "Adjetivos", "👈", "Dirección."],
+				["Quemun", "Inmaculado", "Adjetivos", "✨", "Puro."],
+				["Kitsi", "Insignificante", "Adjetivos", "🤏", "Sin importancia."],
+				[
+					"Quitzhiapæs",
+					"Inferior",
+					"Adjetivos",
+					"⬇️",
+					"De menor rango o altura.",
+				],
+
+				// VERBOS Y ACCIONES
+				["Tzhæcæm / Zecuuman", "Correr", "Verbos", "🏃", "Movimiento veloz."],
+				["Kiche", "Llevar al niño atrás", "Verbos", "👶", "En la espalda."],
+				["Chim", "Bailar", "Verbos", "💃", "Danza ceremonial o festiva."],
+				["Poi", "Dar / Entregar", "Verbos", "🎁", "Acto de transferir."],
+				["Kono / Amoh", "Caminar / Andar", "Verbos", "🚶", "Paso a paso."],
+				["Fil / Guchean", "Cantar", "Verbos", "🎤", "Emitir voz musical."],
+				["Siad / Ciadan", "Dormir", "Verbos", "😴", "Descansar."],
+				["Kep", "Encontrar / Hallar", "Verbos", "🔍", "Descubrir lo perdido."],
+				["Aj", "Inclinarse / Reverenciar", "Verbos", "🙇", "Mostrar respeto."],
+				["Tæc / Oll / Ciaxman", "Ir", "Verbos", "🚶", "Dirigirse hacia."],
+				["Neñ / Ñeñ", "Jugar / Reír", "Verbos", "🎮", "Actividad lúdica."],
+				["Fañ", "Mentir", "Verbos", "🤥", "No decir la verdad."],
+				["Næm", "Oír / Escuchar", "Verbos", "👂", "Percibir sonido."],
+				["J'ep", "Quemar / Arder", "Verbos", "🔥", "Acción del fuego."],
+				[
+					"Loc / Lok-",
+					"Querer / Estar",
+					"Verbos",
+					"💖",
+					"Raíz histórica y moderna.",
+				],
+				[
+					"Nossæn / Çiam",
+					"Reír a carcajadas",
+					"Verbos",
+					"😂",
+					"Demostrar alegría sonora.",
+				],
+				[
+					"Korr / Nop",
+					"Romper / Quebrar",
+					"Verbos",
+					"💔",
+					"Destruir un objeto.",
+				],
+				[
+					"Kap",
+					"Saber / Conocer",
+					"Verbos",
+					"🧠",
+					"Tener inteligencia de algo.",
+				],
+				[
+					"Toxli",
+					"Sacar / Extraer",
+					"Verbos",
+					"📤",
+					"Mover de adentro hacia afuera.",
+				],
+				[
+					"Chup / Ukn",
+					"Saltar / Brincar",
+					"Verbos",
+					"🦘",
+					"Elevarse del piso.",
+				],
+				[
+					"Chimp / Man / Fino",
+					"Tomar / Comer",
+					"Verbos",
+					"🥤",
+					"Ingerir líquidos o alimentos.",
+				],
+				["Met", "Traer", "Verbos", "🤲", "Acercar algo hacia uno."],
+				["Nok / Acan", "Ver / Mirar", "Verbos", "👁️", "Percibir con los ojos."],
+				[
+					"Mullean / Mællæc",
+					"Hablar / Conversar",
+					"Verbos",
+					"🗣️",
+					"Articular idioma.",
+				],
+				["Tonan / Ton", "Matar", "Verbos", "⚔️", "Quitar la vida."],
+				["Af", "Pelear / Luchar", "Verbos", "🤺", "Combate cuerpo a cuerpo."],
+				["Chefnam", "Tener / Poseer", "Verbos", "🙌", "Ser dueño de algo."],
+				[
+					"Chuk-ein",
+					"Fluir / Correr agua",
+					"Verbos",
+					"🌊",
+					"Movimiento de ríos.",
+				],
+				["Tonodoin", "Golpear", "Verbos", "👊", "Impactar."],
+				[
+					"Cyaec / Cyæc",
+					"Amar / Desear",
+					"Verbos",
+					"💖",
+					"Sentimiento profundo.",
+				],
+				["Yakta", "Zarandeando", "Verbos", "🤲", "Limpiar granos (C. Román)."],
+				["Cep", "Pagar", "Verbos", "💰", "Dar dinero por algo."],
+				["Main", "Contar", "Verbos", "🔢", "Numerar cosas."],
+				["Lakancaf", "Trabajar duro", "Verbos", "💦", "Laborar intensamente."],
+				[
+					"Cotumçæc",
+					"Toser / Tos",
+					"Verbos",
+					"🗣️",
+					"Expulsar aire por la garganta.",
+				],
+				["C'hup", "Reparar", "Verbos", "🔧", "Arreglar algo."],
+				["Up / Upeiñ", "Desgranar", "Verbos", "🌽", "Acción sobre el maíz."],
+				["Chaj", "Enfriar", "Verbos", "🧊", "Bajar la temperatura."],
+				["Ñups", "Exprimir", "Verbos", "🍋", "Sacar jugo."],
+				["Nin", "Hervir", "Verbos", "♨️", "Llevar a ebullición."],
+
+				// NÚMEROS Y CANTIDADES MATEMÁTICAS
+				["Onæc", "Uno", "Números", "1️⃣", "Unidad 1."],
+				["Atput", "Dos", "Números", "2️⃣", "Unidad 2."],
+				["Çopæt", "Tres", "Números", "3️⃣", "Unidad 3."],
+				["Nopæt", "Cuatro", "Números", "4️⃣", "Unidad 4."],
+				["Exllmætzh", "Cinco", "Números", "5️⃣", "Unidad 5."],
+				["Tzhaxlltzha", "Seis", "Números", "6️⃣", "Unidad 6."],
+				["Ñite", "Siete", "Números", "7️⃣", "Unidad 7."],
+				["Langæss / Janes", "Ocho", "Números", "8️⃣", "Unidad 8."],
+				["Tap", "Nueve", "Números", "9️⃣", "Unidad 9."],
+				["Çiæcy / Napong", "Diez", "Números", "🔟", "Decena exacta."],
+				["Napong Allo Onæc", "Once", "Números", "1️⃣", "Construcción: 10 y 1."],
+				["Napon Allo Aput", "Doce", "Números", "1️⃣", "Construcción: 10 y 2."],
+				[
+					"Napong Allo Nopet",
+					"Catorce",
+					"Números",
+					"1️⃣",
+					"Construcción: 10 y 4.",
+				],
+				[
+					"Napong Allo Exllmætzh",
+					"Quince",
+					"Números",
+					"1️⃣",
+					"Construcción: 10 y 5.",
+				],
+				[
+					"Napong Allo Tzhaxlltzha",
+					"Dieciséis",
+					"Números",
+					"1️⃣",
+					"Construcción: 10 y 6.",
+				],
+				[
+					"Napong Allo Ñite",
+					"Diecisiete",
+					"Números",
+					"1️⃣",
+					"Construcción: 10 y 7.",
+				],
+				[
+					"Napong Allo Langæss",
+					"Dieciocho",
+					"Números",
+					"1️⃣",
+					"Construcción: 10 y 8.",
+				],
+				[
+					"Napong Allo Tap",
+					"Diecinueve",
+					"Números",
+					"1️⃣",
+					"Construcción: 10 y 9.",
+				],
+				["Pachon / Pacpong", "Veinte", "Números", "2️⃣", "Prefijo 'Pac' (20)."],
+				[
+					"Pacpong Allo Onæc",
+					"Veintiuno",
+					"Números",
+					"2️⃣",
+					"Construcción: 20 y 1.",
+				],
+				[
+					"Pacpong Allo Atput",
+					"Veintidós",
+					"Números",
+					"2️⃣",
+					"Construcción: 20 y 2.",
+				],
+				[
+					"Pacpong Allo Çopæt",
+					"Veintitrés",
+					"Números",
+					"2️⃣",
+					"Construcción: 20 y 3.",
+				],
+				["Zochon / Çocpong", "Treinta", "Números", "3️⃣", "Prefijo 'Çoc' (30)."],
+				["Nocpong", "Cuarenta", "Números", "4️⃣", "Prefijo 'Noc' (40)."],
+				[
+					"Exllmætzhpong",
+					"Cincuenta",
+					"Números",
+					"5️⃣",
+					"Prefijo 'Exllmætzh' (50).",
+				],
+				[
+					"Tzhaxlltzhapong",
+					"Sesenta",
+					"Números",
+					"6️⃣",
+					"Prefijo 'Tzhaxlltzha' (60).",
+				],
+				["Napacjac / Onæcpalæc", "Cien", "Números", "💯", "Una centena."],
+				["Naponpajac / Onæccunô", "Mil", "Números", "🔢", "Un millar."],
+				["Nacíofec", "Muchos / Bastante", "Números", "🔢", "Gran cantidad."],
+				["Chăm", "Abundante", "Números", "🔢", "Gran cantidad."],
+
+				// CLASIFICADORES NUMERALES
+				[
+					"Ssop",
+					"Clasificador: Frutas / Monedas",
+					"Números",
+					"🏷️",
+					"Partícula para contar objetos pequeños y redondos, o años.",
+				],
+				[
+					"Pong",
+					"Clasificador: Personas / Animales",
+					"Números",
+					"🏷️",
+					"Partícula para contar seres vivos u objetos generales.",
+				],
+				[
+					"Cuo quixll",
+					"Clasificador: Mazorcas",
+					"Números",
+					"🏷️",
+					"Específico para agrupar choclos.",
+				],
+				[
+					"Cæss",
+					"Clasificador: Días",
+					"Números",
+					"🏷️",
+					"Exclusivo para contar jornadas.",
+				],
+				[
+					"Palæc",
+					"Clasificador: Centenas",
+					"Números",
+					"🏷️",
+					"Para la suma de cienes en general.",
+				],
+				[
+					"Chiæng",
+					"Clasificador: Centenas frutales",
+					"Números",
+					"🏷️",
+					"Para cienes de vegetales.",
+				],
+				[
+					"Cunô",
+					"Clasificador: Millares",
+					"Números",
+					"🏷️",
+					"El más grande número catalogado.",
+				],
+				[
+					"Luc",
+					"Clasificador Dual: Redondos",
+					"Números",
+					"🏷️",
+					"Para contar 'pares' de cosas redondas (huevos, platos).",
+				],
+				[
+					"Felæp",
+					"Clasificador Dual: Aves / Potos",
+					"Números",
+					"🏷️",
+					"Para contar 'pares' de aves o vasijas.",
+				],
+			];
+
+			// Expansión a formato de objetos
+			const dictionaryData = rawDictData.map((item) => ({
+				muchik: item[0],
+				spanish: item[1],
+				category: item[2],
+				emoji: item[3],
+				notes: item[4],
+			}));
+
+			let currentCategory = "all";
+			let searchQuery = "";
+			let currentDictView = "cards";
+			let quizScore = 0;
+			let currentQuizAnswer = "";
+			let categoryChartInstance = null;
+
+			document.addEventListener("DOMContentLoaded", () => {
+				document.getElementById("total-words-count").innerText =
+					dictionaryData.length;
+				populateCategories();
+				renderDictionary();
+				renderNumbers();
+				renderCategoryChart();
+				startQuiz();
+				updateViewToggleButtons();
+			});
+
+			function switchView(viewName) {
+				[
+					"dictionary",
+					"meaning",
+					"grammar",
+					"numbers",
+					"quiz",
+					"credits",
+					"contact",
+				].forEach((name) => {
+					document.getElementById(`view-${name}`).classList.add("hidden");
+					document
+						.getElementById(`nav-${name}`)
+						.classList.remove("active", "text-[#8A3E26]");
+					document.getElementById(`nav-${name}`).classList.add("text-gray-500");
+				});
+				document.getElementById(`view-${viewName}`).classList.remove("hidden");
+				document
+					.getElementById(`nav-${viewName}`)
+					.classList.add("active", "text-[#8A3E26]");
+				document
+					.getElementById(`nav-${viewName}`)
+					.classList.remove("text-gray-500");
+			}
+
+			function setDictView(mode) {
+				currentDictView = mode;
+				updateViewToggleButtons();
+				renderDictionary();
+			}
+
+			function updateViewToggleButtons() {
+				const btnCards = document.getElementById("btn-view-cards");
+				const btnList = document.getElementById("btn-view-list");
+				if (currentDictView === "cards") {
+					btnCards.className =
+						"px-4 py-1.5 rounded-md bg-white shadow-sm text-sm font-semibold text-[#8A3E26] transition flex items-center gap-2";
+					btnList.className =
+						"px-4 py-1.5 rounded-md text-gray-500 hover:text-gray-700 text-sm font-semibold transition flex items-center gap-2";
+					document.getElementById("dictionary-grid").classList.remove("hidden");
+					document
+						.getElementById("dictionary-list-container")
+						.classList.add("hidden");
+				} else {
+					btnList.className =
+						"px-4 py-1.5 rounded-md bg-white shadow-sm text-sm font-semibold text-[#8A3E26] transition flex items-center gap-2";
+					btnCards.className =
+						"px-4 py-1.5 rounded-md text-gray-500 hover:text-gray-700 text-sm font-semibold transition flex items-center gap-2";
+					document.getElementById("dictionary-grid").classList.add("hidden");
+					document
+						.getElementById("dictionary-list-container")
+						.classList.remove("hidden");
+				}
+			}
+
+			function populateCategories() {
+				const categories = [
+					...new Set(dictionaryData.map((item) => item.category)),
+				].sort();
+				const select = document.getElementById("categoryFilter");
+				categories.forEach((cat) => {
+					const option = document.createElement("option");
+					option.value = cat;
+					option.innerText = cat;
+					select.appendChild(option);
+				});
+			}
+
+			function renderDictionary() {
+				const grid = document.getElementById("dictionary-grid");
+				const listBody = document.getElementById("dictionary-list-body");
+				grid.innerHTML = "";
+				listBody.innerHTML = "";
+
+				const filtered = dictionaryData.filter((item) => {
+					const searchLower = searchQuery.toLowerCase();
+					const matchesSearch =
+						item.spanish.toLowerCase().includes(searchLower) ||
+						item.muchik.toLowerCase().includes(searchLower) ||
+						(item.notes && item.notes.toLowerCase().includes(searchLower));
+					const matchesCat =
+						currentCategory === "all" || item.category === currentCategory;
+					return matchesSearch && matchesCat;
+				});
+
+				if (filtered.length === 0) {
+					document.getElementById("no-results").classList.remove("hidden");
+					document
+						.getElementById("dictionary-list-container")
+						.classList.add("hidden");
+					document.getElementById("dictionary-grid").classList.add("hidden");
+				} else {
+					document.getElementById("no-results").classList.add("hidden");
+					if (currentDictView === "cards") {
+						document
+							.getElementById("dictionary-grid")
+							.classList.remove("hidden");
+					} else {
+						document
+							.getElementById("dictionary-list-container")
+							.classList.remove("hidden");
+					}
+
+					filtered.forEach((item) => {
+						const card = document.createElement("div");
+						card.className =
+							"word-card bg-white p-5 rounded-lg shadow-sm border border-gray-100 flex flex-col justify-between h-full";
+						card.innerHTML = `
+                        <div class="watermark-emoji">${item.emoji}</div>
+                        <div class="relative z-10">
+                            <span class="inline-block px-2 py-1 text-xs font-semibold tracking-wide text-[#C06C47] bg-orange-50 rounded-full mb-2 uppercase">${item.category}</span>
+                            <div class="flex justify-between items-start">
+                                <h3 class="text-2xl font-bold text-gray-800 mb-1">${item.muchik}</h3>
+                            </div>
+                            <p class="text-lg text-[#4B8F8C] font-medium">${item.spanish}</p>
+                        </div>
+                        ${item.notes ? `<p class="mt-4 text-xs text-gray-500 italic border-t pt-2 border-gray-100 relative z-10">${item.notes}</p>` : ""}
+                    `;
+						grid.appendChild(card);
+
+						const row = document.createElement("tr");
+						row.className = "hover:bg-gray-50 transition duration-150";
+						row.innerHTML = `
+                        <td class="p-4 text-center text-3xl">${item.emoji}</td>
+                        <td class="p-4 font-bold text-gray-900">${item.muchik}</td>
+                        <td class="p-4 text-[#4B8F8C] font-medium">${item.spanish}</td>
+                        <td class="p-4"><span class="px-2 py-1 text-[10px] font-semibold tracking-wide text-[#C06C47] bg-orange-50 rounded-full uppercase">${item.category}</span></td>
+                        <td class="p-4 text-xs text-gray-500 hidden md:table-cell italic">${item.notes || "-"}</td>
+                    `;
+						listBody.appendChild(row);
+					});
+				}
+			}
+
+			document.getElementById("searchInput").addEventListener("input", (e) => {
+				searchQuery = e.target.value.trim();
+				renderDictionary();
+			});
+
+			document
+				.getElementById("categoryFilter")
+				.addEventListener("change", (e) => {
+					currentCategory = e.target.value;
+					renderDictionary();
+				});
+
+			function renderCategoryChart() {
+				const ctx = document.getElementById("categoryChart").getContext("2d");
+				const counts = {};
+				dictionaryData.forEach((item) => {
+					counts[item.category] = (counts[item.category] || 0) + 1;
+				});
+				const labels = Object.keys(counts);
+				const data = Object.values(counts);
+
+				if (categoryChartInstance) {
+					categoryChartInstance.destroy();
+				}
+
+				categoryChartInstance = new Chart(ctx, {
+					type: "doughnut",
+					data: {
+						labels: labels,
+						datasets: [
+							{
+								data: data,
+								backgroundColor: [
+									"#C06C47",
+									"#D4AF37",
+									"#4B8F8C",
+									"#8A3E26",
+									"#F3E5AB",
+									"#9CA3AF",
+									"#FCD34D",
+									"#10B981",
+									"#6366F1",
+									"#EC4899",
+									"#A855F7",
+									"#F87171",
+									"#3B82F6",
+									"#14B8A6",
+								],
+								borderWidth: 0,
+							},
+						],
+					},
+					options: {
+						responsive: true,
+						maintainAspectRatio: false,
+						plugins: {
+							legend: {
+								position: "right",
+								labels: { boxWidth: 10, font: { size: 11 } },
+							},
+						},
+						layout: { padding: 10 },
+					},
+				});
+			}
+
+			// --- SISTEMA NUMÉRICO INTELIGENTE ---
+			const numbersListRaw = dictionaryData.filter(
+				(d) => d.category === "Números",
+			);
+
+			function getNumericInfo(spanishText) {
+				let text = spanishText.toLowerCase();
+				if (text.includes("clasificador"))
+					return { type: "classifier", text: "🏷️", sort: 10000 };
+				if (
+					text.includes("muchos") ||
+					text.includes("bastante") ||
+					text.includes("abundante")
+				)
+					return { type: "indefinite", text: "∞", sort: 9999 };
+
+				const numMap = {
+					uno: 1,
+					dos: 2,
+					tres: 3,
+					cuatro: 4,
+					cinco: 5,
+					seis: 6,
+					siete: 7,
+					ocho: 8,
+					nueve: 9,
+					diez: 10,
+					once: 11,
+					doce: 12,
+					catorce: 14,
+					quince: 15,
+					dieciséis: 16,
+					diecisiete: 17,
+					dieciocho: 18,
+					diecinueve: 19,
+					veintiuno: 21,
+					veintidós: 22,
+					veintitrés: 23,
+					veinte: 20,
+					treinta: 30,
+					cuarenta: 40,
+					cincuenta: 50,
+					sesenta: 60,
+					cien: 100,
+					mil: 1000,
+				};
+				for (let [word, val] of Object.entries(numMap)) {
+					if (new RegExp("\\b" + word + "\\b", "i").test(text)) {
+						return { type: "number", val: val, sort: val };
+					}
+				}
+				return { type: "number", val: 0, sort: 0 };
+			}
+
+			const numbersList = numbersListRaw
+				.map((n) => {
+					return { ...n, numInfo: getNumericInfo(n.spanish) };
+				})
+				.sort((a, b) => a.numInfo.sort - b.numInfo.sort);
+
+			const counterList = numbersList.filter(
+				(n) => n.numInfo.type === "number",
+			);
+			let currentCounterIndex = 0;
+
+			function renderNumbers() {
+				const listEl = document.getElementById("number-list");
+				listEl.innerHTML = "";
+				numbersList.forEach((n) => {
+					const li = document.createElement("li");
+					li.className =
+						"flex items-center p-3 hover:bg-gray-50 rounded-lg border-b border-gray-100 transition";
+					let displayVal =
+						n.numInfo.type === "number" ? n.numInfo.val : n.numInfo.text;
+
+					li.innerHTML = `
+                    <div class="flex-shrink-0 w-12 text-center">
+                        <span class="inline-block bg-orange-100 text-[#C06C47] font-bold text-sm px-2 py-1 rounded-md min-w-[2rem] shadow-sm">${displayVal}</span>
+                    </div>
+                    <div class="flex-grow pl-3 flex flex-col sm:flex-row sm:items-center sm:justify-between">
+                        <span class="font-bold text-gray-800 text-base">${n.muchik}</span>
+                        <span class="text-xs text-gray-500 sm:text-right mt-1 sm:mt-0 italic bg-gray-100 px-2 py-0.5 rounded border">${n.spanish}</span>
+                    </div>
+                `;
+					listEl.appendChild(li);
+				});
+				updateCounterUI();
+			}
+
+			function updateCounter(change) {
+				let newIndex = currentCounterIndex + change;
+				if (newIndex < 0) newIndex = 0;
+				if (newIndex >= counterList.length - 1)
+					newIndex = counterList.length - 1;
+				currentCounterIndex = newIndex;
+				updateCounterUI();
+			}
+
+			function updateCounterUI() {
+				const currentNum = counterList[currentCounterIndex];
+				if (currentNum) {
+					document.getElementById("counter-num").innerText =
+						currentNum.numInfo.val;
+					document.getElementById("counter-word").innerText = currentNum.muchik;
+				}
+			}
+
+			// --- QUIZ LOGIC ---
+			function startQuiz() {
+				const feedbackEl = document.getElementById("quiz-feedback");
+				feedbackEl.classList.add("hidden");
+				feedbackEl.className = "p-4 text-center font-bold hidden text-lg";
+
+				const playableData = dictionaryData.filter(
+					(d) => !d.spanish.toLowerCase().includes("clasificador"),
+				);
+				const randomIndex = Math.floor(Math.random() * playableData.length);
+				const questionWord = playableData[randomIndex];
+				currentQuizAnswer = questionWord.spanish;
+
+				document.getElementById("quiz-question").innerText =
+					questionWord.muchik;
+				document.getElementById("quiz-emoji").innerText = questionWord.emoji;
+
+				const options = [currentQuizAnswer];
+				let attempts = 0;
+				while (options.length < 4 && attempts < 100) {
+					const randomDistractor =
+						playableData[Math.floor(Math.random() * playableData.length)]
+							.spanish;
+					if (!options.includes(randomDistractor)) {
+						options.push(randomDistractor);
+					}
+					attempts++;
+				}
+
+				options.sort(() => Math.random() - 0.5);
+				const optionsContainer = document.getElementById("quiz-options");
+				optionsContainer.innerHTML = "";
+				options.forEach((opt) => {
+					const btn = document.createElement("button");
+					btn.className =
+						"w-full py-4 px-6 text-left border-2 border-gray-200 rounded-xl hover:bg-[#F3E5AB] hover:border-[#D4AF37] transition font-bold text-gray-700 shadow-sm text-lg";
+					btn.innerText = opt;
+					btn.onclick = () => checkAnswer(opt, btn);
+					optionsContainer.appendChild(btn);
+				});
+			}
+
+			function checkAnswer(selected, btnElement) {
+				const feedbackEl = document.getElementById("quiz-feedback");
+				feedbackEl.classList.remove("hidden");
+
+				if (selected === currentQuizAnswer) {
+					btnElement.classList.remove(
+						"border-gray-200",
+						"hover:bg-[#F3E5AB]",
+						"hover:border-[#D4AF37]",
+					);
+					btnElement.classList.add(
+						"bg-emerald-100",
+						"border-emerald-500",
+						"text-emerald-800",
+					);
+					feedbackEl.innerHTML = "¡Correcto! <span class='text-2xl'>🎉</span>";
+					feedbackEl.classList.add(
+						"text-emerald-700",
+						"bg-emerald-50",
+						"rounded-xl",
+						"border",
+						"border-emerald-200",
+					);
+					quizScore += 10;
+					document.getElementById("quiz-score").innerText = quizScore;
+
+					const allBtns = document
+						.getElementById("quiz-options")
+						.querySelectorAll("button");
+					allBtns.forEach((b) => (b.disabled = true));
+				} else {
+					btnElement.classList.remove(
+						"border-gray-200",
+						"hover:bg-[#F3E5AB]",
+						"hover:border-[#D4AF37]",
+					);
+					btnElement.classList.add(
+						"bg-red-100",
+						"border-red-500",
+						"text-red-800",
+					);
+					feedbackEl.innerHTML = `Incorrecto. La respuesta era: <br><span class="text-2xl mt-1 block">${currentQuizAnswer}</span>`;
+					feedbackEl.classList.add(
+						"text-red-600",
+						"bg-red-50",
+						"rounded-xl",
+						"border",
+						"border-red-200",
+					);
+				}
+			}
+		</script>
+	</body>
+</html>
