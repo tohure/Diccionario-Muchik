@@ -16,6 +16,7 @@ import dev.tohure.muchik_dictionary.core.design.rememberEmojiFont
 import dev.tohure.muchik_dictionary.core.navigation.MuchikTopBar
 import dev.tohure.muchik_dictionary.core.navigation.Screen
 import dev.tohure.muchik_dictionary.feature.dictionary.presentation.ui.DictionaryScreen
+import dev.tohure.muchik_dictionary.feature.grammar.presentation.ui.GrammarScreen
 
 @Composable
 fun App() {
@@ -47,7 +48,7 @@ fun App() {
                 ) {
                     composable(Screen.Dictionary.route) { DictionaryScreen() }
                     composable(Screen.Meaning.route) { PlaceholderScreen("Significado de Muchik") }
-                    composable(Screen.Grammar.route) { PlaceholderScreen("Gramática") }
+                    composable(Screen.Grammar.route) { GrammarScreen() }
                     composable(Screen.Numbers.route) { PlaceholderScreen("Sistema Numérico") }
                     composable(Screen.Quiz.route) { PlaceholderScreen("Práctica") }
                     composable(Screen.Credits.route) { PlaceholderScreen("Créditos") }
