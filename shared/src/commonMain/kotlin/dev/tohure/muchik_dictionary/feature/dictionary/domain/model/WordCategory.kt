@@ -1,7 +1,7 @@
 package dev.tohure.muchik_dictionary.feature.dictionary.domain.model
 
 enum class WordCategory(val displayName: String) {
-    ALL("Todas las Categorías"),
+    ALL("Categorías"),
     EDUCACION("Educación"),
     EXPRESIONES("Expresiones"),
     TIEMPO("Tiempo"),

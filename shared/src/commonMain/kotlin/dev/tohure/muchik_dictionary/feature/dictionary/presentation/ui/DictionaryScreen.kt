@@ -2,6 +2,7 @@ package dev.tohure.muchik_dictionary.feature.dictionary.presentation.ui
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -40,6 +41,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import dev.tohure.muchik_dictionary.core.design.Clay
+import dev.tohure.muchik_dictionary.core.design.ClayLight
 import dev.tohure.muchik_dictionary.core.design.DarkClay
 import dev.tohure.muchik_dictionary.feature.dictionary.domain.model.WordCategory
 import dev.tohure.muchik_dictionary.feature.dictionary.presentation.state.DictionaryViewMode
@@ -178,28 +180,34 @@ private fun SearchAndFilterRow(
         horizontalArrangement = Arrangement.spacedBy(12.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        TextField(
-            value = query,
-            onValueChange = onQueryChange,
-            modifier = Modifier.weight(1f),
-            placeholder = {
-                Text(
-                    text = "Buscar en Muchik o Español...",
-                    style = MaterialTheme.typography.bodyMedium,
-                    maxLines = 1,
-                )
-            },
-            singleLine = true,
-            shape = CircleShape,
-            colors = TextFieldDefaults.colors(
-                focusedIndicatorColor = Color.Transparent,
-                unfocusedIndicatorColor = Color.Transparent,
-                disabledIndicatorColor = Color.Transparent,
-                focusedContainerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f),
-                unfocusedContainerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f),
-            ),
-            textStyle = MaterialTheme.typography.bodyMedium
-        )
+        Box(
+            modifier = Modifier
+                .weight(1f)
+                .border(1.5.dp, ClayLight, CircleShape),
+        ) {
+            TextField(
+                value = query,
+                onValueChange = onQueryChange,
+                modifier = Modifier.fillMaxWidth(),
+                placeholder = {
+                    Text(
+                        text = "Buscar...",
+                        style = MaterialTheme.typography.bodyMedium,
+                        maxLines = 1,
+                    )
+                },
+                singleLine = true,
+                shape = CircleShape,
+                colors = TextFieldDefaults.colors(
+                    focusedIndicatorColor = Color.Transparent,
+                    unfocusedIndicatorColor = Color.Transparent,
+                    disabledIndicatorColor = Color.Transparent,
+                    focusedContainerColor = MaterialTheme.colorScheme.surface,
+                    unfocusedContainerColor = MaterialTheme.colorScheme.surface,
+                ),
+                textStyle = MaterialTheme.typography.bodyMedium,
+            )
+        }
         CategoryDropdown(
             selectedCategory = selectedCategory,
             onCategorySelected = onCategorySelected,
