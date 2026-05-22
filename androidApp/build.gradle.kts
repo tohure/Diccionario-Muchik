@@ -26,7 +26,7 @@ android {
     compileSdk = libs.versions.android.compileSdk.get().toInt()
 
     sourceSets["main"].assets.srcDirs(
-        "${project(":shared").layout.buildDirectory.get()}/generated/compose/resourceGenerator/preparedResources/commonMain"
+        "${project(":shared").layout.buildDirectory.get()}/generated/compose/resourceGenerator/assembledResources/jvmMain"
     )
 
     defaultConfig {
@@ -55,6 +55,6 @@ android {
 // Garantiza que los recursos CMP del módulo shared se generen antes del merge de assets
 afterEvaluate {
     listOf("mergeDebugAssets", "mergeReleaseAssets").forEach { taskName ->
-        tasks.findByName(taskName)?.dependsOn(":shared:prepareComposeResourcesTaskForCommonMain")
+        tasks.findByName(taskName)?.dependsOn(":shared:assembleJvmMainResources")
     }
 }
