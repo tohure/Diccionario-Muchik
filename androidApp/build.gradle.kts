@@ -25,10 +25,11 @@ android {
     namespace = "dev.tohure.muchik_dictionary"
     compileSdk = libs.versions.android.compileSdk.get().toInt()
 
-    // Empaqueta los recursos CMP del módulo shared en los assets del APK con el namespace correcto.
-    // assembleJvmMainResources genera la estructura con namespace que Android Runtime requiere;
-    // CopyResourcesToAndroidAssetsTask (el task nativo de CMP para este caso) es internal en el plugin
-    // y no expone API pública para configurar su outputDirectory en setups multi-módulo.
+    // WORKAROUND: el plugin `com.android.kotlin.multiplatform.library` (experimental de Google) no
+    // engacha automáticamente con el pipeline de recursos de Compose Multiplatform (JetBrains).
+    // CMP genera los assets en jvmMain con el namespace requerido por el Android Runtime, pero
+    // no los copia al APK en este setup. Se elimina cuando alguno de los dos plugins resuelva
+    // la integración nativa
     sourceSets.getByName("main").assets.srcDir(
         "${project(":shared").layout.buildDirectory.get()}/generated/compose/resourceGenerator/assembledResources/jvmMain"
     )
@@ -56,6 +57,9 @@ android {
     }
 }
 
+// AGP crea las tareas mergeAssets de forma lazy (no existen en tiempo de configuración).
+// Sin afterEvaluate, tasks.named() fallaría. Sin el dependsOn, Gradle no garantiza
+// que assembleJvmMainResources se ejecute antes que mergeAssets en un clean build.
 afterEvaluate {
     listOf("mergeDebugAssets", "mergeReleaseAssets").forEach { taskName ->
         tasks.named(taskName) {

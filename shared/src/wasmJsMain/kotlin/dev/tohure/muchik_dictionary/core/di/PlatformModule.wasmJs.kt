@@ -7,6 +7,8 @@ import dev.tohure.muchik_dictionary.feature.sync.domain.repository.SyncRepositor
 import org.koin.core.module.Module
 import org.koin.dsl.module
 
+// Web no tiene Room ni acceso HTTP directo desde WASM; usa datos estáticos y sync desactivado.
+// NoOpSyncRepository retorna Done(0) sin llamadas de red para no romper la UI de sincronización.
 val platformModule: Module = module {
     single<DictionaryRepository> { DictionaryRepositoryImpl() }
     single<SyncRepository> { NoOpSyncRepository() }

@@ -71,7 +71,7 @@ by feature count.
 The technology stack MUST prioritize a unified codebase with native performance across all platforms (Android, iOS, Web, Desktop).
 
 - **Core:** Kotlin Multiplatform (KMP).
-- **UI:** 100% Compose Multiplatform (CMP) across all targets using a Single Shared UI in the `composeApp` module. Platform-specific UI code (`expect/actual`) is strictly limited to hardware access or specific window/inset behaviors.
+- **UI:** 100% Compose Multiplatform (CMP) across all targets using a Single Shared UI in the `shared` module. Platform-specific UI code (`expect/actual`) is strictly limited to hardware access or specific window/inset behaviors.
 - **Architecture:** Clean Architecture (Presentation, Domain, Data layers) utilizing the MVVM / MVI pattern for state management.
 - **Dependency Injection:** Koin (Multiplatform).
 - **Networking:** Ktor client.

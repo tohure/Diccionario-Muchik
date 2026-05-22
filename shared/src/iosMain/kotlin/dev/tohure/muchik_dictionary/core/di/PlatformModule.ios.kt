@@ -1,3 +1,5 @@
+// @file:OptIn requerido para NSFileManager y NSDocumentDirectory de platform.Foundation.
+// ExperimentalForeignApi marca la interop C/ObjC como inestable pero es necesaria para iOS.
 @file:OptIn(kotlinx.cinterop.ExperimentalForeignApi::class)
 
 package dev.tohure.muchik_dictionary.core.di

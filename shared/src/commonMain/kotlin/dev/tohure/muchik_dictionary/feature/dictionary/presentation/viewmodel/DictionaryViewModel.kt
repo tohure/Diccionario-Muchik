@@ -50,6 +50,8 @@ class DictionaryViewModel(
     }
 
     private fun observeEntries() {
+        // debounce(150) evita queries en cada keystroke; flatMapLatest cancela la búsqueda
+        // anterior cuando llega una nueva, garantizando que solo la más reciente ejecuta Room.
         combine(queryFlow.debounce(150), categoryFlow) { query, category -> query to category }
             .flatMapLatest { (query, category) ->
                 searchWords(query).map { entries ->

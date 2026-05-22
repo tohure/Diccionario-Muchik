@@ -19,7 +19,7 @@ fun getDatabaseBuilder(): RoomDatabase.Builder<AppDatabase> {
         create = false,
         error = null,
     )
-    val dbPath = requireNotNull(documentDirectory?.path) + "/muchik.db"
+    val dbPath = requireNotNull(documentDirectory?.path) + "/muchik.db" // NSUserDomainMask siempre provee path válido; null indicaría corrupción del sistema de archivos
     return Room.databaseBuilder<AppDatabase>(name = dbPath)
 }
 

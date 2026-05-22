@@ -6,9 +6,12 @@
 ![Compose Multiplatform](https://img.shields.io/badge/Compose%20Multiplatform-1.11.0-4285F4?logo=jetpackcompose&logoColor=white)
 ![Android](https://img.shields.io/badge/Android-API%2024%2B-3DDC84?logo=android&logoColor=white)
 ![iOS](https://img.shields.io/badge/iOS-16%2B-000000?logo=apple&logoColor=white)
-![Desktop](https://img.shields.io/badge/Desktop-JVM-007396?logo=openjdk&logoColor=white)
+![Desktop](https://img.shields.io/badge/Desktop-JVM%2021-007396?logo=openjdk&logoColor=white)
 ![Web](https://img.shields.io/badge/Web-WASM-654FF0?logo=webassembly&logoColor=white)
 ![Koin](https://img.shields.io/badge/Koin-4.2.1-F97316?logoColor=white)
+![Room](https://img.shields.io/badge/Room-2.8.4-green?logo=sqlite&logoColor=white)
+![Ktor](https://img.shields.io/badge/Ktor-3.5.0-0095D5?logo=ktor&logoColor=white)
+![AGP](https://img.shields.io/badge/AGP-9.2.1-3DDC84?logo=android&logoColor=white)
 ![License](https://img.shields.io/badge/License-MIT-yellow)
 
 ---
@@ -51,7 +54,7 @@
 │       ├── commonMain/  # Compose UI, Clean Architecture, Koin, Room
 │       ├── androidMain/ # Room + Ktor engine Android
 │       ├── iosMain/     # Room + Ktor engine Darwin
-│       ├── jvmMain/     # Room + Ktor engine OkHttp (Desktop)
+│       ├── jvmMain/     # Room + Ktor engine CIO (Desktop)
 │       └── wasmJsMain/  # Font emoji (NotoColorEmoji vía resources)
 └── specs/               # Especificaciones y plan de implementación
 ```

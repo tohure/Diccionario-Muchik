@@ -14,16 +14,21 @@ plugins {
     alias(libs.plugins.buildkonfig)
 }
 
-val localProps = Properties().apply {
-    rootProject.file("local.properties").takeIf { it.exists() }?.inputStream()?.use { load(it) }
-}
+// providers.fileContents() registra local.properties como input de Configuration Cache.
+// Properties() directo no lo hace: cambios en el archivo no invalidarían el caché.
+val localPropsProvider: Provider<Properties> =
+    providers.fileContents(rootProject.layout.projectDirectory.file("local.properties"))
+        .asText
+        .map { text -> Properties().apply { load(text.reader()) } }
 
 fun secret(envKey: String, propKey: String = envKey): String =
     providers.environmentVariable(envKey)
-        .orElse(localProps.getProperty(propKey, ""))
+        .orElse(localPropsProvider.map { it.getProperty(propKey, "") }.orElse(""))
         .get()
 
 kotlin {
+    // Genera source sets intermedios estándar de KMP (iosMain, nativeMain, appleMain, etc.).
+    // Sin esto, iosMain.get() no existe y el dependsOn de mobileDesktopMain falla.
     applyDefaultHierarchyTemplate()
 
     android {
@@ -42,7 +47,8 @@ kotlin {
     ).forEach { iosTarget ->
         iosTarget.binaries.framework {
             baseName = "Shared"
-            isStatic = true
+            isStatic = true  // requerido por el linker de Xcode para embeber el framework en el bundle
+            binaryOption("bundleId", "dev.tohure.muchik_dictionary.shared")
         }
     }
 
@@ -58,13 +64,12 @@ kotlin {
     }
 
     sourceSets {
-        // Conjunto intermedio: android + ios + jvm (Room, Ktor, DataStore)
+        // Source set intermedio para android + ios + jvm.
+        // Room, Ktor y DataStore no tienen implementaciones JS/WASM, por lo que no pueden ir
+        // en commonMain. jsMain y wasmJsMain no dependen de este conjunto: usan datos estáticos.
         val mobileDesktopMain by creating {
             dependsOn(commonMain.get())
         }
-        androidMain.get().dependsOn(mobileDesktopMain)
-        iosMain.get().dependsOn(mobileDesktopMain)
-        jvmMain.get().dependsOn(mobileDesktopMain)
 
         commonMain.dependencies {
             implementation(libs.compose.runtime)
@@ -89,22 +94,35 @@ kotlin {
             implementation(libs.ktor.serialization.kotlinx.json)
             implementation(libs.datastore.preferences.core)
         }
-        androidMain.dependencies {
-            implementation(libs.compose.uiToolingPreview)
-            implementation(libs.androidx.room.sqlite.wrapper)
-            implementation(libs.koin.android)
-            implementation(libs.ktor.client.okhttp)
+
+        androidMain {
+            dependsOn(mobileDesktopMain)
+            dependencies {
+                implementation(libs.androidx.room.sqlite.wrapper)
+                implementation(libs.koin.android)
+                implementation(libs.ktor.client.okhttp)
+            }
         }
-        iosMain.dependencies {
-            implementation(libs.ktor.client.darwin)
+
+        iosMain {
+            dependsOn(mobileDesktopMain)
+            dependencies {
+                implementation(libs.ktor.client.darwin)
+            }
         }
-        jvmMain.dependencies {
-            implementation(libs.ktor.client.cio)
+
+        jvmMain {
+            dependsOn(mobileDesktopMain)
+            dependencies {
+                implementation(libs.ktor.client.cio)
+            }
         }
+
         commonTest.dependencies {
             implementation(libs.kotlin.test)
             implementation(libs.kotlinx.coroutines.test)
         }
+
         jsMain.dependencies {
             implementation(libs.wrappers.browser)
         }
@@ -124,7 +142,11 @@ buildkonfig {
 }
 
 dependencies {
+    // Equivalente a debugImplementation con com.android.kotlin.multiplatform.library.
+    // El plugin experimental no expone variantes de build en la forma estándar de AGP.
     androidRuntimeClasspath(libs.compose.uiTooling)
+
+    // Room KSP solo en los targets de mobileDesktopMain; js y wasmJs usan datos estáticos.
     add("kspAndroid", libs.androidx.room.compiler)
     add("kspIosArm64", libs.androidx.room.compiler)
     add("kspIosSimulatorArm64", libs.androidx.room.compiler)

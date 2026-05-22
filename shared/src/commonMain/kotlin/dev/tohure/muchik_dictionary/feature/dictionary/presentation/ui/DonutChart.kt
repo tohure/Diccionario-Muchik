@@ -38,7 +38,7 @@ fun DonutChart(
 ) {
     if (categoryCounts.isEmpty()) return
 
-    val total = categoryCounts.values.sum().coerceAtLeast(1).toFloat()
+    val total = categoryCounts.values.sum().coerceAtLeast(1).toFloat() // evita división por cero en los ángulos de arco
     val entries = categoryCounts.entries.sortedByDescending { it.value }
     val surfaceColor = MaterialTheme.colorScheme.surface
 
