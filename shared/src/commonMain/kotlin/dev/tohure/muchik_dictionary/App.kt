@@ -21,8 +21,11 @@ import dev.tohure.muchik_dictionary.core.design.rememberEmojiFont
 import dev.tohure.muchik_dictionary.core.navigation.AdaptiveNavigation
 import dev.tohure.muchik_dictionary.core.navigation.MuchikTopBar
 import dev.tohure.muchik_dictionary.core.navigation.Screen
+import dev.tohure.muchik_dictionary.feature.contact.presentation.ui.ContactScreen
+import dev.tohure.muchik_dictionary.feature.credits.presentation.ui.CreditsScreen
 import dev.tohure.muchik_dictionary.feature.dictionary.presentation.ui.DictionaryScreen
 import dev.tohure.muchik_dictionary.feature.grammar.presentation.ui.GrammarScreen
+import dev.tohure.muchik_dictionary.feature.meaning.presentation.ui.MeaningScreen
 import dev.tohure.muchik_dictionary.feature.numbers.presentation.ui.NumbersScreen
 import dev.tohure.muchik_dictionary.feature.quiz.presentation.ui.QuizScreen
 import kotlinx.coroutines.launch
@@ -70,12 +73,12 @@ fun App() {
                             modifier = Modifier.padding(paddingValues),
                         ) {
                             composable(Screen.Dictionary.route) { DictionaryScreen() }
-                            composable(Screen.Meaning.route) { PlaceholderScreen("Significado de Muchik") }
+                            composable(Screen.Meaning.route) { MeaningScreen() }
                             composable(Screen.Grammar.route) { GrammarScreen() }
                             composable(Screen.Numbers.route) { NumbersScreen() }
                             composable(Screen.Quiz.route) { QuizScreen() }
-                            composable(Screen.Credits.route) { PlaceholderScreen("Créditos") }
-                            composable(Screen.Contact.route) { PlaceholderScreen("Contacto") }
+                            composable(Screen.Credits.route) { CreditsScreen() }
+                            composable(Screen.Contact.route) { ContactScreen() }
                         }
                     }
                 }
