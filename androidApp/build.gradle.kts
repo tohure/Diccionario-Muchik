@@ -25,7 +25,11 @@ android {
     namespace = "dev.tohure.muchik_dictionary"
     compileSdk = libs.versions.android.compileSdk.get().toInt()
 
-    sourceSets["main"].assets.srcDirs(
+    // Empaqueta los recursos CMP del módulo shared en los assets del APK con el namespace correcto.
+    // assembleJvmMainResources genera la estructura con namespace que Android Runtime requiere;
+    // CopyResourcesToAndroidAssetsTask (el task nativo de CMP para este caso) es internal en el plugin
+    // y no expone API pública para configurar su outputDirectory en setups multi-módulo.
+    sourceSets.getByName("main").assets.srcDir(
         "${project(":shared").layout.buildDirectory.get()}/generated/compose/resourceGenerator/assembledResources/jvmMain"
     )
 
@@ -52,9 +56,10 @@ android {
     }
 }
 
-// Garantiza que los recursos CMP del módulo shared se generen antes del merge de assets
 afterEvaluate {
     listOf("mergeDebugAssets", "mergeReleaseAssets").forEach { taskName ->
-        tasks.findByName(taskName)?.dependsOn(":shared:assembleJvmMainResources")
+        tasks.named(taskName) {
+            dependsOn(project(":shared").tasks.named("assembleJvmMainResources"))
+        }
     }
 }
