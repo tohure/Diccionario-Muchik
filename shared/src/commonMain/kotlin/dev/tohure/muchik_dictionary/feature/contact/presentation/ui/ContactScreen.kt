@@ -33,6 +33,20 @@ import androidx.compose.ui.unit.dp
 import dev.tohure.muchik_dictionary.core.design.Clay
 import dev.tohure.muchik_dictionary.core.design.DarkClay
 import dev.tohure.muchik_dictionary.core.design.Sand
+import dictionarymuchik.shared.generated.resources.Res
+import dictionarymuchik.shared.generated.resources.contact_closing
+import dictionarymuchik.shared.generated.resources.contact_email_button
+import dictionarymuchik.shared.generated.resources.contact_email_label
+import dictionarymuchik.shared.generated.resources.contact_intro1
+import dictionarymuchik.shared.generated.resources.contact_intro2_category
+import dictionarymuchik.shared.generated.resources.contact_intro2_mid
+import dictionarymuchik.shared.generated.resources.contact_intro2_phonetics
+import dictionarymuchik.shared.generated.resources.contact_intro2_post
+import dictionarymuchik.shared.generated.resources.contact_intro2_pre
+import dictionarymuchik.shared.generated.resources.contact_peño_tæsæk
+import dictionarymuchik.shared.generated.resources.contact_subtitle
+import dictionarymuchik.shared.generated.resources.contact_title
+import org.jetbrains.compose.resources.stringResource
 
 private const val CONTACT_EMAIL = "cr.htorres@gmail.com"
 
@@ -61,14 +75,14 @@ fun ContactScreen() {
                 verticalArrangement = Arrangement.spacedBy(16.dp),
             ) {
                 Text(
-                    text = "¡Escríbeme!",
+                    text = stringResource(Res.string.contact_title),
                     style = MaterialTheme.typography.headlineLarge,
                     color = DarkClay,
                     fontWeight = FontWeight.Black,
                     textAlign = TextAlign.Center,
                 )
                 Text(
-                    text = "Construyamos juntos nuestra identidad.",
+                    text = stringResource(Res.string.contact_subtitle),
                     style = MaterialTheme.typography.titleMedium,
                     color = Clay,
                     fontStyle = FontStyle.Italic,
@@ -80,10 +94,10 @@ fun ContactScreen() {
                 Text(
                     text = buildAnnotatedString {
                         append("¡")
-                        withStyle(SpanStyle(fontWeight = FontWeight.Bold)) { append("Peño Tæsæk") }
-                        append(" a este espacio colaborativo! Este diccionario es un ente vivo, " +
-                            "igual que nuestra herencia Moche, y requiere del cuidado de todos nosotros " +
-                            "para crecer fuerte y preciso.")
+                        withStyle(SpanStyle(fontWeight = FontWeight.Bold)) {
+                            append(stringResource(Res.string.contact_peño_tæsæk))
+                        }
+                        append(stringResource(Res.string.contact_intro1))
                     },
                     style = MaterialTheme.typography.bodyLarge,
                     color = MaterialTheme.colorScheme.onSurface,
@@ -92,12 +106,15 @@ fun ContactScreen() {
 
                 Text(
                     text = buildAnnotatedString {
-                        append("Mi ojo no siempre es perfecto. Si al navegar por estas páginas identificas ")
-                        withStyle(SpanStyle(fontWeight = FontWeight.Bold)) { append("problemas con la fonética") }
-                        append(", crees que alguna palabra pertenece a otra ")
-                        withStyle(SpanStyle(fontWeight = FontWeight.Bold)) { append("categorización") }
-                        append(", o si simplemente has encontrado un viejo apunte, un libro o un recuerdo " +
-                            "familiar que pueda aportar nuevos vocablos...")
+                        append(stringResource(Res.string.contact_intro2_pre))
+                        withStyle(SpanStyle(fontWeight = FontWeight.Bold)) {
+                            append(stringResource(Res.string.contact_intro2_phonetics))
+                        }
+                        append(stringResource(Res.string.contact_intro2_mid))
+                        withStyle(SpanStyle(fontWeight = FontWeight.Bold)) {
+                            append(stringResource(Res.string.contact_intro2_category))
+                        }
+                        append(stringResource(Res.string.contact_intro2_post))
                     },
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
@@ -113,7 +130,7 @@ fun ContactScreen() {
                     verticalArrangement = Arrangement.spacedBy(16.dp),
                 ) {
                     Text(
-                        text = "POR FAVOR, ENVÍAME UN MENSAJE A:",
+                        text = stringResource(Res.string.contact_email_label),
                         style = MaterialTheme.typography.labelSmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                         fontWeight = FontWeight.Bold,
@@ -133,7 +150,7 @@ fun ContactScreen() {
                         modifier = Modifier.widthIn(min = 200.dp),
                     ) {
                         Text(
-                            text = "📧  $CONTACT_EMAIL",
+                            text = stringResource(Res.string.contact_email_button),
                             style = MaterialTheme.typography.titleMedium,
                             fontWeight = FontWeight.Bold,
                             modifier = Modifier.padding(vertical = 6.dp, horizontal = 4.dp),
@@ -142,8 +159,7 @@ fun ContactScreen() {
                 }
 
                 Text(
-                    text = "Toda nueva ayuda, crítica constructiva o documento es bienvenida. " +
-                        "¡Hagamos que el Muchik vuelva a resonar!",
+                    text = stringResource(Res.string.contact_closing),
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     fontWeight = FontWeight.Medium,

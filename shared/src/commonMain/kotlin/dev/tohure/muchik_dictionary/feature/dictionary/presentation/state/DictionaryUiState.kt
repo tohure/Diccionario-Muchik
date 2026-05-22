@@ -14,4 +14,6 @@ data class DictionaryUiState(
     val totalCount: Int = 0,
     val categoryCounts: Map<String, Int> = emptyMap(),
     val errorMessage: String? = null,
+    val isSyncing: Boolean = false,
+    val syncMessage: String? = null,
 )

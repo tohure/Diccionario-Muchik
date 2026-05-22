@@ -1,6 +1,7 @@
 package dev.tohure.muchik_dictionary.core.navigation
 
 sealed class Screen(val route: String, val label: String) {
+    data object Sync       : Screen("sync",       "Cargando")
     data object Dictionary : Screen("dictionary", "Diccionario")
     data object Meaning    : Screen("meaning",    "Significado")
     data object Grammar    : Screen("grammar",    "Gramática")

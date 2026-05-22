@@ -21,6 +21,13 @@ import dev.tohure.muchik_dictionary.core.design.LocalEmojiFontFamily
 import dev.tohure.muchik_dictionary.core.design.Ocean
 import dev.tohure.muchik_dictionary.core.design.Sand
 import dev.tohure.muchik_dictionary.feature.dictionary.domain.model.WordEntry
+import dictionarymuchik.shared.generated.resources.Res
+import dictionarymuchik.shared.generated.resources.dict_header_category
+import dictionarymuchik.shared.generated.resources.dict_header_icon
+import dictionarymuchik.shared.generated.resources.dict_header_muchik
+import dictionarymuchik.shared.generated.resources.dict_header_notes
+import dictionarymuchik.shared.generated.resources.dict_header_spanish
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun WordListHeader(modifier: Modifier = Modifier) {
@@ -36,7 +43,7 @@ fun WordListHeader(modifier: Modifier = Modifier) {
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Text(
-            text = "ÍCONO",
+            text = stringResource(Res.string.dict_header_icon),
             style = MaterialTheme.typography.labelSmall,
             color = MaterialTheme.colorScheme.onSecondaryContainer,
             fontWeight = FontWeight.Bold,
@@ -44,28 +51,28 @@ fun WordListHeader(modifier: Modifier = Modifier) {
             textAlign = TextAlign.Center
         )
         Text(
-            text = "MUCHIK",
+            text = stringResource(Res.string.dict_header_muchik),
             style = MaterialTheme.typography.labelSmall,
             color = MaterialTheme.colorScheme.onSecondaryContainer,
             fontWeight = FontWeight.Bold,
             modifier = Modifier.weight(1.5f),
         )
         Text(
-            text = "ESPAÑOL",
+            text = stringResource(Res.string.dict_header_spanish),
             style = MaterialTheme.typography.labelSmall,
             color = MaterialTheme.colorScheme.onSecondaryContainer,
             fontWeight = FontWeight.Bold,
             modifier = Modifier.weight(2f),
         )
         Text(
-            text = "CATEGORÍA",
+            text = stringResource(Res.string.dict_header_category),
             style = MaterialTheme.typography.labelSmall,
             color = MaterialTheme.colorScheme.onSecondaryContainer,
             fontWeight = FontWeight.Bold,
             modifier = Modifier.weight(1.2f),
         )
         Text(
-            text = "NOTAS",
+            text = stringResource(Res.string.dict_header_notes),
             style = MaterialTheme.typography.labelSmall,
             color = MaterialTheme.colorScheme.onSecondaryContainer,
             fontWeight = FontWeight.Bold,

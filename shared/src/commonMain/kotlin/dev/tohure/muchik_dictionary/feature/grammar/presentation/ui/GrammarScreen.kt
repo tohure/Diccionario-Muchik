@@ -31,6 +31,17 @@ import dev.tohure.muchik_dictionary.core.design.Clay
 import dev.tohure.muchik_dictionary.core.design.DarkClay
 import dev.tohure.muchik_dictionary.core.design.Ocean
 import dev.tohure.muchik_dictionary.core.design.Sand
+import dictionarymuchik.shared.generated.resources.Res
+import dictionarymuchik.shared.generated.resources.grammar_block1_title
+import dictionarymuchik.shared.generated.resources.grammar_block2_title
+import dictionarymuchik.shared.generated.resources.grammar_block3_title
+import dictionarymuchik.shared.generated.resources.grammar_block4_title
+import dictionarymuchik.shared.generated.resources.grammar_block5_title
+import dictionarymuchik.shared.generated.resources.grammar_block6_title
+import dictionarymuchik.shared.generated.resources.grammar_block7_title
+import dictionarymuchik.shared.generated.resources.grammar_subtitle
+import dictionarymuchik.shared.generated.resources.grammar_title
+import org.jetbrains.compose.resources.stringResource
 
 private val OCEAN_DARK = Color(0xFF1E3A8A)
 
@@ -63,15 +74,14 @@ private fun GrammarHeader() {
             .padding(vertical = 8.dp),
     ) {
         Text(
-            text = "Estructura y Gramática Muchik",
+            text = stringResource(Res.string.grammar_title),
             style = MaterialTheme.typography.headlineSmall,
             color = DarkClay,
             fontWeight = FontWeight.Bold,
         )
         Spacer(Modifier.height(6.dp))
         Text(
-            text = "El Muchik es un idioma aglutinante, con una morfología compleja y marcas verbales " +
-                "de posición estricta (Basado en F. de la Carrera y R. Eloranta).",
+            text = stringResource(Res.string.grammar_subtitle),
             style = MaterialTheme.typography.bodySmall,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
             fontStyle = FontStyle.Italic,
@@ -91,7 +101,7 @@ private fun Block1WordFormation() {
         SuffixEntry("-(i)sæk", "Sufijo de Resultado", "læmisæk (la muerte), apisæk (la lección)"),
     )
 
-    GrammarBlockCard(title = "1. Formación de Palabras (Derivación)") {
+    GrammarBlockCard(title = stringResource(Res.string.grammar_block1_title)) {
         Text(
             text = "El idioma crea nuevos sustantivos añadiendo sufijos a una raíz verbal (ej. raíz ap- = aprender):",
             style = MaterialTheme.typography.bodySmall,
@@ -149,7 +159,7 @@ private fun Block2Greetings() {
         Greeting("Loktopan / Loktopanchi", "Adiós (singular / plural)"),
     )
 
-    GrammarBlockCard(title = "2. Saludos: La Regla del \"Peño\"") {
+    GrammarBlockCard(title = stringResource(Res.string.grammar_block2_title)) {
         Text(
             text = buildAnnotatedString {
                 append("Para buenos deseos se usa la raíz ")
@@ -212,7 +222,7 @@ private fun Block3Postpositions() {
         Postposition("fæiñ", "Con (objeto)", "Tonic fæiñ — Con la piedra"),
     )
 
-    GrammarBlockCard(title = "3. Ubicación y Posposiciones Espaciales") {
+    GrammarBlockCard(title = stringResource(Res.string.grammar_block3_title)) {
         Text(
             text = buildAnnotatedString {
                 append("El Muchik usa ")
@@ -263,7 +273,7 @@ private fun Block3Postpositions() {
 
 @Composable
 private fun Block4VerbConjugation() {
-    GrammarBlockCard(title = "4. Marcas Verbales (Conjugación)") {
+    GrammarBlockCard(title = stringResource(Res.string.grammar_block4_title)) {
         Text(
             text = buildAnnotatedString {
                 append("La marca de persona se engancha ")
@@ -280,7 +290,7 @@ private fun Block4VerbConjugation() {
 
 @Composable
 private fun Block5Syntax() {
-    GrammarBlockCard(title = "5. Sintaxis Básica") {
+    GrammarBlockCard(title = stringResource(Res.string.grammar_block5_title)) {
         Text(
             text = buildAnnotatedString {
                 append("En Muchik ")
@@ -363,7 +373,7 @@ private fun SyntaxExampleBox(
 @Composable
 private fun Block6InalienablePossession() {
     GrammarBlockCard(
-        title = "6. Posesión Inalienable",
+        title = stringResource(Res.string.grammar_block6_title),
         containerColor = Color(0xFFFFF1F2),
         titleColor = DarkClay,
     ) {
@@ -427,7 +437,7 @@ private fun PossessionBox(
 @Composable
 private fun Block7Loanwords() {
     GrammarBlockCard(
-        title = "7. Préstamos y Evolución Fonética",
+        title = stringResource(Res.string.grammar_block7_title),
         containerColor = Color(0xFFEFF6FF),
         titleColor = OCEAN_DARK,
     ) {

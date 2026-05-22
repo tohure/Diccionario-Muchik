@@ -18,6 +18,9 @@ import androidx.compose.ui.unit.dp
 import dev.tohure.muchik_dictionary.core.design.DarkClay
 import dev.tohure.muchik_dictionary.core.design.Sand
 import kotlinx.coroutines.launch
+import dictionarymuchik.shared.generated.resources.Res
+import dictionarymuchik.shared.generated.resources.app_title
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun AdaptiveNavigation(
@@ -108,7 +111,7 @@ private fun MuchikModalDrawer(
                 drawerContainerColor = MaterialTheme.colorScheme.surface,
             ) {
                 Text(
-                    text = "ENCICLOPEDIA MUCHIK",
+                    text = stringResource(Res.string.app_title),
                     style = MaterialTheme.typography.titleMedium,
                     color = DarkClay,
                     fontWeight = FontWeight.ExtraBold,

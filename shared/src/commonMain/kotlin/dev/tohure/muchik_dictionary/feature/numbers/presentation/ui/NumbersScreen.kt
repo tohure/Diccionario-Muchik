@@ -42,6 +42,21 @@ import dev.tohure.muchik_dictionary.core.design.Gold
 import dev.tohure.muchik_dictionary.core.design.Ocean
 import dev.tohure.muchik_dictionary.core.design.OceanContainer
 import dev.tohure.muchik_dictionary.core.design.Sand
+import dictionarymuchik.shared.generated.resources.Res
+import dictionarymuchik.shared.generated.resources.numbers_age_example
+import dictionarymuchik.shared.generated.resources.numbers_age_note
+import dictionarymuchik.shared.generated.resources.numbers_age_question_muchik
+import dictionarymuchik.shared.generated.resources.numbers_age_question_spanish
+import dictionarymuchik.shared.generated.resources.numbers_age_title
+import dictionarymuchik.shared.generated.resources.numbers_classifiers_title
+import dictionarymuchik.shared.generated.resources.numbers_formula_label
+import dictionarymuchik.shared.generated.resources.numbers_practical_result
+import dictionarymuchik.shared.generated.resources.numbers_practical_title
+import dictionarymuchik.shared.generated.resources.numbers_prefixes_title
+import dictionarymuchik.shared.generated.resources.numbers_reference_title
+import dictionarymuchik.shared.generated.resources.numbers_subtitle
+import dictionarymuchik.shared.generated.resources.numbers_title
+import org.jetbrains.compose.resources.stringResource
 import dev.tohure.muchik_dictionary.feature.numbers.domain.model.NumeralClassifier
 import dev.tohure.muchik_dictionary.feature.numbers.domain.model.NumberEntry
 import dev.tohure.muchik_dictionary.feature.numbers.presentation.state.NumbersUiState
@@ -109,7 +124,7 @@ private fun NumbersContent(
 
             // Classifier table
             item {
-                SectionTitle("Clasificadores Numerales")
+                SectionTitle(stringResource(Res.string.numbers_classifiers_title))
                 Spacer(Modifier.height(8.dp))
                 NumeralClassifierTable(classifiers = classifiers, modifier = Modifier.fillMaxWidth())
             }
@@ -164,14 +179,13 @@ private fun NumbersContent(
 private fun NumbersHeader() {
     Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
         Text(
-            text = "El Sistema Matemático Moche",
+            text = stringResource(Res.string.numbers_title),
             style = MaterialTheme.typography.headlineLarge,
             fontFamily = FontFamily.Serif,
             color = DarkClay,
         )
         Text(
-            text = "Un sistema de cuenta altamente avanzado. Los mochicas no decían simplemente \"veinte hombres\"... " +
-                    "(Chero Zurita y Peralta Vallejos, 2014)",
+            text = stringResource(Res.string.numbers_subtitle),
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
             fontStyle = FontStyle.Italic,
@@ -188,7 +202,7 @@ private fun FormulaBar() {
             .padding(16.dp),
     ) {
         Text(
-            text = "Fórmula constructiva:",
+            text = stringResource(Res.string.numbers_formula_label),
             style = MaterialTheme.typography.labelMedium,
             color = Color(0xFF6C6C8A),
             modifier = Modifier.padding(bottom = 8.dp),
@@ -232,7 +246,7 @@ private fun PrefixesCard(modifier: Modifier = Modifier) {
         verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
         Text(
-            text = "1. Los Prefijos Base (De 10 en 10)",
+            text = stringResource(Res.string.numbers_prefixes_title),
             style = MaterialTheme.typography.titleMedium,
             fontWeight = FontWeight.SemiBold,
             color = DarkClay,
@@ -287,33 +301,33 @@ private fun AgeApplicationCard(modifier: Modifier = Modifier) {
         verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
         Text(
-            text = "Aplicación: Preguntar la Edad",
+            text = stringResource(Res.string.numbers_age_title),
             style = MaterialTheme.typography.titleMedium,
             fontWeight = FontWeight.SemiBold,
             color = Ocean,
         )
         Text(
-            text = "¿Ep æn fûr æn chefnam az?",
+            text = stringResource(Res.string.numbers_age_question_muchik),
             style = MaterialTheme.typography.bodyMedium,
             fontFamily = FontFamily.Serif,
             fontWeight = FontWeight.Bold,
             color = DarkClay,
         )
         Text(
-            text = "¿Cuántos años tienes?",
+            text = stringResource(Res.string.numbers_age_question_spanish),
             style = MaterialTheme.typography.bodySmall,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
             fontStyle = FontStyle.Italic,
         )
         Spacer(Modifier.height(4.dp))
         Text(
-            text = "\"Pac ssop fûr æn\"  →  Veinte años",
+            text = stringResource(Res.string.numbers_age_example),
             style = MaterialTheme.typography.bodyMedium,
             fontFamily = FontFamily.Serif,
             color = DarkClay,
         )
         Text(
-            text = "* Usa 'ssop' porque los años se cuentan como frutos o ciclos.",
+            text = stringResource(Res.string.numbers_age_note),
             style = MaterialTheme.typography.bodySmall,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
             fontStyle = FontStyle.Italic,
@@ -333,7 +347,7 @@ private fun PracticalExampleCard() {
         verticalArrangement = Arrangement.spacedBy(12.dp),
     ) {
         Text(
-            text = "Ejemplo práctico: 12 hombres",
+            text = stringResource(Res.string.numbers_practical_title),
             style = MaterialTheme.typography.titleMedium,
             fontWeight = FontWeight.SemiBold,
             color = DarkClay,
@@ -354,7 +368,7 @@ private fun PracticalExampleCard() {
             ExampleBlock("ñofæn", "Sustantivo\n(Hombre)", null)
         }
         Text(
-            text = "→ \"Napong allo atput ñofæn\"  —  \"Diez personas y dos hombres\"",
+            text = stringResource(Res.string.numbers_practical_result),
             style = MaterialTheme.typography.bodyMedium,
             fontFamily = FontFamily.Serif,
             fontWeight = FontWeight.Bold,
@@ -433,7 +447,7 @@ private fun NumberReferenceList(
     ) {
         // Header fijo (no scrollea)
         Text(
-            text = "Referencia Numérica",
+            text = stringResource(Res.string.numbers_reference_title),
             style = MaterialTheme.typography.titleMedium,
             fontWeight = FontWeight.SemiBold,
             color = DarkClay,

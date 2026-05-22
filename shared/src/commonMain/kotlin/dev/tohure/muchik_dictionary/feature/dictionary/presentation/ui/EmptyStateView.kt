@@ -13,6 +13,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import dev.tohure.muchik_dictionary.core.design.LocalEmojiFontFamily
+import dictionarymuchik.shared.generated.resources.Res
+import dictionarymuchik.shared.generated.resources.dict_empty_empty
+import dictionarymuchik.shared.generated.resources.dict_empty_hint
+import dictionarymuchik.shared.generated.resources.dict_empty_no_results
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun EmptyStateView(query: String, modifier: Modifier = Modifier) {
@@ -26,14 +31,14 @@ fun EmptyStateView(query: String, modifier: Modifier = Modifier) {
     ) {
         Text(text = "🏺", fontSize = 64.sp, fontFamily = emojiFont)
         Text(
-            text = if (query.isNotBlank()) "Sin resultados para \"$query\""
-                   else "El diccionario está vacío",
+            text = if (query.isNotBlank()) stringResource(Res.string.dict_empty_no_results, query)
+                   else stringResource(Res.string.dict_empty_empty),
             style = MaterialTheme.typography.titleMedium,
             textAlign = TextAlign.Center,
             modifier = Modifier.padding(top = 16.dp),
         )
         Text(
-            text = "Intenta con otra búsqueda o categoría",
+            text = stringResource(Res.string.dict_empty_hint),
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
             textAlign = TextAlign.Center,

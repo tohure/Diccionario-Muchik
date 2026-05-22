@@ -16,6 +16,11 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import dev.tohure.muchik_dictionary.core.design.Clay
 import dev.tohure.muchik_dictionary.core.design.Sand
+import dictionarymuchik.shared.generated.resources.Res
+import dictionarymuchik.shared.generated.resources.grammar_verb_table_example
+import dictionarymuchik.shared.generated.resources.grammar_verb_table_mark
+import dictionarymuchik.shared.generated.resources.grammar_verb_table_pronoun
+import org.jetbrains.compose.resources.stringResource
 
 private data class ConjugationRow(
     val pronoun: String,
@@ -48,21 +53,21 @@ fun VerbConjugationTable(modifier: Modifier = Modifier) {
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Text(
-                text = "Pronombre",
+                text = stringResource(Res.string.grammar_verb_table_pronoun),
                 style = MaterialTheme.typography.labelSmall,
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.weight(1f),
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
             Text(
-                text = "Marca",
+                text = stringResource(Res.string.grammar_verb_table_mark),
                 style = MaterialTheme.typography.labelSmall,
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.weight(1f),
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
             Text(
-                text = "Ejemplo",
+                text = stringResource(Res.string.grammar_verb_table_example),
                 style = MaterialTheme.typography.labelSmall,
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.weight(1.5f),

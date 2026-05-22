@@ -38,6 +38,41 @@ import dev.tohure.muchik_dictionary.core.design.DarkClay
 import dev.tohure.muchik_dictionary.core.design.Gold
 import dev.tohure.muchik_dictionary.core.design.Ocean
 import dev.tohure.muchik_dictionary.core.design.Sand
+import dictionarymuchik.shared.generated.resources.Res
+import dictionarymuchik.shared.generated.resources.credit_bruning_author
+import dictionarymuchik.shared.generated.resources.credit_bruning_desc
+import dictionarymuchik.shared.generated.resources.credit_cerron_author
+import dictionarymuchik.shared.generated.resources.credit_cerron_desc
+import dictionarymuchik.shared.generated.resources.credit_elim_author
+import dictionarymuchik.shared.generated.resources.credit_elim_desc
+import dictionarymuchik.shared.generated.resources.credit_eloranta_author
+import dictionarymuchik.shared.generated.resources.credit_eloranta_desc
+import dictionarymuchik.shared.generated.resources.credit_fernando_author
+import dictionarymuchik.shared.generated.resources.credit_fernando_desc
+import dictionarymuchik.shared.generated.resources.credit_middendorf_author
+import dictionarymuchik.shared.generated.resources.credit_middendorf_desc
+import dictionarymuchik.shared.generated.resources.credit_montjoy_author
+import dictionarymuchik.shared.generated.resources.credit_montjoy_desc
+import dictionarymuchik.shared.generated.resources.credit_unt_author
+import dictionarymuchik.shared.generated.resources.credit_unt_desc
+import dictionarymuchik.shared.generated.resources.credit_uss_author
+import dictionarymuchik.shared.generated.resources.credit_uss_desc
+import dictionarymuchik.shared.generated.resources.credit_villarreal_author
+import dictionarymuchik.shared.generated.resources.credit_villarreal_desc
+import dictionarymuchik.shared.generated.resources.credits_community_cities
+import dictionarymuchik.shared.generated.resources.credits_community_closing_highlight
+import dictionarymuchik.shared.generated.resources.credits_community_families
+import dictionarymuchik.shared.generated.resources.credits_community_inikuk
+import dictionarymuchik.shared.generated.resources.credits_community_jem
+import dictionarymuchik.shared.generated.resources.credits_community_neomochica
+import dictionarymuchik.shared.generated.resources.credits_community_simon
+import dictionarymuchik.shared.generated.resources.credits_community_title
+import dictionarymuchik.shared.generated.resources.credits_community_tok
+import dictionarymuchik.shared.generated.resources.credits_historical_title
+import dictionarymuchik.shared.generated.resources.credits_intro
+import dictionarymuchik.shared.generated.resources.credits_modern_title
+import dictionarymuchik.shared.generated.resources.credits_title
+import org.jetbrains.compose.resources.stringResource
 
 private enum class SourceStyle { NORMAL, HIGHLIGHT_BLUE, HIGHLIGHT_GREEN }
 
@@ -47,56 +82,22 @@ private data class SourceEntry(
     val style: SourceStyle = SourceStyle.NORMAL,
 )
 
-private val historicalSources = listOf(
-    SourceEntry(
-        "Fernando de la Carrera Daza (1644):",
-        " Su \"Arte de la lengua yunga...\" es la piedra angular y la gramática madre del idioma.",
-    ),
-    SourceEntry(
-        "Santiago C. Montjoy (1865):",
-        " Cónsul estadounidense cuya valiosa lista de palabras de Eten permaneció oculta un siglo.",
-    ),
-    SourceEntry(
-        "Ernst W. Middendorf (1892):",
-        " Primer gran investigador de la lingüística costeña.",
-    ),
-    SourceEntry(
-        "Hans Heinrich Brüning (1924):",
-        " Etno-lingüista que convivió con los últimos hablantes de Eten.",
-    ),
-    SourceEntry(
-        "Federico Villarreal (1921):",
-        " Recopiló vocabularios cruciales de informantes etenanos como don Amadeo Vilches.",
-    ),
+@Composable
+private fun historicalSources() = listOf(
+    SourceEntry(stringResource(Res.string.credit_fernando_author), stringResource(Res.string.credit_fernando_desc)),
+    SourceEntry(stringResource(Res.string.credit_montjoy_author), stringResource(Res.string.credit_montjoy_desc)),
+    SourceEntry(stringResource(Res.string.credit_middendorf_author), stringResource(Res.string.credit_middendorf_desc)),
+    SourceEntry(stringResource(Res.string.credit_bruning_author), stringResource(Res.string.credit_bruning_desc)),
+    SourceEntry(stringResource(Res.string.credit_villarreal_author), stringResource(Res.string.credit_villarreal_desc)),
 )
 
-private val modernSources = listOf(
-    SourceEntry(
-        "Rodolfo Cerrón-Palomino y José A. Salas García:",
-        " Máximas autoridades en la reconstrucción fonológica y diccionarios modernos.",
-    ),
-    SourceEntry(
-        "Rita Eloranta (2025):",
-        " Sus manuales han corregido errores históricos de sufijos y clarificado el sistema inalienable.",
-    ),
-    SourceEntry(
-        "Docentes USS (2012-2014):",
-        " Juan Carlos Chero Zurita, Medali Peralta Vallejos y el arqueólogo Luis Enrique Chero Zurita. " +
-            "Descifradores del brillante sistema matemático Moche (Tük muchik).",
-    ),
-    SourceEntry(
-        "Universidad Nacional de Trujillo (UNT):",
-        " Un profundo reconocimiento a los estudiantes de la Promoción XXVIII de Lengua y Literatura, " +
-            "y a su docente Maribel Pizarro Mostacero, por su labor de difusión y revalorización en redes sociales.",
-        style = SourceStyle.HIGHLIGHT_BLUE,
-    ),
-    SourceEntry(
-        "Instituto Pedagógico Internacional Elim:",
-        " Agradecimiento por los valiosos diccionarios etnolingüísticos recopilados por las investigadoras " +
-            "Luz Saraí Ramos Carlos, Rosa Pérez Samillán, Cesia Román Pasapera y Estrella Castillo Rodríguez, " +
-            "asegurando el futuro del idioma en las aulas.",
-        style = SourceStyle.HIGHLIGHT_GREEN,
-    ),
+@Composable
+private fun modernSources() = listOf(
+    SourceEntry(stringResource(Res.string.credit_cerron_author), stringResource(Res.string.credit_cerron_desc)),
+    SourceEntry(stringResource(Res.string.credit_eloranta_author), stringResource(Res.string.credit_eloranta_desc)),
+    SourceEntry(stringResource(Res.string.credit_uss_author), stringResource(Res.string.credit_uss_desc)),
+    SourceEntry(stringResource(Res.string.credit_unt_author), stringResource(Res.string.credit_unt_desc), style = SourceStyle.HIGHLIGHT_BLUE),
+    SourceEntry(stringResource(Res.string.credit_elim_author), stringResource(Res.string.credit_elim_desc), style = SourceStyle.HIGHLIGHT_GREEN),
 )
 
 @Composable
@@ -116,7 +117,7 @@ fun CreditsScreen() {
                     horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
                     Text(
-                        text = "Fuentes y Agradecimientos",
+                        text = stringResource(Res.string.credits_title),
                         style = MaterialTheme.typography.headlineMedium,
                         color = DarkClay,
                         fontWeight = FontWeight.Bold,
@@ -124,9 +125,7 @@ fun CreditsScreen() {
                     )
                     Spacer(Modifier.height(8.dp))
                     Text(
-                        text = "Este diccionario es el resultado monumental del esfuerzo de siglos de " +
-                            "curas, lingüistas, y, sobre todo, la inquebrantable memoria de nuestros " +
-                            "pueblos y la nueva ola de estudiantes universitarios.",
+                        text = stringResource(Res.string.credits_intro),
                         style = MaterialTheme.typography.bodyLarge,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                         textAlign = TextAlign.Center,
@@ -185,14 +184,14 @@ private fun HistoricalCard(modifier: Modifier = Modifier) {
             )
             Column(modifier = Modifier.padding(top = 4.dp).padding(20.dp)) {
                 Text(
-                    text = "✒️  Archivos Históricos y Coloniales",
+                    text = stringResource(Res.string.credits_historical_title),
                     style = MaterialTheme.typography.titleMedium,
                     color = DarkClay,
                     fontWeight = FontWeight.Bold,
                     modifier = Modifier.padding(bottom = 16.dp),
                 )
                 Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
-                    historicalSources.forEach { source ->
+                    historicalSources().forEach { source ->
                         SourceItem(
                             source = source,
                             normalBorderColor = Clay.copy(alpha = 0.35f),
@@ -229,14 +228,14 @@ private fun ModernCard(modifier: Modifier = Modifier) {
             )
             Column(modifier = Modifier.padding(top = 4.dp).padding(20.dp)) {
                 Text(
-                    text = "📚  Investigación y Revitalización Actual",
+                    text = stringResource(Res.string.credits_modern_title),
                     style = MaterialTheme.typography.titleMedium,
                     color = Ocean,
                     fontWeight = FontWeight.Bold,
                     modifier = Modifier.padding(bottom = 16.dp),
                 )
                 Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
-                    modernSources.forEach { source ->
+                    modernSources().forEach { source ->
                         SourceItem(
                             source = source,
                             normalBorderColor = Ocean.copy(alpha = 0.35f),
@@ -311,7 +310,7 @@ private fun CommunitySection() {
                 textAlign = TextAlign.Center,
             )
             Text(
-                text = "Mención de Honor a las Comunidades",
+                text = stringResource(Res.string.credits_community_title),
                 style = MaterialTheme.typography.headlineSmall,
                 color = DarkClay,
                 fontWeight = FontWeight.Black,
@@ -322,7 +321,7 @@ private fun CommunitySection() {
                     append("Nada de esta erudición tendría sentido sin la sangre viva que mantuvo " +
                         "latiendo estas palabras. Nuestro tributo imperecedero a las herederas de ")
                     withStyle(SpanStyle(fontWeight = FontWeight.Bold, color = Clay)) {
-                        append("Ciudad Eten, Monsefú, Mórrope y Lambayeque")
+                        append(stringResource(Res.string.credits_community_cities))
                     }
                     append(".")
                 },
@@ -334,15 +333,21 @@ private fun CommunitySection() {
                 text = buildAnnotatedString {
                     append("A las honorables familias ")
                     withStyle(SpanStyle(fontWeight = FontWeight.Bold)) {
-                        append("Quesquén, Nuntón, Isique, Ayasta, Chafloque y Llonto")
+                        append(stringResource(Res.string.credits_community_families))
                     }
                     append("; y en memoria de don ")
-                    withStyle(SpanStyle(fontStyle = FontStyle.Italic)) { append("Simón Quesquén") }
+                    withStyle(SpanStyle(fontStyle = FontStyle.Italic)) {
+                        append(stringResource(Res.string.credits_community_simon))
+                    }
                     append(", cuyas grabaciones nos devolvieron la voz de los ancestros. Ellos " +
                         "resguardaron el idioma en el calor de los fogones (")
-                    withStyle(SpanStyle(fontStyle = FontStyle.Italic)) { append("Tok") }
+                    withStyle(SpanStyle(fontStyle = FontStyle.Italic)) {
+                        append(stringResource(Res.string.credits_community_tok))
+                    }
                     append("), en el tejido (")
-                    withStyle(SpanStyle(fontStyle = FontStyle.Italic)) { append("Jem") }
+                    withStyle(SpanStyle(fontStyle = FontStyle.Italic)) {
+                        append(stringResource(Res.string.credits_community_jem))
+                    }
                     append(") y en sus memorias frente al paso arrollador de los siglos.")
                 },
                 style = MaterialTheme.typography.bodyMedium,
@@ -359,12 +364,16 @@ private fun CommunitySection() {
                     text = buildAnnotatedString {
                         append("Un abrazo fraterno a todos los ")
                         withStyle(SpanStyle(color = Ocean, fontWeight = FontWeight.SemiBold)) {
-                            append("alumnos, profesores y gestores culturales")
+                            append(stringResource(Res.string.credits_community_closing_highlight))
                         }
                         append(" que hoy enarbolan la identidad ")
-                        withStyle(SpanStyle(fontStyle = FontStyle.Italic)) { append("Iñikuk") }
+                        withStyle(SpanStyle(fontStyle = FontStyle.Italic)) {
+                            append(stringResource(Res.string.credits_community_inikuk))
+                        }
                         append(" y levantan el movimiento ")
-                        withStyle(SpanStyle(fontStyle = FontStyle.Italic)) { append("NeoMochica") }
+                        withStyle(SpanStyle(fontStyle = FontStyle.Italic)) {
+                            append(stringResource(Res.string.credits_community_neomochica))
+                        }
                         append(". ¡El idioma vive en ustedes!")
                     },
                     style = MaterialTheme.typography.bodyMedium,

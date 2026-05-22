@@ -11,6 +11,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import dev.tohure.muchik_dictionary.core.design.DarkClay
 import dev.tohure.muchik_dictionary.core.design.OffWhite
+import dictionarymuchik.shared.generated.resources.Res
+import dictionarymuchik.shared.generated.resources.app_title
+import dictionarymuchik.shared.generated.resources.menu_content_description
+import org.jetbrains.compose.resources.stringResource
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -23,7 +27,7 @@ fun MuchikTopBar(
         modifier = modifier,
         title = {
             Text(
-                text = "ENCICLOPEDIA MUCHIK",
+                text = stringResource(Res.string.app_title),
                 style = MaterialTheme.typography.titleLarge,
                 color = DarkClay,
                 fontWeight = FontWeight.ExtraBold,
@@ -34,7 +38,7 @@ fun MuchikTopBar(
                 IconButton(onClick = onMenuClick) {
                     Icon(
                         imageVector = MenuIcon,
-                        contentDescription = "Menu",
+                        contentDescription = stringResource(Res.string.menu_content_description),
                         tint = DarkClay
                     )
                 }

@@ -15,6 +15,7 @@ dependencies {
     implementation(projects.shared)
 
     implementation(libs.androidx.activity.compose)
+    implementation(libs.koin.android)
 
     implementation(libs.compose.uiToolingPreview)
     debugImplementation(libs.compose.uiTooling)
@@ -23,6 +24,10 @@ dependencies {
 android {
     namespace = "dev.tohure.muchik_dictionary"
     compileSdk = libs.versions.android.compileSdk.get().toInt()
+
+    sourceSets["main"].assets.srcDirs(
+        "${project(":shared").layout.buildDirectory.get()}/generated/compose/resourceGenerator/preparedResources/commonMain"
+    )
 
     defaultConfig {
         applicationId = "dev.tohure.muchik_dictionary"
@@ -44,5 +49,12 @@ android {
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_21
         targetCompatibility = JavaVersion.VERSION_21
+    }
+}
+
+// Garantiza que los recursos CMP del módulo shared se generen antes del merge de assets
+afterEvaluate {
+    listOf("mergeDebugAssets", "mergeReleaseAssets").forEach { taskName ->
+        tasks.findByName(taskName)?.dependsOn(":shared:prepareComposeResourcesTaskForCommonMain")
     }
 }

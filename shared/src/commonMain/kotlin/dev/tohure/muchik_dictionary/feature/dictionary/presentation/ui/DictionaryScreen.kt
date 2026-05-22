@@ -27,13 +27,20 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ElevatedCard
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Snackbar
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -43,6 +50,15 @@ import androidx.compose.ui.unit.dp
 import dev.tohure.muchik_dictionary.core.design.Clay
 import dev.tohure.muchik_dictionary.core.design.ClayLight
 import dev.tohure.muchik_dictionary.core.design.DarkClay
+import dictionarymuchik.shared.generated.resources.Res
+import dictionarymuchik.shared.generated.resources.dict_search_placeholder
+import dictionarymuchik.shared.generated.resources.dict_semantic_distribution
+import dictionarymuchik.shared.generated.resources.dict_terms_verified
+import dictionarymuchik.shared.generated.resources.dict_total_entries_label
+import dictionarymuchik.shared.generated.resources.dict_view_cards
+import dictionarymuchik.shared.generated.resources.dict_view_label
+import dictionarymuchik.shared.generated.resources.dict_view_list
+import org.jetbrains.compose.resources.stringResource
 import dev.tohure.muchik_dictionary.feature.dictionary.domain.model.WordCategory
 import dev.tohure.muchik_dictionary.feature.dictionary.presentation.state.DictionaryViewMode
 import dev.tohure.muchik_dictionary.feature.dictionary.presentation.viewmodel.DictionaryViewModel
@@ -51,90 +67,120 @@ import org.koin.compose.viewmodel.koinViewModel
 @Composable
 fun DictionaryScreen(viewModel: DictionaryViewModel = koinViewModel()) {
     val state by viewModel.uiState.collectAsState()
+    val snackbarHostState = remember { SnackbarHostState() }
+
+    LaunchedEffect(state.syncMessage) {
+        val msg = state.syncMessage ?: return@LaunchedEffect
+        snackbarHostState.showSnackbar(msg)
+        viewModel.onSyncMessageShown()
+    }
 
     val showDashboard = state.query.isBlank() &&
         state.selectedCategory == WordCategory.ALL &&
         state.categoryCounts.isNotEmpty()
 
-    if (state.isLoading) {
-        Box(
-            modifier = Modifier.fillMaxSize(),
-            contentAlignment = Alignment.Center,
-        ) {
-            CircularProgressIndicator(color = Clay)
-        }
-        return
-    }
+    Box(modifier = Modifier.fillMaxSize()) {
+        if (state.isLoading) {
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center,
+            ) {
+                CircularProgressIndicator(color = Clay)
+            }
+        } else {
+            val contentPadding = PaddingValues(horizontal = 16.dp, vertical = 16.dp)
 
-    val contentPadding = PaddingValues(horizontal = 16.dp, vertical = 16.dp)
-
-    if (state.viewMode == DictionaryViewMode.LIST) {
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(MaterialTheme.colorScheme.background),
-            contentPadding = contentPadding,
-            verticalArrangement = Arrangement.spacedBy(12.dp)
-        ) {
-            if (showDashboard) {
-                item { DashboardSection(state.totalCount, state.categoryCounts) }
-            }
-            item {
-                SearchAndFilterRow(
-                    query = state.query,
-                    selectedCategory = state.selectedCategory,
-                    onQueryChange = viewModel::onQueryChange,
-                    onCategorySelected = viewModel::onCategorySelected,
-                )
-            }
-            item {
-                ViewModeRow(viewMode = state.viewMode, onToggle = viewModel::onViewModeToggle)
-            }
-            if (state.entries.isEmpty()) {
-                item { EmptyStateView(query = state.query) }
-            } else {
-                stickyHeader { WordListHeader() }
-                items(state.entries, key = { it.id }) { entry ->
-                    WordListItem(entry = entry)
-                }
-            }
-        }
-    } else {
-        LazyVerticalGrid(
-            columns = GridCells.Adaptive(minSize = 280.dp),
-            modifier = Modifier
-                .fillMaxSize()
-                .background(MaterialTheme.colorScheme.background),
-            contentPadding = contentPadding,
-            verticalArrangement = Arrangement.spacedBy(12.dp),
-            horizontalArrangement = Arrangement.spacedBy(12.dp),
-        ) {
-            if (showDashboard) {
-                item(span = { GridItemSpan(maxLineSpan) }) {
-                    DashboardSection(state.totalCount, state.categoryCounts)
-                }
-            }
-            item(span = { GridItemSpan(maxLineSpan) }) {
-                SearchAndFilterRow(
-                    query = state.query,
-                    selectedCategory = state.selectedCategory,
-                    onQueryChange = viewModel::onQueryChange,
-                    onCategorySelected = viewModel::onCategorySelected,
-                )
-            }
-            item(span = { GridItemSpan(maxLineSpan) }) {
-                ViewModeRow(viewMode = state.viewMode, onToggle = viewModel::onViewModeToggle)
-            }
-            if (state.entries.isEmpty()) {
-                item(span = { GridItemSpan(maxLineSpan) }) {
-                    EmptyStateView(query = state.query)
+            if (state.viewMode == DictionaryViewMode.LIST) {
+                LazyColumn(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(MaterialTheme.colorScheme.background),
+                    contentPadding = contentPadding,
+                    verticalArrangement = Arrangement.spacedBy(12.dp)
+                ) {
+                    if (showDashboard) {
+                        item { DashboardSection(state.totalCount, state.categoryCounts) }
+                    }
+                    item {
+                        SearchAndFilterRow(
+                            query = state.query,
+                            selectedCategory = state.selectedCategory,
+                            onQueryChange = viewModel::onQueryChange,
+                            onCategorySelected = viewModel::onCategorySelected,
+                        )
+                    }
+                    item {
+                        ViewModeRow(
+                            viewMode = state.viewMode,
+                            isSyncing = state.isSyncing,
+                            onToggle = viewModel::onViewModeToggle,
+                            onSyncTrigger = viewModel::triggerDeltaSync,
+                        )
+                    }
+                    if (state.entries.isEmpty()) {
+                        item { EmptyStateView(query = state.query) }
+                    } else {
+                        stickyHeader { WordListHeader() }
+                        items(state.entries, key = { it.id }) { entry ->
+                            WordListItem(entry = entry)
+                        }
+                    }
                 }
             } else {
-                items(state.entries, key = { it.id }) { entry ->
-                    WordCard(entry = entry)
+                LazyVerticalGrid(
+                    columns = GridCells.Adaptive(minSize = 280.dp),
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(MaterialTheme.colorScheme.background),
+                    contentPadding = contentPadding,
+                    verticalArrangement = Arrangement.spacedBy(12.dp),
+                    horizontalArrangement = Arrangement.spacedBy(12.dp),
+                ) {
+                    if (showDashboard) {
+                        item(span = { GridItemSpan(maxLineSpan) }) {
+                            DashboardSection(state.totalCount, state.categoryCounts)
+                        }
+                    }
+                    item(span = { GridItemSpan(maxLineSpan) }) {
+                        SearchAndFilterRow(
+                            query = state.query,
+                            selectedCategory = state.selectedCategory,
+                            onQueryChange = viewModel::onQueryChange,
+                            onCategorySelected = viewModel::onCategorySelected,
+                        )
+                    }
+                    item(span = { GridItemSpan(maxLineSpan) }) {
+                        ViewModeRow(
+                            viewMode = state.viewMode,
+                            isSyncing = state.isSyncing,
+                            onToggle = viewModel::onViewModeToggle,
+                            onSyncTrigger = viewModel::triggerDeltaSync,
+                        )
+                    }
+                    if (state.entries.isEmpty()) {
+                        item(span = { GridItemSpan(maxLineSpan) }) {
+                            EmptyStateView(query = state.query)
+                        }
+                    } else {
+                        items(state.entries, key = { it.id }) { entry ->
+                            WordCard(entry = entry)
+                        }
+                    }
                 }
             }
         }
+
+        SnackbarHost(
+            hostState = snackbarHostState,
+            modifier = Modifier.align(Alignment.BottomCenter),
+            snackbar = { data ->
+                Snackbar(
+                    snackbarData = data,
+                    containerColor = MaterialTheme.colorScheme.inverseSurface,
+                    contentColor = MaterialTheme.colorScheme.inverseOnSurface,
+                )
+            }
+        )
     }
 }
 
@@ -191,7 +237,7 @@ private fun SearchAndFilterRow(
                 modifier = Modifier.fillMaxWidth(),
                 placeholder = {
                     Text(
-                        text = "Buscar...",
+                        text = stringResource(Res.string.dict_search_placeholder),
                         style = MaterialTheme.typography.bodyMedium,
                         maxLines = 1,
                     )
@@ -217,20 +263,43 @@ private fun SearchAndFilterRow(
 }
 
 @Composable
-private fun ViewModeRow(viewMode: DictionaryViewMode, onToggle: () -> Unit) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 4.dp),
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        Text(
-            text = "Visualización:",
-            style = MaterialTheme.typography.labelMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-        )
-        Spacer(modifier = Modifier.weight(1f))
-        ViewModeToggle(viewMode = viewMode, onToggle = onToggle)
+private fun ViewModeRow(
+    viewMode: DictionaryViewMode,
+    isSyncing: Boolean,
+    onToggle: () -> Unit,
+    onSyncTrigger: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Column(modifier = modifier.fillMaxWidth()) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 4.dp),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Text(
+                text = stringResource(Res.string.dict_view_label),
+                style = MaterialTheme.typography.labelMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+            Spacer(modifier = Modifier.weight(1f))
+            TextButton(onClick = onSyncTrigger, enabled = !isSyncing) {
+                Text(
+                    text = "↻",
+                    style = MaterialTheme.typography.titleLarge,
+                    color = if (isSyncing) MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.4f)
+                            else Clay,
+                )
+            }
+            ViewModeToggle(viewMode = viewMode, onToggle = onToggle)
+        }
+        if (isSyncing) {
+            LinearProgressIndicator(
+                modifier = Modifier.fillMaxWidth(),
+                color = Clay,
+                trackColor = ClayLight.copy(alpha = 0.3f),
+            )
+        }
     }
 }
 
@@ -249,7 +318,7 @@ private fun StatsCard(totalCount: Int, modifier: Modifier = Modifier) {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = "TOTAL ENTRADAS",
+                text = stringResource(Res.string.dict_total_entries_label),
                 style = MaterialTheme.typography.labelMedium,
                 color = MaterialTheme.colorScheme.primary,
                 fontWeight = FontWeight.ExtraBold,
@@ -264,7 +333,7 @@ private fun StatsCard(totalCount: Int, modifier: Modifier = Modifier) {
                 textAlign = TextAlign.Center
             )
             Text(
-                text = "términos verificados",
+                text = stringResource(Res.string.dict_terms_verified),
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 textAlign = TextAlign.Center
@@ -283,7 +352,7 @@ private fun DonutChartCard(categoryCounts: Map<String, Int>, modifier: Modifier 
     ) {
         Column(modifier = Modifier.padding(20.dp)) {
             Text(
-                text = "Distribución Semántica",
+                text = stringResource(Res.string.dict_semantic_distribution),
                 style = MaterialTheme.typography.titleSmall,
                 color = DarkClay,
                 fontWeight = FontWeight.SemiBold,
@@ -317,7 +386,7 @@ private fun ViewModeToggle(viewMode: DictionaryViewMode, onToggle: () -> Unit) {
                 .padding(horizontal = 16.dp, vertical = 6.dp),
         ) {
             Text(
-                text = "Tarjetas",
+                text = stringResource(Res.string.dict_view_cards),
                 style = MaterialTheme.typography.labelMedium,
                 color = if (isCards) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.onSurfaceVariant,
                 fontWeight = if (isCards) FontWeight.SemiBold else FontWeight.Normal,
@@ -334,7 +403,7 @@ private fun ViewModeToggle(viewMode: DictionaryViewMode, onToggle: () -> Unit) {
                 .padding(horizontal = 16.dp, vertical = 6.dp),
         ) {
             Text(
-                text = "Lista",
+                text = stringResource(Res.string.dict_view_list),
                 style = MaterialTheme.typography.labelMedium,
                 color = if (!isCards) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.onSurfaceVariant,
                 fontWeight = if (!isCards) FontWeight.SemiBold else FontWeight.Normal,

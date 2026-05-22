@@ -7,11 +7,14 @@ import dev.tohure.muchik_dictionary.feature.dictionary.domain.usecase.GetCategor
 import dev.tohure.muchik_dictionary.feature.dictionary.domain.usecase.SearchWordsUseCase
 import dev.tohure.muchik_dictionary.feature.dictionary.presentation.state.DictionaryUiState
 import dev.tohure.muchik_dictionary.feature.dictionary.presentation.state.DictionaryViewMode
+import dev.tohure.muchik_dictionary.feature.sync.domain.repository.SyncRepository
+import dev.tohure.muchik_dictionary.feature.sync.domain.repository.SyncResult
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.flatMapLatest
@@ -25,6 +28,7 @@ import kotlinx.coroutines.launch
 class DictionaryViewModel(
     private val searchWords: SearchWordsUseCase,
     private val getCategoryCounts: GetCategoryCountsUseCase,
+    private val syncRepository: SyncRepository,
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(DictionaryUiState())
@@ -76,5 +80,30 @@ class DictionaryViewModel(
                     else DictionaryViewMode.CARDS
             )
         }
+    }
+
+    fun triggerDeltaSync() {
+        if (_uiState.value.isSyncing) return
+        viewModelScope.launch {
+            syncRepository.deltaSyncFlow()
+                .catch { _uiState.update { it.copy(isSyncing = false, syncMessage = "Error de red") } }
+                .collect { result ->
+                    when (result) {
+                        SyncResult.Syncing -> _uiState.update { it.copy(isSyncing = true) }
+                        is SyncResult.Done -> {
+                            val msg = if (result.newEntries > 0) "${result.newEntries} términos actualizados"
+                                      else "Ya estás al día"
+                            _uiState.update { it.copy(isSyncing = false, syncMessage = msg) }
+                            loadCategoryCounts()
+                        }
+                        is SyncResult.Error -> _uiState.update { it.copy(isSyncing = false, syncMessage = "Error de red") }
+                        else -> Unit
+                    }
+                }
+        }
+    }
+
+    fun onSyncMessageShown() {
+        _uiState.update { it.copy(syncMessage = null) }
     }
 }

@@ -36,6 +36,13 @@ import dev.tohure.muchik_dictionary.core.design.Clay
 import dev.tohure.muchik_dictionary.core.design.DarkClay
 import dev.tohure.muchik_dictionary.core.design.LocalEmojiFontFamily
 import dev.tohure.muchik_dictionary.core.design.Ocean
+import dictionarymuchik.shared.generated.resources.Res
+import dictionarymuchik.shared.generated.resources.quiz_correct
+import dictionarymuchik.shared.generated.resources.quiz_incorrect_prefix
+import dictionarymuchik.shared.generated.resources.quiz_next_button
+import dictionarymuchik.shared.generated.resources.quiz_score_label
+import dictionarymuchik.shared.generated.resources.quiz_term_label
+import org.jetbrains.compose.resources.stringResource
 import dev.tohure.muchik_dictionary.feature.quiz.domain.model.QuizQuestion
 import dev.tohure.muchik_dictionary.feature.quiz.presentation.state.QuizUiState
 import dev.tohure.muchik_dictionary.feature.quiz.presentation.viewmodel.QuizViewModel
@@ -147,7 +154,7 @@ private fun QuizHeader(
                     .padding(horizontal = 12.dp, vertical = 4.dp),
             ) {
                 Text(
-                    text = "TÉRMINO MUCHIK",
+                    text = stringResource(Res.string.quiz_term_label),
                     style = MaterialTheme.typography.labelSmall,
                     color = Color.White.copy(alpha = 0.9f),
                     fontWeight = FontWeight.Bold,
@@ -193,7 +200,7 @@ private fun QuizFeedback(
     ) {
         if (isCorrect) {
             Text(
-                text = "¡Correcto! 🎉",
+                text = stringResource(Res.string.quiz_correct),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.Bold,
                 color = textColor,
@@ -201,7 +208,7 @@ private fun QuizFeedback(
             )
         } else {
             Text(
-                text = "Incorrecto. La respuesta era:",
+                text = stringResource(Res.string.quiz_incorrect_prefix),
                 style = MaterialTheme.typography.bodyMedium,
                 color = textColor,
                 textAlign = TextAlign.Center,
@@ -237,7 +244,7 @@ private fun QuizFooter(
             horizontalArrangement = Arrangement.spacedBy(8.dp),
         ) {
             Text(
-                text = "Puntaje:",
+                text = stringResource(Res.string.quiz_score_label),
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
@@ -262,7 +269,7 @@ private fun QuizFooter(
             shape = RoundedCornerShape(8.dp),
         ) {
             Text(
-                text = "Siguiente →",
+                text = stringResource(Res.string.quiz_next_button),
                 fontWeight = FontWeight.SemiBold,
                 color = Color.White,
             )

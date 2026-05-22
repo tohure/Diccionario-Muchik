@@ -28,6 +28,7 @@ import dev.tohure.muchik_dictionary.feature.grammar.presentation.ui.GrammarScree
 import dev.tohure.muchik_dictionary.feature.meaning.presentation.ui.MeaningScreen
 import dev.tohure.muchik_dictionary.feature.numbers.presentation.ui.NumbersScreen
 import dev.tohure.muchik_dictionary.feature.quiz.presentation.ui.QuizScreen
+import dev.tohure.muchik_dictionary.feature.sync.presentation.ui.SyncScreen
 import kotlinx.coroutines.launch
 
 @Composable
@@ -69,9 +70,18 @@ fun App() {
                     ) { paddingValues ->
                         NavHost(
                             navController = navController,
-                            startDestination = Screen.Dictionary.route,
+                            startDestination = Screen.Sync.route,
                             modifier = Modifier.padding(paddingValues),
                         ) {
+                            composable(Screen.Sync.route) {
+                                SyncScreen(
+                                    onSyncComplete = {
+                                        navController.navigate(Screen.Dictionary.route) {
+                                            popUpTo(Screen.Sync.route) { inclusive = true }
+                                        }
+                                    }
+                                )
+                            }
                             composable(Screen.Dictionary.route) { DictionaryScreen() }
                             composable(Screen.Meaning.route) { MeaningScreen() }
                             composable(Screen.Grammar.route) { GrammarScreen() }
