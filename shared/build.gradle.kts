@@ -9,7 +9,7 @@ plugins {
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.ksp)
-    alias(libs.plugins.androidx.room)
+    alias(libs.plugins.androidx.room3)
     alias(libs.plugins.kotlinSerialization)
     alias(libs.plugins.buildkonfig)
 }
@@ -65,8 +65,8 @@ kotlin {
 
     sourceSets {
         // Source set intermedio para android + ios + jvm.
-        // Room, Ktor y DataStore no tienen implementaciones JS/WASM, por lo que no pueden ir
-        // en commonMain. jsMain y wasmJsMain no dependen de este conjunto: usan datos estáticos.
+        // Ktor y DataStore aún no tienen implementaciones JS/WASM; Room 3 ya está en commonMain.
+        // jsMain y wasmJsMain no dependen de este conjunto.
         val mobileDesktopMain by creating {
             dependsOn(commonMain.get())
         }
@@ -85,9 +85,9 @@ kotlin {
             implementation(libs.koin.compose.viewmodel)
             implementation(libs.navigation.compose)
             implementation(libs.kotlinx.serialization.json)
+            implementation(libs.androidx.room3.runtime)
         }
         mobileDesktopMain.dependencies {
-            implementation(libs.androidx.room.runtime)
             implementation(libs.androidx.sqlite.bundled)
             implementation(libs.ktor.client.core)
             implementation(libs.ktor.client.content.negotiation)
@@ -98,7 +98,6 @@ kotlin {
         androidMain {
             dependsOn(mobileDesktopMain)
             dependencies {
-                implementation(libs.androidx.room.sqlite.wrapper)
                 implementation(libs.koin.android)
                 implementation(libs.ktor.client.okhttp)
             }
@@ -129,7 +128,7 @@ kotlin {
     }
 }
 
-room {
+room3 {
     schemaDirectory("$projectDir/schemas")
 }
 
@@ -146,10 +145,11 @@ dependencies {
     // El plugin experimental no expone variantes de build en la forma estándar de AGP.
     androidRuntimeClasspath(libs.compose.uiTooling)
 
-    // Room KSP solo en los targets de mobileDesktopMain; js y wasmJs usan datos estáticos.
-    add("kspAndroid", libs.androidx.room.compiler)
-    add("kspIosArm64", libs.androidx.room.compiler)
-    add("kspIosSimulatorArm64", libs.androidx.room.compiler)
-    add("kspJvm", libs.androidx.room.compiler)
+    // Room 3 KSP solo en targets nativos; js/wasmJs usan datos estáticos (worker WASM pendiente).
+    // El expect object AppDatabaseConstructor usa @Suppress("NO_ACTUAL_FOR_EXPECT") para web.
+    add("kspAndroid", libs.androidx.room3.compiler)
+    add("kspIosArm64", libs.androidx.room3.compiler)
+    add("kspIosSimulatorArm64", libs.androidx.room3.compiler)
+    add("kspJvm", libs.androidx.room3.compiler)
 }
 

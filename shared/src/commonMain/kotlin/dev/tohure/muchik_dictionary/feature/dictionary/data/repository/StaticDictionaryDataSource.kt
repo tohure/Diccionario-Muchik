@@ -1,3 +1,6 @@
+// Fuente de datos permanente del corpus Muchik. No eliminar.
+// Rol dual: (1) repositorio definitivo para web (js/wasmJs, donde Room no está disponible),
+// (2) datos de referencia para todos los tests unitarios.
 package dev.tohure.muchik_dictionary.feature.dictionary.data.repository
 
 import dev.tohure.muchik_dictionary.feature.dictionary.domain.model.WordEntry

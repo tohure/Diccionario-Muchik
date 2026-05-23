@@ -1,8 +1,8 @@
 package dev.tohure.muchik_dictionary.feature.dictionary.data.repository
 
 import dev.tohure.muchik_dictionary.core.database.DictionaryDao
-import dev.tohure.muchik_dictionary.core.database.toDomain
 import dev.tohure.muchik_dictionary.core.database.toEntity
+import dev.tohure.muchik_dictionary.core.database.toDomain
 import dev.tohure.muchik_dictionary.feature.dictionary.domain.model.WordEntry
 import dev.tohure.muchik_dictionary.feature.dictionary.domain.repository.DictionaryRepository
 import kotlinx.coroutines.flow.Flow
@@ -27,8 +27,8 @@ class RoomDictionaryRepositoryImpl(private val dao: DictionaryDao) : DictionaryR
 
     override fun search(query: String): Flow<List<WordEntry>> {
         if (query.isBlank()) return observeAll()
-        val ftsQuery = query.trim().split(" ")
-            .joinToString(" ") { "$it*" }
+        // FTS5 prefix: "term*" por cada token para búsqueda incremental
+        val ftsQuery = query.trim().split(" ").joinToString(" ") { "$it*" }
         return dao.searchFts(ftsQuery).map { list -> list.map { it.toDomain() } }
     }
 

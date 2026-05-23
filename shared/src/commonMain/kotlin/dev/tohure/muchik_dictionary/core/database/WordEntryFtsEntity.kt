@@ -1,9 +1,9 @@
 package dev.tohure.muchik_dictionary.core.database
 
-import androidx.room.Entity
-import androidx.room.Fts4
+import androidx.room3.Entity
+import androidx.room3.Fts5
 
-@Fts4(contentEntity = WordEntryEntity::class)
+@Fts5(contentEntity = WordEntryEntity::class)
 @Entity(tableName = "word_entry_fts")
 data class WordEntryFtsEntity(
     val muchikTerm: String,

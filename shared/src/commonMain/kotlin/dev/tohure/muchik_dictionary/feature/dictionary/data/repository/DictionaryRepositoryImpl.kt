@@ -5,6 +5,8 @@ import dev.tohure.muchik_dictionary.feature.dictionary.domain.repository.Diction
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 
+// Implementación en memoria sobre STATIC_ENTRIES. Usada por web (js/wasmJs) y tests.
+// Android, iOS y Desktop usan RoomDictionaryRepositoryImpl vía platformModule.
 class DictionaryRepositoryImpl : DictionaryRepository {
 
     private val allEntries: List<WordEntry> = STATIC_ENTRIES

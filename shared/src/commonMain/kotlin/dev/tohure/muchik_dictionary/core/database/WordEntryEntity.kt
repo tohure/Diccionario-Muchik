@@ -1,7 +1,7 @@
 package dev.tohure.muchik_dictionary.core.database
 
-import androidx.room.Entity
-import androidx.room.PrimaryKey
+import androidx.room3.Entity
+import androidx.room3.PrimaryKey
 import dev.tohure.muchik_dictionary.feature.dictionary.domain.model.WordEntry
 
 @Entity(tableName = "word_entry")

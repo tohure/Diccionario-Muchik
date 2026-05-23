@@ -6,7 +6,11 @@ import dev.tohure.muchik_dictionary.feature.dictionary.domain.usecase.GetCategor
 import dev.tohure.muchik_dictionary.feature.dictionary.domain.usecase.SearchWordsUseCase
 import dev.tohure.muchik_dictionary.feature.dictionary.presentation.state.DictionaryViewMode
 import dev.tohure.muchik_dictionary.feature.dictionary.presentation.viewmodel.DictionaryViewModel
+import dev.tohure.muchik_dictionary.feature.sync.domain.repository.SyncRepository
+import dev.tohure.muchik_dictionary.feature.sync.domain.repository.SyncResult
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.advanceUntilIdle
@@ -19,6 +23,11 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
+
+private class FakeSyncRepository : SyncRepository {
+    override fun syncFlow(): Flow<SyncResult> = flowOf(SyncResult.HasLocalData)
+    override fun deltaSyncFlow(): Flow<SyncResult> = flowOf(SyncResult.Done(0))
+}
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class DictionaryViewModelTest {
@@ -33,6 +42,7 @@ class DictionaryViewModelTest {
         viewModel = DictionaryViewModel(
             searchWords = SearchWordsUseCase(repo),
             getCategoryCounts = GetCategoryCountsUseCase(repo),
+            syncRepository = FakeSyncRepository(),
         )
     }
 
