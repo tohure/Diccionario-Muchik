@@ -43,8 +43,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.focus.FocusRequester
-import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
@@ -76,7 +74,6 @@ import org.koin.compose.viewmodel.koinViewModel
 fun DictionaryScreen(viewModel: DictionaryViewModel = koinViewModel()) {
     val state by viewModel.uiState.collectAsState()
     val snackbarHostState = remember { SnackbarHostState() }
-    val searchFocusRequester = remember { FocusRequester() }
 
     LaunchedEffect(state.syncMessage) {
         val msg = state.syncMessage ?: return@LaunchedEffect
@@ -88,14 +85,6 @@ fun DictionaryScreen(viewModel: DictionaryViewModel = koinViewModel()) {
         state.query.isBlank() &&
             state.selectedCategory == WordCategory.ALL &&
             state.categoryCounts.isNotEmpty()
-
-    // Cuando el dashboard desaparece al escribir el primer carácter, la LazyColumn
-    // cambia su estructura y le quita el foco al TextField. Lo restauramos aquí.
-    LaunchedEffect(showDashboard) {
-        if (!showDashboard && state.query.isNotBlank()) {
-            searchFocusRequester.requestFocus()
-        }
-    }
 
     val loadingDesc = stringResource(Res.string.a11y_loading_dictionary)
     Box(modifier = Modifier.fillMaxSize()) {
@@ -122,18 +111,17 @@ fun DictionaryScreen(viewModel: DictionaryViewModel = koinViewModel()) {
                     verticalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
                     if (showDashboard) {
-                        item { DashboardSection(state.totalCount, state.categoryCounts) }
+                        item(key = "dashboard") { DashboardSection(state.totalCount, state.categoryCounts) }
                     }
-                    item {
+                    item(key = "search") {
                         SearchAndFilterRow(
                             query = state.query,
                             selectedCategory = state.selectedCategory,
                             onQueryChange = viewModel::onQueryChange,
                             onCategorySelected = viewModel::onCategorySelected,
-                            focusRequester = searchFocusRequester,
                         )
                     }
-                    item {
+                    item(key = "viewmode") {
                         ViewModeRow(
                             viewMode = state.viewMode,
                             isSyncing = state.isSyncing,
@@ -142,9 +130,9 @@ fun DictionaryScreen(viewModel: DictionaryViewModel = koinViewModel()) {
                         )
                     }
                     if (state.entries.isEmpty()) {
-                        item { EmptyStateView(query = state.query) }
+                        item(key = "empty") { EmptyStateView(query = state.query) }
                     } else {
-                        stickyHeader { WordListHeader() }
+                        stickyHeader(key = "header") { WordListHeader() }
                         items(state.entries, key = { it.id }) { entry ->
                             WordListItem(entry = entry)
                         }
@@ -162,20 +150,19 @@ fun DictionaryScreen(viewModel: DictionaryViewModel = koinViewModel()) {
                     horizontalArrangement = Arrangement.spacedBy(12.dp),
                 ) {
                     if (showDashboard) {
-                        item(span = { GridItemSpan(maxLineSpan) }) {
+                        item(key = "dashboard", span = { GridItemSpan(maxLineSpan) }) {
                             DashboardSection(state.totalCount, state.categoryCounts)
                         }
                     }
-                    item(span = { GridItemSpan(maxLineSpan) }) {
+                    item(key = "search", span = { GridItemSpan(maxLineSpan) }) {
                         SearchAndFilterRow(
                             query = state.query,
                             selectedCategory = state.selectedCategory,
                             onQueryChange = viewModel::onQueryChange,
                             onCategorySelected = viewModel::onCategorySelected,
-                            focusRequester = searchFocusRequester,
                         )
                     }
-                    item(span = { GridItemSpan(maxLineSpan) }) {
+                    item(key = "viewmode", span = { GridItemSpan(maxLineSpan) }) {
                         ViewModeRow(
                             viewMode = state.viewMode,
                             isSyncing = state.isSyncing,
@@ -184,7 +171,7 @@ fun DictionaryScreen(viewModel: DictionaryViewModel = koinViewModel()) {
                         )
                     }
                     if (state.entries.isEmpty()) {
-                        item(span = { GridItemSpan(maxLineSpan) }) {
+                        item(key = "empty", span = { GridItemSpan(maxLineSpan) }) {
                             EmptyStateView(query = state.query)
                         }
                     } else {
@@ -245,7 +232,6 @@ private fun SearchAndFilterRow(
     selectedCategory: WordCategory,
     onQueryChange: (String) -> Unit,
     onCategorySelected: (WordCategory) -> Unit,
-    focusRequester: FocusRequester,
 ) {
     Row(
         modifier =
@@ -264,7 +250,7 @@ private fun SearchAndFilterRow(
             TextField(
                 value = query,
                 onValueChange = onQueryChange,
-                modifier = Modifier.fillMaxWidth().focusRequester(focusRequester),
+                modifier = Modifier.fillMaxWidth(),
                 placeholder = {
                     Text(
                         text = stringResource(Res.string.dict_search_placeholder),
