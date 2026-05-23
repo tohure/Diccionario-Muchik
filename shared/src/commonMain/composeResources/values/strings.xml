@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- App / Navegación -->
+    <string name="app_title">ENCICLOPEDIA MUCHIK</string>
+    <string name="app_subtitle">Léxico, historia y revitalización de la lengua yunga</string>
+    <string name="menu_content_description">Menú</string>
+
+    <!-- Diccionario -->
+    <string name="dict_search_placeholder">Buscar en Muchik o Español…</string>
+    <string name="dict_total_entries_label">TOTAL ENTRADAS</string>
+    <string name="dict_terms_verified">términos verificados</string>
+    <string name="dict_semantic_distribution">Distribución Semántica</string>
+    <string name="dict_view_label">Visualización:</string>
+    <string name="dict_view_cards">Tarjetas</string>
+    <string name="dict_view_list">Lista</string>
+    <string name="dict_header_icon">ÍCONO</string>
+    <string name="dict_header_muchik">MUCHIK</string>
+    <string name="dict_header_spanish">ESPAÑOL</string>
+    <string name="dict_header_category">CATEGORÍA</string>
+    <string name="dict_header_notes">NOTAS</string>
+    <string name="dict_empty_no_results">Sin resultados para «%s»</string>
+    <string name="dict_empty_empty">El diccionario está vacío</string>
+    <string name="dict_empty_hint">Intenta con otra búsqueda o categoría</string>
+
+    <!-- Gramática -->
+    <string name="grammar_title">Estructura y Gramática Muchik</string>
+    <string name="grammar_subtitle">El Muchik es un idioma aglutinante, con una morfología compleja y marcas verbales de posición estricta (Basado en F. de la Carrera y R. Eloranta).</string>
+    <string name="grammar_block1_title">1. Formación de Palabras (Derivación)</string>
+    <string name="grammar_block2_title">2. Saludos: La Regla del «Peño»</string>
+    <string name="grammar_block3_title">3. Ubicación y Posposiciones Espaciales</string>
+    <string name="grammar_block4_title">4. Marcas Verbales (Conjugación)</string>
+    <string name="grammar_block5_title">5. Sintaxis Básica</string>
+    <string name="grammar_block6_title">6. Posesión Inalienable</string>
+    <string name="grammar_block7_title">7. Préstamos y Evolución Fonética</string>
+    <string name="grammar_verb_table_pronoun">Pronombre</string>
+    <string name="grammar_verb_table_mark">Marca</string>
+    <string name="grammar_verb_table_example">Ejemplo</string>
+
+    <!-- Números -->
+    <string name="numbers_title">El Sistema Matemático Moche</string>
+    <string name="numbers_subtitle">Un sistema de cuenta altamente avanzado. Los mochicas no decían simplemente «veinte hombres»… utilizaban un clasificador que lo indicaba todo.</string>
+    <string name="numbers_formula_label">Fórmula constructiva:</string>
+    <string name="numbers_prefixes_title">1. Los Prefijos Base (De 10 en 10)</string>
+    <string name="numbers_age_title">Aplicación: Preguntar la Edad</string>
+    <string name="numbers_age_question_muchik">¿Ep æn fûr æn chefnam az?</string>
+    <string name="numbers_age_question_spanish">¿Cuántos años tienes?</string>
+    <string name="numbers_age_example">«Pac ssop fûr æn» → Veinte años</string>
+    <string name="numbers_age_note">* Usa «ssop» porque los años se cuentan como frutos o ciclos.</string>
+    <string name="numbers_practical_title">Ejemplo práctico: 12 hombres</string>
+    <string name="numbers_practical_result">→ «Napong allo atput ñofæn» — «Diez personas y dos hombres»</string>
+    <string name="numbers_classifiers_title">Clasificadores Numerales</string>
+    <string name="numbers_reference_title">Referencia Numérica</string>
+
+    <!-- Quiz -->
+    <string name="quiz_term_label">TÉRMINO MUCHIK</string>
+    <string name="quiz_correct">¡Correcto! 🎉</string>
+    <string name="quiz_incorrect_prefix">Incorrecto. La respuesta era:</string>
+    <string name="quiz_score_label">Puntaje:</string>
+    <string name="quiz_next_button">Siguiente →</string>
+
+    <!-- Créditos -->
+    <string name="credits_title">Fuentes y Agradecimientos</string>
+    <string name="credits_intro">Este diccionario es el resultado monumental del esfuerzo de siglos de curas, lingüistas, y, sobre todo, la inquebrantable memoria de nuestros pueblos y la nueva ola de estudiantes universitarios.</string>
+    <string name="credits_historical_title">✒️  Archivos Históricos y Coloniales</string>
+    <string name="credits_modern_title">📚  Investigación y Revitalización Actual</string>
+
+    <!-- Créditos — fuentes históricas -->
+    <string name="credit_fernando_author">Fernando de la Carrera Daza (1644):</string>
+    <string name="credit_fernando_desc"> Su «Arte de la lengua yunga…» es la piedra angular y la gramática madre del idioma.</string>
+    <string name="credit_montjoy_author">Santiago C. Montjoy (1865):</string>
+    <string name="credit_montjoy_desc"> Cónsul estadounidense cuya valiosa lista de palabras de Eten permaneció oculta un siglo.</string>
+    <string name="credit_middendorf_author">Ernst W. Middendorf (1892):</string>
+    <string name="credit_middendorf_desc"> Primer gran investigador de la lingüística costeña.</string>
+    <string name="credit_bruning_author">Hans Heinrich Brüning (1924):</string>
+    <string name="credit_bruning_desc"> Etno-lingüista que convivió con los últimos hablantes de Eten.</string>
+    <string name="credit_villarreal_author">Federico Villarreal (1921):</string>
+    <string name="credit_villarreal_desc"> Recopiló vocabularios cruciales de informantes etenanos como don Amadeo Vilches.</string>
+
+    <!-- Créditos — investigación actual -->
+    <string name="credit_cerron_author">Rodolfo Cerrón-Palomino y José A. Salas García:</string>
+    <string name="credit_cerron_desc"> Máximas autoridades en la reconstrucción fonológica y diccionarios modernos.</string>
+    <string name="credit_eloranta_author">Rita Eloranta (2025):</string>
+    <string name="credit_eloranta_desc"> Sus manuales han corregido errores históricos de sufijos y clarificado el sistema inalienable.</string>
+    <string name="credit_uss_author">Docentes USS (2012-2014):</string>
+    <string name="credit_uss_desc"> Juan Carlos Chero Zurita, Medali Peralta Vallejos y el arqueólogo Luis Enrique Chero Zurita. Descifradores del brillante sistema matemático Moche (Tük muchik).</string>
+    <string name="credit_unt_author">Universidad Nacional de Trujillo (UNT):</string>
+    <string name="credit_unt_desc"> Un profundo reconocimiento a los estudiantes de la Promoción XXVIII de Lengua y Literatura, y a su docente Maribel Pizarro Mostacero, por su labor de difusión y revalorización en redes sociales.</string>
+    <string name="credit_elim_author">Instituto Pedagógico Internacional Elim:</string>
+    <string name="credit_elim_desc"> Agradecimiento por los valiosos diccionarios etnolingüísticos recopilados por las investigadoras Luz Saraí Ramos Carlos, Rosa Pérez Samillán, Cesia Román Pasapera y Estrella Castillo Rodríguez, asegurando el futuro del idioma en las aulas.</string>
+
+    <!-- Créditos — comunidades -->
+    <string name="credits_community_title">Mención de Honor a las Comunidades</string>
+    <string name="credits_community_cities">Ciudad Eten, Monsefú, Mórrope y Lambayeque</string>
+    <string name="credits_community_families">Quesquén, Nuntón, Isique, Ayasta, Chafloque y Llonto</string>
+    <string name="credits_community_simon">Simón Quesquén</string>
+    <string name="credits_community_tok">Tok</string>
+    <string name="credits_community_jem">Jem</string>
+    <string name="credits_community_closing_highlight">alumnos, profesores y gestores culturales</string>
+    <string name="credits_community_inikuk">Iñikuk</string>
+    <string name="credits_community_neomochica">NeoMochica</string>
+
+    <!-- Sincronización -->
+    <string name="sync_loading_title">Ejep Muchik</string>
+    <string name="sync_loading_subtitle">Diccionario Mochica</string>
+    <string name="sync_loading_message">Cargando corpus léxico...</string>
+    <string name="sync_error_title">No se pudo cargar el diccionario</string>
+    <string name="sync_retry_button">Reintentar</string>
+
+    <!-- Diccionario — detalle -->
+    <string name="dict_source_label">Fuente:</string>
+
+    <!-- Accesibilidad -->
+    <string name="a11y_loading_dictionary">Cargando diccionario</string>
+    <string name="a11y_loading_quiz">Cargando pregunta</string>
+    <string name="a11y_syncing">Sincronizando con el servidor</string>
+
+    <!-- Contacto -->
+    <string name="contact_title">¡Escríbeme!</string>
+    <string name="contact_subtitle">Construyamos juntos nuestra identidad.</string>
+    <string name="contact_peño_tæsæk">Peño Tæsæk</string>
+    <string name="contact_intro1"> a este espacio colaborativo! Este diccionario es un ente vivo, igual que nuestra herencia Moche, y requiere del cuidado de todos nosotros para crecer fuerte y preciso.</string>
+    <string name="contact_intro2_pre">Mi ojo no siempre es perfecto. Si al navegar por estas páginas identificas </string>
+    <string name="contact_intro2_phonetics">problemas con la fonética</string>
+    <string name="contact_intro2_mid">, crees que alguna palabra pertenece a otra </string>
+    <string name="contact_intro2_category">categorización</string>
+    <string name="contact_intro2_post">, o si simplemente has encontrado un viejo apunte, un libro o un recuerdo familiar que pueda aportar nuevos vocablos…</string>
+    <string name="contact_email_label">POR FAVOR, ENVÍAME UN MENSAJE A:</string>
+    <string name="contact_email_button">📧  cr.htorres@gmail.com</string>
+    <string name="contact_closing">Toda nueva ayuda, crítica constructiva o documento es bienvenida. ¡Hagamos que el Muchik vuelva a resonar!</string>
+
+</resources>
