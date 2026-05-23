@@ -2,6 +2,7 @@
 
 > Enciclopedia digital de la lengua Muchik (Yunga) — léxico, gramática e historia de la lengua costera del antiguo Perú.
 
+[![CI](https://github.com/tohure/Diccionario-Muchik/actions/workflows/ci.yml/badge.svg)](https://github.com/tohure/Diccionario-Muchik/actions/workflows/ci.yml)
 ![Kotlin](https://img.shields.io/badge/Kotlin-2.3.21-7F52FF?logo=kotlin&logoColor=white)
 ![Compose Multiplatform](https://img.shields.io/badge/Compose%20Multiplatform-1.11.0-4285F4?logo=jetpackcompose&logoColor=white)
 ![Android](https://img.shields.io/badge/Android-API%2024%2B-3DDC84?logo=android&logoColor=white)
