@@ -15,12 +15,22 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dev.tohure.muchik_dictionary.core.design.DarkClay
 import dev.tohure.muchik_dictionary.feature.sync.presentation.state.SyncUiState
 import dev.tohure.muchik_dictionary.feature.sync.presentation.viewmodel.SyncViewModel
+import dictionarymuchik.shared.generated.resources.Res
+import dictionarymuchik.shared.generated.resources.a11y_loading_dictionary
+import dictionarymuchik.shared.generated.resources.sync_error_title
+import dictionarymuchik.shared.generated.resources.sync_loading_message
+import dictionarymuchik.shared.generated.resources.sync_loading_subtitle
+import dictionarymuchik.shared.generated.resources.sync_loading_title
+import dictionarymuchik.shared.generated.resources.sync_retry_button
+import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
@@ -48,31 +58,32 @@ fun SyncScreen(
 
 @Composable
 private fun SyncLoadingContent(modifier: Modifier = Modifier) {
+    val loadingDesc = stringResource(Res.string.a11y_loading_dictionary)
     Column(
         modifier = modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
     ) {
         Text(
-            text = "Ejep Muchik",
+            text = stringResource(Res.string.sync_loading_title),
             style = MaterialTheme.typography.headlineMedium,
             fontWeight = FontWeight.Black,
             color = DarkClay,
         )
         Spacer(Modifier.height(8.dp))
         Text(
-            text = "Diccionario Mochica",
+            text = stringResource(Res.string.sync_loading_subtitle),
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
         Spacer(Modifier.height(32.dp))
         CircularProgressIndicator(
-            modifier = Modifier.size(40.dp),
+            modifier = Modifier.size(40.dp).semantics { contentDescription = loadingDesc },
             color = DarkClay,
         )
         Spacer(Modifier.height(16.dp))
         Text(
-            text = "Cargando corpus léxico...",
+            text = stringResource(Res.string.sync_loading_message),
             style = MaterialTheme.typography.bodySmall,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
@@ -91,7 +102,7 @@ private fun SyncErrorContent(
         verticalArrangement = Arrangement.Center,
     ) {
         Text(
-            text = "No se pudo cargar el diccionario",
+            text = stringResource(Res.string.sync_error_title),
             style = MaterialTheme.typography.titleMedium,
             color = MaterialTheme.colorScheme.error,
         )
@@ -103,7 +114,7 @@ private fun SyncErrorContent(
         )
         Spacer(Modifier.height(24.dp))
         Button(onClick = onRetry) {
-            Text("Reintentar")
+            Text(stringResource(Res.string.sync_retry_button))
         }
     }
 }

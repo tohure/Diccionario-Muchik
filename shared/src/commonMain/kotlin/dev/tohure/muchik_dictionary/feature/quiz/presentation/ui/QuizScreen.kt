@@ -36,7 +36,10 @@ import dev.tohure.muchik_dictionary.core.design.Clay
 import dev.tohure.muchik_dictionary.core.design.DarkClay
 import dev.tohure.muchik_dictionary.core.design.LocalEmojiFontFamily
 import dev.tohure.muchik_dictionary.core.design.Ocean
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import dictionarymuchik.shared.generated.resources.Res
+import dictionarymuchik.shared.generated.resources.a11y_loading_quiz
 import dictionarymuchik.shared.generated.resources.quiz_correct
 import dictionarymuchik.shared.generated.resources.quiz_incorrect_prefix
 import dictionarymuchik.shared.generated.resources.quiz_next_button
@@ -130,6 +133,7 @@ private fun QuizHeader(
     modifier: Modifier = Modifier,
 ) {
     val emojiFont = LocalEmojiFontFamily.current
+    val loadingDesc = stringResource(Res.string.a11y_loading_quiz)
 
     Box(
         modifier = modifier
@@ -166,7 +170,7 @@ private fun QuizHeader(
                 CircularProgressIndicator(
                     color = Color.White.copy(alpha = 0.7f),
                     strokeWidth = 2.dp,
-                    modifier = Modifier.padding(vertical = 8.dp),
+                    modifier = Modifier.padding(vertical = 8.dp).semantics { contentDescription = loadingDesc },
                 )
             } else {
                 Text(

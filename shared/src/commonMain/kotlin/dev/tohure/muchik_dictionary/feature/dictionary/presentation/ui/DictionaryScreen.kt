@@ -44,6 +44,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -51,6 +53,8 @@ import dev.tohure.muchik_dictionary.core.design.Clay
 import dev.tohure.muchik_dictionary.core.design.ClayLight
 import dev.tohure.muchik_dictionary.core.design.DarkClay
 import dictionarymuchik.shared.generated.resources.Res
+import dictionarymuchik.shared.generated.resources.a11y_loading_dictionary
+import dictionarymuchik.shared.generated.resources.a11y_syncing
 import dictionarymuchik.shared.generated.resources.dict_search_placeholder
 import dictionarymuchik.shared.generated.resources.dict_semantic_distribution
 import dictionarymuchik.shared.generated.resources.dict_terms_verified
@@ -79,13 +83,17 @@ fun DictionaryScreen(viewModel: DictionaryViewModel = koinViewModel()) {
         state.selectedCategory == WordCategory.ALL &&
         state.categoryCounts.isNotEmpty()
 
+    val loadingDesc = stringResource(Res.string.a11y_loading_dictionary)
     Box(modifier = Modifier.fillMaxSize()) {
         if (state.isLoading) {
             Box(
                 modifier = Modifier.fillMaxSize(),
                 contentAlignment = Alignment.Center,
             ) {
-                CircularProgressIndicator(color = Clay)
+                CircularProgressIndicator(
+                    modifier = Modifier.semantics { contentDescription = loadingDesc },
+                    color = Clay,
+                )
             }
         } else {
             val contentPadding = PaddingValues(horizontal = 16.dp, vertical = 16.dp)
@@ -270,6 +278,7 @@ private fun ViewModeRow(
     onSyncTrigger: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val syncingDesc = stringResource(Res.string.a11y_syncing)
     Column(modifier = modifier.fillMaxWidth()) {
         Row(
             modifier = Modifier
@@ -295,7 +304,7 @@ private fun ViewModeRow(
         }
         if (isSyncing) {
             LinearProgressIndicator(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth().semantics { contentDescription = syncingDesc },
                 color = Clay,
                 trackColor = ClayLight.copy(alpha = 0.3f),
             )
