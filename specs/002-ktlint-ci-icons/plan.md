@@ -1,6 +1,51 @@
 # Plan: ktlint + CI + Iconos de Navegación
 
-**Branch**: `002-ktlint-ci-icons` | **Date**: 2026-05-22 | **Tasks**: [tasks.md](tasks.md)
+**Branch**: `002-ktlint-ci-icons` | **Date**: 2026-05-22 | **Spec**: [spec.md](spec.md) | **Tasks**: [tasks.md](tasks.md)
+
+---
+
+## Technical Context
+
+**Language/Version**: Kotlin 2.3.21 / Compose Multiplatform 1.11.0 / AGP 9.2.1
+
+**Primary Dependencies añadidas**:
+- `org.jlleitschuh.gradle.ktlint` v12.2.0 (ktlint-cli 1.x internamente)
+- GitHub Actions: `actions/checkout@v4`, `actions/setup-java@v4`, `gradle/actions/setup-gradle@v4`
+
+**Storage**: N/A — feature de tooling, sin cambios de BD
+
+**Testing**: `ktlintCheck` (lint), `./gradlew :shared:jvmTest` (17 tests existentes)
+
+**Target Platform**: Developer toolchain (macOS local) + `ubuntu-latest` (CI)
+
+**Project Type**: Developer experience — linting + CI + refactor de UI
+
+**Performance Goals**: `ktlintCheck` con daemon < 30s localmente
+
+**Constraints**: Compatible con Kotlin 2.3.21, KSP 2.3.8, AGP 9.2.1. `compileKotlinIosSimulatorArm64` en ubuntu-latest sin Xcode (solo fase compile, no link).
+
+**Scale/Scope**: 5 módulos, ~130 archivos `.kt`, 7 iconos SVG, 1 workflow YAML
+
+---
+
+## Constitution Check
+
+*GATE: Evaluado contra `constitution.md` v1.1.0*
+
+| Principio | Aplica | Estado | Notas |
+|---|---|---|---|
+| I. Data Fidelity | No | ✅ N/A | Sin cambios al corpus |
+| II. Linguistic Accuracy | No | ✅ N/A | Sin cambios a entradas léxicas |
+| III. Accessibility | Sí | ✅ Pass | Los iconos mejoran la navegabilidad visual |
+| IV. Full Traceability | Sí | ✅ Pass | Un commit atómico `style: aplicar formato ktlint`; historial limpio |
+| V. Incremental Preservation | Sí | ✅ Pass | Iconos añaden UI sin remover features existentes |
+| Architecture & Tech Stack | Sí | ✅ Pass | ktlint es build tool; no altera KMP/CMP/Koin/Ktor |
+| Data Sync & Storage | No | ✅ N/A | Sin cambios de BD ni sync |
+| UI/UX & Feature Parity | Sí | ✅ Pass | Iconos mejoran identidad visual; `getIconForScreen()` existente ya tenía iconos para Dictionary/Quiz |
+| Security | Sí | ⚠️ Nota | BuildKonfig necesita `SUPABASE_URL`/`SUPABASE_PUBLISHABLE_KEY` en CI — inyectar como GitHub Secrets, no hardcodear |
+| Compose UI Contracts | Sí | ✅ Pass | `NavScreen` refactor preserva state hoisting; `onNavigate: (NavScreen)` solo en composables de navegación, no en screens hijos |
+
+**Resultado del gate**: ✅ Sin violaciones. Una nota de security implementada en el workflow CI (secrets).
 
 ---
 

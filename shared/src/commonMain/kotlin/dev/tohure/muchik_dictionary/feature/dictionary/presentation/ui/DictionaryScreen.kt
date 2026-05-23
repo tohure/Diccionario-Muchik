@@ -25,6 +25,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ElevatedCard
+import androidx.compose.material3.Icon
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Snackbar
@@ -42,6 +43,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
@@ -64,6 +67,8 @@ import dictionarymuchik.shared.generated.resources.dict_total_entries_label
 import dictionarymuchik.shared.generated.resources.dict_view_cards
 import dictionarymuchik.shared.generated.resources.dict_view_label
 import dictionarymuchik.shared.generated.resources.dict_view_list
+import dictionarymuchik.shared.generated.resources.ic_sync
+import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -71,6 +76,7 @@ import org.koin.compose.viewmodel.koinViewModel
 fun DictionaryScreen(viewModel: DictionaryViewModel = koinViewModel()) {
     val state by viewModel.uiState.collectAsState()
     val snackbarHostState = remember { SnackbarHostState() }
+    val searchFocusRequester = remember { FocusRequester() }
 
     LaunchedEffect(state.syncMessage) {
         val msg = state.syncMessage ?: return@LaunchedEffect
@@ -82,6 +88,14 @@ fun DictionaryScreen(viewModel: DictionaryViewModel = koinViewModel()) {
         state.query.isBlank() &&
             state.selectedCategory == WordCategory.ALL &&
             state.categoryCounts.isNotEmpty()
+
+    // Cuando el dashboard desaparece al escribir el primer carácter, la LazyColumn
+    // cambia su estructura y le quita el foco al TextField. Lo restauramos aquí.
+    LaunchedEffect(showDashboard) {
+        if (!showDashboard && state.query.isNotBlank()) {
+            searchFocusRequester.requestFocus()
+        }
+    }
 
     val loadingDesc = stringResource(Res.string.a11y_loading_dictionary)
     Box(modifier = Modifier.fillMaxSize()) {
@@ -116,6 +130,7 @@ fun DictionaryScreen(viewModel: DictionaryViewModel = koinViewModel()) {
                             selectedCategory = state.selectedCategory,
                             onQueryChange = viewModel::onQueryChange,
                             onCategorySelected = viewModel::onCategorySelected,
+                            focusRequester = searchFocusRequester,
                         )
                     }
                     item {
@@ -157,6 +172,7 @@ fun DictionaryScreen(viewModel: DictionaryViewModel = koinViewModel()) {
                             selectedCategory = state.selectedCategory,
                             onQueryChange = viewModel::onQueryChange,
                             onCategorySelected = viewModel::onCategorySelected,
+                            focusRequester = searchFocusRequester,
                         )
                     }
                     item(span = { GridItemSpan(maxLineSpan) }) {
@@ -229,6 +245,7 @@ private fun SearchAndFilterRow(
     selectedCategory: WordCategory,
     onQueryChange: (String) -> Unit,
     onCategorySelected: (WordCategory) -> Unit,
+    focusRequester: FocusRequester,
 ) {
     Row(
         modifier =
@@ -247,7 +264,7 @@ private fun SearchAndFilterRow(
             TextField(
                 value = query,
                 onValueChange = onQueryChange,
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth().focusRequester(focusRequester),
                 placeholder = {
                     Text(
                         text = stringResource(Res.string.dict_search_placeholder),
@@ -300,10 +317,10 @@ private fun ViewModeRow(
             )
             Spacer(modifier = Modifier.weight(1f))
             TextButton(onClick = onSyncTrigger, enabled = !isSyncing) {
-                Text(
-                    text = "↻",
-                    style = MaterialTheme.typography.titleLarge,
-                    color =
+                Icon(
+                    painter = painterResource(Res.drawable.ic_sync),
+                    contentDescription = null,
+                    tint =
                         if (isSyncing) {
                             MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.4f)
                         } else {

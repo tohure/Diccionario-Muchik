@@ -138,7 +138,7 @@ description: "Tareas — ktlint + GitHub Actions CI + Iconos de Navegación"
 
 ### Commit de prueba de fuego
 
-- [ ] T019 [US3] Hacer commit con todos los cambios de iconos (`style:` o `feat:`); el **pre-commit hook** debe ejecutarse automáticamente y pasar sin errores; push al branch; verificar que GitHub Actions dispara el workflow y los 4 jobs quedan en verde
+- [x] T019 [US3] Hacer commit con todos los cambios de iconos (`style:` o `feat:`); el **pre-commit hook** debe ejecutarse automáticamente y pasar sin errores; push al branch; verificar que GitHub Actions dispara el workflow y los 4 jobs quedan en verde
 
 **Checkpoint US3**: 7 íconos distintos en el menú. Hook ejecutado. CI verde.
 
