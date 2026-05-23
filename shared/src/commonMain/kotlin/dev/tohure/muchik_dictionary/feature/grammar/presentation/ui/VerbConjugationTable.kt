@@ -29,14 +29,15 @@ private data class ConjugationRow(
     val suffix: String,
 )
 
-private val ROWS = listOf(
-    ConjugationRow("Yo", "-eñ / -ñ", "Peñ", "eñ chi"),
-    ConjugationRow("Tú", "-as / -s", "Peñ", "as chi"),
-    ConjugationRow("Él/Ella", "-ang / -ng", "Peñ", "ang chi"),
-    ConjugationRow("Nosotros", "-esh / -sh", "Peñ", "esh chi"),
-    ConjugationRow("Ustedes", "-aschi", "Peñ", "aschi chi"),
-    ConjugationRow("Ellos", "-ænang", "Peñ", "ænang chi"),
-)
+private val ROWS =
+    listOf(
+        ConjugationRow("Yo", "-eñ / -ñ", "Peñ", "eñ chi"),
+        ConjugationRow("Tú", "-as / -s", "Peñ", "as chi"),
+        ConjugationRow("Él/Ella", "-ang / -ng", "Peñ", "ang chi"),
+        ConjugationRow("Nosotros", "-esh / -sh", "Peñ", "esh chi"),
+        ConjugationRow("Ustedes", "-aschi", "Peñ", "aschi chi"),
+        ConjugationRow("Ellos", "-ænang", "Peñ", "ænang chi"),
+    )
 
 @Composable
 fun VerbConjugationTable(modifier: Modifier = Modifier) {
@@ -46,10 +47,11 @@ fun VerbConjugationTable(modifier: Modifier = Modifier) {
 
     androidx.compose.foundation.layout.Column(modifier = modifier.fillMaxWidth()) {
         Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(headerBg)
-                .padding(horizontal = 8.dp, vertical = 6.dp),
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .background(headerBg)
+                    .padding(horizontal = 8.dp, vertical = 6.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Text(
@@ -77,10 +79,11 @@ fun VerbConjugationTable(modifier: Modifier = Modifier) {
 
         ROWS.forEachIndexed { index, row ->
             Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .background(if (index % 2 == 0) oddBg else evenBg)
-                    .padding(horizontal = 8.dp, vertical = 8.dp),
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .background(if (index % 2 == 0) oddBg else evenBg)
+                        .padding(horizontal = 8.dp, vertical = 8.dp),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 Text(
@@ -96,13 +99,14 @@ fun VerbConjugationTable(modifier: Modifier = Modifier) {
                     modifier = Modifier.weight(1f),
                 )
                 Text(
-                    text = buildAnnotatedString {
-                        append(row.prefix)
-                        withStyle(SpanStyle(color = Clay, fontWeight = FontWeight.Bold)) {
-                            append(row.suffix.substringBefore(" "))
-                        }
-                        append(" " + row.suffix.substringAfter(" "))
-                    },
+                    text =
+                        buildAnnotatedString {
+                            append(row.prefix)
+                            withStyle(SpanStyle(color = Clay, fontWeight = FontWeight.Bold)) {
+                                append(row.suffix.substringBefore(" "))
+                            }
+                            append(" " + row.suffix.substringAfter(" "))
+                        },
                     style = MaterialTheme.typography.bodySmall,
                     modifier = Modifier.weight(1.5f),
                 )

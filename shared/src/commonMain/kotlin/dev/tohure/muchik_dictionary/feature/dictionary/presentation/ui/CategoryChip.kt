@@ -3,7 +3,6 @@ package dev.tohure.muchik_dictionary.feature.dictionary.presentation.ui
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -16,9 +15,10 @@ import dev.tohure.muchik_dictionary.core.design.categoryColor
 fun CategoryChip(category: String, modifier: Modifier = Modifier) {
     val color = categoryColor(category)
     Box(
-        modifier = modifier
-            .background(color.copy(alpha = 0.12f), MaterialTheme.shapes.small)
-            .padding(horizontal = 10.dp, vertical = 4.dp),
+        modifier =
+            modifier
+                .background(color.copy(alpha = 0.12f), MaterialTheme.shapes.small)
+                .padding(horizontal = 10.dp, vertical = 4.dp),
     ) {
         Text(
             text = category,

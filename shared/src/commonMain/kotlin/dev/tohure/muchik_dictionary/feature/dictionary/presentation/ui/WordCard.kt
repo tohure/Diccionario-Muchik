@@ -1,6 +1,5 @@
 package dev.tohure.muchik_dictionary.feature.dictionary.presentation.ui
 
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -30,17 +29,19 @@ fun WordCard(entry: WordEntry, modifier: Modifier = Modifier) {
 
     ElevatedCard(
         modifier = modifier.fillMaxWidth(),
-        colors = CardDefaults.elevatedCardColors(
-            containerColor = MaterialTheme.colorScheme.surface,
-        ),
+        colors =
+            CardDefaults.elevatedCardColors(
+                containerColor = MaterialTheme.colorScheme.surface,
+            ),
         elevation = CardDefaults.elevatedCardElevation(defaultElevation = 2.dp),
         shape = MaterialTheme.shapes.large,
     ) {
         Box(modifier = Modifier.fillMaxWidth()) {
             Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(20.dp),
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(20.dp),
             ) {
                 CategoryChip(category = entry.category)
 
@@ -88,9 +89,10 @@ fun WordCard(entry: WordEntry, modifier: Modifier = Modifier) {
                     text = entry.emoji,
                     fontSize = 52.sp,
                     fontFamily = emojiFont,
-                    modifier = Modifier
-                        .align(Alignment.BottomEnd)
-                        .padding(end = 12.dp, bottom = 8.dp),
+                    modifier =
+                        Modifier
+                            .align(Alignment.BottomEnd)
+                            .padding(end = 12.dp, bottom = 8.dp),
                     color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.1f),
                 )
             }

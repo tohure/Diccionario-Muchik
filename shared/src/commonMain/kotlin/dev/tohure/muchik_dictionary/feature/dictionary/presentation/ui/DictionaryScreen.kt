@@ -1,6 +1,5 @@
 package dev.tohure.muchik_dictionary.feature.dictionary.presentation.ui
 
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -23,7 +22,6 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.ui.draw.clip
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ElevatedCard
@@ -43,6 +41,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
@@ -52,6 +51,9 @@ import androidx.compose.ui.unit.dp
 import dev.tohure.muchik_dictionary.core.design.Clay
 import dev.tohure.muchik_dictionary.core.design.ClayLight
 import dev.tohure.muchik_dictionary.core.design.DarkClay
+import dev.tohure.muchik_dictionary.feature.dictionary.domain.model.WordCategory
+import dev.tohure.muchik_dictionary.feature.dictionary.presentation.state.DictionaryViewMode
+import dev.tohure.muchik_dictionary.feature.dictionary.presentation.viewmodel.DictionaryViewModel
 import dictionarymuchik.shared.generated.resources.Res
 import dictionarymuchik.shared.generated.resources.a11y_loading_dictionary
 import dictionarymuchik.shared.generated.resources.a11y_syncing
@@ -63,9 +65,6 @@ import dictionarymuchik.shared.generated.resources.dict_view_cards
 import dictionarymuchik.shared.generated.resources.dict_view_label
 import dictionarymuchik.shared.generated.resources.dict_view_list
 import org.jetbrains.compose.resources.stringResource
-import dev.tohure.muchik_dictionary.feature.dictionary.domain.model.WordCategory
-import dev.tohure.muchik_dictionary.feature.dictionary.presentation.state.DictionaryViewMode
-import dev.tohure.muchik_dictionary.feature.dictionary.presentation.viewmodel.DictionaryViewModel
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
@@ -79,9 +78,10 @@ fun DictionaryScreen(viewModel: DictionaryViewModel = koinViewModel()) {
         viewModel.onSyncMessageShown()
     }
 
-    val showDashboard = state.query.isBlank() &&
-        state.selectedCategory == WordCategory.ALL &&
-        state.categoryCounts.isNotEmpty()
+    val showDashboard =
+        state.query.isBlank() &&
+            state.selectedCategory == WordCategory.ALL &&
+            state.categoryCounts.isNotEmpty()
 
     val loadingDesc = stringResource(Res.string.a11y_loading_dictionary)
     Box(modifier = Modifier.fillMaxSize()) {
@@ -100,9 +100,10 @@ fun DictionaryScreen(viewModel: DictionaryViewModel = koinViewModel()) {
 
             if (state.viewMode == DictionaryViewMode.LIST) {
                 LazyColumn(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .background(MaterialTheme.colorScheme.background),
+                    modifier =
+                        Modifier
+                            .fillMaxSize()
+                            .background(MaterialTheme.colorScheme.background),
                     contentPadding = contentPadding,
                     verticalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
@@ -137,9 +138,10 @@ fun DictionaryScreen(viewModel: DictionaryViewModel = koinViewModel()) {
             } else {
                 LazyVerticalGrid(
                     columns = GridCells.Adaptive(minSize = 280.dp),
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .background(MaterialTheme.colorScheme.background),
+                    modifier =
+                        Modifier
+                            .fillMaxSize()
+                            .background(MaterialTheme.colorScheme.background),
                     contentPadding = contentPadding,
                     verticalArrangement = Arrangement.spacedBy(12.dp),
                     horizontalArrangement = Arrangement.spacedBy(12.dp),
@@ -195,9 +197,10 @@ fun DictionaryScreen(viewModel: DictionaryViewModel = koinViewModel()) {
 @Composable
 private fun DashboardSection(totalCount: Int, categoryCounts: Map<String, Int>) {
     BoxWithConstraints(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 12.dp),
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .padding(vertical = 12.dp),
     ) {
         if (maxWidth > 650.dp) {
             Row(
@@ -228,16 +231,18 @@ private fun SearchAndFilterRow(
     onCategorySelected: (WordCategory) -> Unit,
 ) {
     Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 8.dp),
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .padding(vertical = 8.dp),
         horizontalArrangement = Arrangement.spacedBy(12.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Box(
-            modifier = Modifier
-                .weight(1f)
-                .border(1.5.dp, ClayLight, CircleShape),
+            modifier =
+                Modifier
+                    .weight(1f)
+                    .border(1.5.dp, ClayLight, CircleShape),
         ) {
             TextField(
                 value = query,
@@ -252,13 +257,14 @@ private fun SearchAndFilterRow(
                 },
                 singleLine = true,
                 shape = CircleShape,
-                colors = TextFieldDefaults.colors(
-                    focusedIndicatorColor = Color.Transparent,
-                    unfocusedIndicatorColor = Color.Transparent,
-                    disabledIndicatorColor = Color.Transparent,
-                    focusedContainerColor = MaterialTheme.colorScheme.surface,
-                    unfocusedContainerColor = MaterialTheme.colorScheme.surface,
-                ),
+                colors =
+                    TextFieldDefaults.colors(
+                        focusedIndicatorColor = Color.Transparent,
+                        unfocusedIndicatorColor = Color.Transparent,
+                        disabledIndicatorColor = Color.Transparent,
+                        focusedContainerColor = MaterialTheme.colorScheme.surface,
+                        unfocusedContainerColor = MaterialTheme.colorScheme.surface,
+                    ),
                 textStyle = MaterialTheme.typography.bodyMedium,
             )
         }
@@ -281,9 +287,10 @@ private fun ViewModeRow(
     val syncingDesc = stringResource(Res.string.a11y_syncing)
     Column(modifier = modifier.fillMaxWidth()) {
         Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = 4.dp),
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 4.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Text(
@@ -296,8 +303,12 @@ private fun ViewModeRow(
                 Text(
                     text = "↻",
                     style = MaterialTheme.typography.titleLarge,
-                    color = if (isSyncing) MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.4f)
-                            else Clay,
+                    color =
+                        if (isSyncing) {
+                            MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.4f)
+                        } else {
+                            Clay
+                        },
                 )
             }
             ViewModeToggle(viewMode = viewMode, onToggle = onToggle)
@@ -321,9 +332,10 @@ private fun StatsCard(totalCount: Int, modifier: Modifier = Modifier) {
         shape = MaterialTheme.shapes.large,
     ) {
         Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(24.dp),
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .padding(24.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
@@ -377,44 +389,54 @@ private fun ViewModeToggle(viewMode: DictionaryViewMode, onToggle: () -> Unit) {
     val isCards = viewMode == DictionaryViewMode.CARDS
 
     Row(
-        modifier = Modifier
-            .background(
-                color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f),
-                shape = CircleShape
-            )
-            .padding(4.dp),
+        modifier =
+            Modifier
+                .background(
+                    color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f),
+                    shape = CircleShape
+                ).padding(4.dp),
     ) {
         Box(
-            modifier = Modifier
-                .clip(CircleShape)
-                .background(
-                    color = if (isCards) MaterialTheme.colorScheme.primaryContainer else Color.Transparent,
-                    shape = CircleShape,
-                )
-                .clickable { if (!isCards) onToggle() }
-                .padding(horizontal = 16.dp, vertical = 6.dp),
+            modifier =
+                Modifier
+                    .clip(CircleShape)
+                    .background(
+                        color = if (isCards) MaterialTheme.colorScheme.primaryContainer else Color.Transparent,
+                        shape = CircleShape,
+                    ).clickable { if (!isCards) onToggle() }
+                    .padding(horizontal = 16.dp, vertical = 6.dp),
         ) {
             Text(
                 text = stringResource(Res.string.dict_view_cards),
                 style = MaterialTheme.typography.labelMedium,
-                color = if (isCards) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.onSurfaceVariant,
+                color =
+                    if (isCards) {
+                        MaterialTheme.colorScheme.onPrimaryContainer
+                    } else {
+                        MaterialTheme.colorScheme.onSurfaceVariant
+                    },
                 fontWeight = if (isCards) FontWeight.SemiBold else FontWeight.Normal,
             )
         }
         Box(
-            modifier = Modifier
-                .clip(CircleShape)
-                .background(
-                    color = if (!isCards) MaterialTheme.colorScheme.primaryContainer else Color.Transparent,
-                    shape = CircleShape,
-                )
-                .clickable { if (isCards) onToggle() }
-                .padding(horizontal = 16.dp, vertical = 6.dp),
+            modifier =
+                Modifier
+                    .clip(CircleShape)
+                    .background(
+                        color = if (!isCards) MaterialTheme.colorScheme.primaryContainer else Color.Transparent,
+                        shape = CircleShape,
+                    ).clickable { if (isCards) onToggle() }
+                    .padding(horizontal = 16.dp, vertical = 6.dp),
         ) {
             Text(
                 text = stringResource(Res.string.dict_view_list),
                 style = MaterialTheme.typography.labelMedium,
-                color = if (!isCards) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.onSurfaceVariant,
+                color =
+                    if (!isCards) {
+                        MaterialTheme.colorScheme.onPrimaryContainer
+                    } else {
+                        MaterialTheme.colorScheme.onSurfaceVariant
+                    },
                 fontWeight = if (!isCards) FontWeight.SemiBold else FontWeight.Normal,
             )
         }

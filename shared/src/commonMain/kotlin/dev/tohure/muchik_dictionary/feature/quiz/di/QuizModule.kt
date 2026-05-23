@@ -5,7 +5,8 @@ import dev.tohure.muchik_dictionary.feature.quiz.presentation.viewmodel.QuizView
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 
-val quizModule = module {
-    factory { GenerateQuizQuestionUseCase(get()) }
-    viewModel { QuizViewModel(get()) }
-}
+val quizModule =
+    module {
+        factory { GenerateQuizQuestionUseCase(get()) }
+        viewModel { QuizViewModel(get()) }
+    }

@@ -37,7 +37,6 @@ import dev.tohure.muchik_dictionary.core.design.Clay
 import dev.tohure.muchik_dictionary.core.design.DarkClay
 import dev.tohure.muchik_dictionary.core.design.Gold
 import dev.tohure.muchik_dictionary.core.design.Ocean
-import dev.tohure.muchik_dictionary.core.design.Sand
 import dictionarymuchik.shared.generated.resources.Res
 import dictionarymuchik.shared.generated.resources.credit_bruning_author
 import dictionarymuchik.shared.generated.resources.credit_bruning_desc
@@ -83,31 +82,48 @@ private data class SourceEntry(
 )
 
 @Composable
-private fun historicalSources() = listOf(
-    SourceEntry(stringResource(Res.string.credit_fernando_author), stringResource(Res.string.credit_fernando_desc)),
-    SourceEntry(stringResource(Res.string.credit_montjoy_author), stringResource(Res.string.credit_montjoy_desc)),
-    SourceEntry(stringResource(Res.string.credit_middendorf_author), stringResource(Res.string.credit_middendorf_desc)),
-    SourceEntry(stringResource(Res.string.credit_bruning_author), stringResource(Res.string.credit_bruning_desc)),
-    SourceEntry(stringResource(Res.string.credit_villarreal_author), stringResource(Res.string.credit_villarreal_desc)),
-)
+private fun historicalSources() =
+    listOf(
+        SourceEntry(stringResource(Res.string.credit_fernando_author), stringResource(Res.string.credit_fernando_desc)),
+        SourceEntry(stringResource(Res.string.credit_montjoy_author), stringResource(Res.string.credit_montjoy_desc)),
+        SourceEntry(
+            stringResource(Res.string.credit_middendorf_author),
+            stringResource(Res.string.credit_middendorf_desc)
+        ),
+        SourceEntry(stringResource(Res.string.credit_bruning_author), stringResource(Res.string.credit_bruning_desc)),
+        SourceEntry(
+            stringResource(Res.string.credit_villarreal_author),
+            stringResource(Res.string.credit_villarreal_desc)
+        ),
+    )
 
 @Composable
-private fun modernSources() = listOf(
-    SourceEntry(stringResource(Res.string.credit_cerron_author), stringResource(Res.string.credit_cerron_desc)),
-    SourceEntry(stringResource(Res.string.credit_eloranta_author), stringResource(Res.string.credit_eloranta_desc)),
-    SourceEntry(stringResource(Res.string.credit_uss_author), stringResource(Res.string.credit_uss_desc)),
-    SourceEntry(stringResource(Res.string.credit_unt_author), stringResource(Res.string.credit_unt_desc), style = SourceStyle.HIGHLIGHT_BLUE),
-    SourceEntry(stringResource(Res.string.credit_elim_author), stringResource(Res.string.credit_elim_desc), style = SourceStyle.HIGHLIGHT_GREEN),
-)
+private fun modernSources() =
+    listOf(
+        SourceEntry(stringResource(Res.string.credit_cerron_author), stringResource(Res.string.credit_cerron_desc)),
+        SourceEntry(stringResource(Res.string.credit_eloranta_author), stringResource(Res.string.credit_eloranta_desc)),
+        SourceEntry(stringResource(Res.string.credit_uss_author), stringResource(Res.string.credit_uss_desc)),
+        SourceEntry(
+            stringResource(Res.string.credit_unt_author),
+            stringResource(Res.string.credit_unt_desc),
+            style = SourceStyle.HIGHLIGHT_BLUE
+        ),
+        SourceEntry(
+            stringResource(Res.string.credit_elim_author),
+            stringResource(Res.string.credit_elim_desc),
+            style = SourceStyle.HIGHLIGHT_GREEN
+        ),
+    )
 
 @Composable
 fun CreditsScreen() {
     BoxWithConstraints(modifier = Modifier.fillMaxSize()) {
         val isWide = maxWidth > 700.dp
         LazyColumn(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(MaterialTheme.colorScheme.background),
+            modifier =
+                Modifier
+                    .fillMaxSize()
+                    .background(MaterialTheme.colorScheme.background),
             contentPadding = PaddingValues(16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
@@ -167,19 +183,21 @@ private fun HistoricalCard(modifier: Modifier = Modifier) {
         Box(modifier = Modifier.fillMaxWidth()) {
             // Top border — Clay
             Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(4.dp)
-                    .background(Clay),
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .height(4.dp)
+                        .background(Clay),
             )
             // Watermark emoji
             Text(
                 text = "📜",
                 fontSize = 80.sp,
-                modifier = Modifier
-                    .align(Alignment.TopEnd)
-                    .padding(top = 8.dp, end = 8.dp)
-                    .then(Modifier),
+                modifier =
+                    Modifier
+                        .align(Alignment.TopEnd)
+                        .padding(top = 8.dp, end = 8.dp)
+                        .then(Modifier),
                 color = Color.Black.copy(alpha = 0.05f),
             )
             Column(modifier = Modifier.padding(top = 4.dp).padding(20.dp)) {
@@ -213,17 +231,19 @@ private fun ModernCard(modifier: Modifier = Modifier) {
     ) {
         Box(modifier = Modifier.fillMaxWidth()) {
             Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(4.dp)
-                    .background(Ocean),
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .height(4.dp)
+                        .background(Ocean),
             )
             Text(
                 text = "🔬",
                 fontSize = 80.sp,
-                modifier = Modifier
-                    .align(Alignment.TopEnd)
-                    .padding(top = 8.dp, end = 8.dp),
+                modifier =
+                    Modifier
+                        .align(Alignment.TopEnd)
+                        .padding(top = 8.dp, end = 8.dp),
                 color = Color.Black.copy(alpha = 0.05f),
             )
             Column(modifier = Modifier.padding(top = 4.dp).padding(20.dp)) {
@@ -249,32 +269,36 @@ private fun ModernCard(modifier: Modifier = Modifier) {
 
 @Composable
 private fun SourceItem(source: SourceEntry, normalBorderColor: Color) {
-    val (borderColor, bgColor, borderWidth) = when (source.style) {
-        SourceStyle.NORMAL -> Triple(normalBorderColor, Color.Transparent, 2.dp)
-        SourceStyle.HIGHLIGHT_BLUE -> Triple(Color(0xFF60A5FA), Color(0xFFEFF6FF), 4.dp)
-        SourceStyle.HIGHLIGHT_GREEN -> Triple(Color(0xFF34D399), Color(0xFFF0FDF4), 4.dp)
-    }
+    val (borderColor, bgColor, borderWidth) =
+        when (source.style) {
+            SourceStyle.NORMAL -> Triple(normalBorderColor, Color.Transparent, 2.dp)
+            SourceStyle.HIGHLIGHT_BLUE -> Triple(Color(0xFF60A5FA), Color(0xFFEFF6FF), 4.dp)
+            SourceStyle.HIGHLIGHT_GREEN -> Triple(Color(0xFF34D399), Color(0xFFF0FDF4), 4.dp)
+        }
 
     Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(IntrinsicSize.Min)
-            .background(bgColor, MaterialTheme.shapes.small),
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .height(IntrinsicSize.Min)
+                .background(bgColor, MaterialTheme.shapes.small),
     ) {
         Box(
-            modifier = Modifier
-                .width(borderWidth)
-                .fillMaxHeight()
-                .background(borderColor),
+            modifier =
+                Modifier
+                    .width(borderWidth)
+                    .fillMaxHeight()
+                    .background(borderColor),
         )
         Spacer(Modifier.width(10.dp))
         Text(
-            text = buildAnnotatedString {
-                withStyle(SpanStyle(fontWeight = FontWeight.Bold)) {
-                    append(source.author)
-                }
-                append(source.description)
-            },
+            text =
+                buildAnnotatedString {
+                    withStyle(SpanStyle(fontWeight = FontWeight.Bold)) {
+                        append(source.author)
+                    }
+                    append(source.description)
+                },
             style = MaterialTheme.typography.bodySmall,
             color = MaterialTheme.colorScheme.onSurface,
             modifier = Modifier.padding(top = 6.dp, bottom = 6.dp, end = 4.dp),
@@ -285,19 +309,20 @@ private fun SourceItem(source: SourceEntry, normalBorderColor: Color) {
 @Composable
 private fun CommunitySection() {
     Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .background(Color(0xFFFFFBEB), MaterialTheme.shapes.extraLarge)
-            .then(
-                Modifier.background(
-                    brush = androidx.compose.ui.graphics.Brush.linearGradient(
-                        colors = listOf(Color(0xFFFFFBEB), Color(0xFFFFF3E0)),
-                    ),
-                    shape = MaterialTheme.shapes.extraLarge,
-                )
-            )
-            .border(1.dp, Gold, MaterialTheme.shapes.extraLarge)
-            .padding(24.dp),
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .background(Color(0xFFFFFBEB), MaterialTheme.shapes.extraLarge)
+                .then(
+                    Modifier.background(
+                        brush =
+                            androidx.compose.ui.graphics.Brush.linearGradient(
+                                colors = listOf(Color(0xFFFFFBEB), Color(0xFFFFF3E0)),
+                            ),
+                        shape = MaterialTheme.shapes.extraLarge,
+                    )
+                ).border(1.dp, Gold, MaterialTheme.shapes.extraLarge)
+                .padding(24.dp),
     ) {
         Column(
             modifier = Modifier.fillMaxWidth(),
@@ -317,65 +342,73 @@ private fun CommunitySection() {
                 textAlign = TextAlign.Center,
             )
             Text(
-                text = buildAnnotatedString {
-                    append("Nada de esta erudición tendría sentido sin la sangre viva que mantuvo " +
-                        "latiendo estas palabras. Nuestro tributo imperecedero a las herederas de ")
-                    withStyle(SpanStyle(fontWeight = FontWeight.Bold, color = Clay)) {
-                        append(stringResource(Res.string.credits_community_cities))
-                    }
-                    append(".")
-                },
+                text =
+                    buildAnnotatedString {
+                        append(
+                            "Nada de esta erudición tendría sentido sin la sangre viva que mantuvo " +
+                                "latiendo estas palabras. Nuestro tributo imperecedero a las herederas de "
+                        )
+                        withStyle(SpanStyle(fontWeight = FontWeight.Bold, color = Clay)) {
+                            append(stringResource(Res.string.credits_community_cities))
+                        }
+                        append(".")
+                    },
                 style = MaterialTheme.typography.bodyLarge,
                 color = MaterialTheme.colorScheme.onSurface,
                 textAlign = TextAlign.Center,
             )
             Text(
-                text = buildAnnotatedString {
-                    append("A las honorables familias ")
-                    withStyle(SpanStyle(fontWeight = FontWeight.Bold)) {
-                        append(stringResource(Res.string.credits_community_families))
-                    }
-                    append("; y en memoria de don ")
-                    withStyle(SpanStyle(fontStyle = FontStyle.Italic)) {
-                        append(stringResource(Res.string.credits_community_simon))
-                    }
-                    append(", cuyas grabaciones nos devolvieron la voz de los ancestros. Ellos " +
-                        "resguardaron el idioma en el calor de los fogones (")
-                    withStyle(SpanStyle(fontStyle = FontStyle.Italic)) {
-                        append(stringResource(Res.string.credits_community_tok))
-                    }
-                    append("), en el tejido (")
-                    withStyle(SpanStyle(fontStyle = FontStyle.Italic)) {
-                        append(stringResource(Res.string.credits_community_jem))
-                    }
-                    append(") y en sus memorias frente al paso arrollador de los siglos.")
-                },
+                text =
+                    buildAnnotatedString {
+                        append("A las honorables familias ")
+                        withStyle(SpanStyle(fontWeight = FontWeight.Bold)) {
+                            append(stringResource(Res.string.credits_community_families))
+                        }
+                        append("; y en memoria de don ")
+                        withStyle(SpanStyle(fontStyle = FontStyle.Italic)) {
+                            append(stringResource(Res.string.credits_community_simon))
+                        }
+                        append(
+                            ", cuyas grabaciones nos devolvieron la voz de los ancestros. Ellos " +
+                                "resguardaron el idioma en el calor de los fogones ("
+                        )
+                        withStyle(SpanStyle(fontStyle = FontStyle.Italic)) {
+                            append(stringResource(Res.string.credits_community_tok))
+                        }
+                        append("), en el tejido (")
+                        withStyle(SpanStyle(fontStyle = FontStyle.Italic)) {
+                            append(stringResource(Res.string.credits_community_jem))
+                        }
+                        append(") y en sus memorias frente al paso arrollador de los siglos.")
+                    },
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurface,
                 textAlign = TextAlign.Center,
             )
             Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .background(Color.White.copy(alpha = 0.6f), MaterialTheme.shapes.medium)
-                    .padding(16.dp),
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .background(Color.White.copy(alpha = 0.6f), MaterialTheme.shapes.medium)
+                        .padding(16.dp),
             ) {
                 Text(
-                    text = buildAnnotatedString {
-                        append("Un abrazo fraterno a todos los ")
-                        withStyle(SpanStyle(color = Ocean, fontWeight = FontWeight.SemiBold)) {
-                            append(stringResource(Res.string.credits_community_closing_highlight))
-                        }
-                        append(" que hoy enarbolan la identidad ")
-                        withStyle(SpanStyle(fontStyle = FontStyle.Italic)) {
-                            append(stringResource(Res.string.credits_community_inikuk))
-                        }
-                        append(" y levantan el movimiento ")
-                        withStyle(SpanStyle(fontStyle = FontStyle.Italic)) {
-                            append(stringResource(Res.string.credits_community_neomochica))
-                        }
-                        append(". ¡El idioma vive en ustedes!")
-                    },
+                    text =
+                        buildAnnotatedString {
+                            append("Un abrazo fraterno a todos los ")
+                            withStyle(SpanStyle(color = Ocean, fontWeight = FontWeight.SemiBold)) {
+                                append(stringResource(Res.string.credits_community_closing_highlight))
+                            }
+                            append(" que hoy enarbolan la identidad ")
+                            withStyle(SpanStyle(fontStyle = FontStyle.Italic)) {
+                                append(stringResource(Res.string.credits_community_inikuk))
+                            }
+                            append(" y levantan el movimiento ")
+                            withStyle(SpanStyle(fontStyle = FontStyle.Italic)) {
+                                append(stringResource(Res.string.credits_community_neomochica))
+                            }
+                            append(". ¡El idioma vive en ustedes!")
+                        },
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurface,
                     fontWeight = FontWeight.Bold,

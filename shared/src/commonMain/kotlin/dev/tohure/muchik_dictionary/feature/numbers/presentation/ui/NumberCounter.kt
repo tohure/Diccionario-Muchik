@@ -7,9 +7,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
@@ -42,9 +40,10 @@ fun NumberCounter(
     modifier: Modifier = Modifier,
 ) {
     Column(
-        modifier = modifier
-            .background(Sand.copy(alpha = 0.3f), MaterialTheme.shapes.large)
-            .padding(24.dp),
+        modifier =
+            modifier
+                .background(Sand.copy(alpha = 0.3f), MaterialTheme.shapes.large)
+                .padding(24.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
@@ -107,13 +106,14 @@ private fun CounterButton(
     val fg = if (enabled) color else color.copy(alpha = 0.3f)
 
     Box(
-        modifier = Modifier
-            .size(56.dp)
-            .shadow(if (enabled) 4.dp else 0.dp, CircleShape)
-            .clip(CircleShape)
-            .background(bg)
-            .border(1.dp, fg.copy(alpha = 0.4f), CircleShape)
-            .then(if (enabled) Modifier.clickable(onClick = onClick) else Modifier),
+        modifier =
+            Modifier
+                .size(56.dp)
+                .shadow(if (enabled) 4.dp else 0.dp, CircleShape)
+                .clip(CircleShape)
+                .background(bg)
+                .border(1.dp, fg.copy(alpha = 0.4f), CircleShape)
+                .then(if (enabled) Modifier.clickable(onClick = onClick) else Modifier),
         contentAlignment = Alignment.Center,
     ) {
         Text(

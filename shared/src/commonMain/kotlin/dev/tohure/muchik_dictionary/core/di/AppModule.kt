@@ -7,6 +7,7 @@ import dev.tohure.muchik_dictionary.feature.sync.di.syncModule
 import org.koin.core.module.Module
 import org.koin.dsl.module
 
-fun appModule(platformModule: Module): Module = module {
-    includes(platformModule, dictionaryModule, quizModule, numbersModule, syncModule)
-}
+fun appModule(platformModule: Module): Module =
+    module {
+        includes(platformModule, dictionaryModule, quizModule, numbersModule, syncModule)
+    }

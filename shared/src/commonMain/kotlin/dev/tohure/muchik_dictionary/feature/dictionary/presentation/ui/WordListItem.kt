@@ -19,7 +19,6 @@ import androidx.compose.ui.unit.dp
 import dev.tohure.muchik_dictionary.core.design.DarkClay
 import dev.tohure.muchik_dictionary.core.design.LocalEmojiFontFamily
 import dev.tohure.muchik_dictionary.core.design.Ocean
-import dev.tohure.muchik_dictionary.core.design.Sand
 import dev.tohure.muchik_dictionary.feature.dictionary.domain.model.WordEntry
 import dictionarymuchik.shared.generated.resources.Res
 import dictionarymuchik.shared.generated.resources.dict_header_category
@@ -32,14 +31,14 @@ import org.jetbrains.compose.resources.stringResource
 @Composable
 fun WordListHeader(modifier: Modifier = Modifier) {
     Row(
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(bottom = 8.dp)
-            .background(
-                color = MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.4f),
-                shape = MaterialTheme.shapes.medium
-            )
-            .padding(horizontal = 12.dp, vertical = 12.dp),
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .padding(bottom = 8.dp)
+                .background(
+                    color = MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.4f),
+                    shape = MaterialTheme.shapes.medium
+                ).padding(horizontal = 12.dp, vertical = 12.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Text(
@@ -86,9 +85,10 @@ fun WordListItem(entry: WordEntry, modifier: Modifier = Modifier) {
     val emojiFont = LocalEmojiFontFamily.current
 
     Row(
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(vertical = 10.dp),
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .padding(vertical = 10.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Box(
@@ -120,9 +120,10 @@ fun WordListItem(entry: WordEntry, modifier: Modifier = Modifier) {
         )
 
         Box(
-            modifier = Modifier
-                .weight(1.2f)
-                .padding(end = 8.dp),
+            modifier =
+                Modifier
+                    .weight(1.2f)
+                    .padding(end = 8.dp),
         ) {
             CategoryChip(category = entry.category)
         }

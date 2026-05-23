@@ -37,9 +37,10 @@ fun CategoryDropdown(
             onClick = { expanded = true },
             modifier = Modifier.fillMaxWidth(),
             shape = MaterialTheme.shapes.medium,
-            colors = ButtonDefaults.outlinedButtonColors(
-                contentColor = MaterialTheme.colorScheme.onSurface,
-            ),
+            colors =
+                ButtonDefaults.outlinedButtonColors(
+                    contentColor = MaterialTheme.colorScheme.onSurface,
+                ),
             border = ButtonDefaults.outlinedButtonBorder(enabled = true).copy(width = 1.dp)
         ) {
             Row(

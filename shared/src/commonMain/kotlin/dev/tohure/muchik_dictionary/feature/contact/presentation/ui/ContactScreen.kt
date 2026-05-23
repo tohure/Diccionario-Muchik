@@ -54,11 +54,12 @@ private const val CONTACT_EMAIL = "cr.htorres@gmail.com"
 fun ContactScreen() {
     val uriHandler = LocalUriHandler.current
     Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background)
-            .verticalScroll(rememberScrollState())
-            .padding(16.dp),
+        modifier =
+            Modifier
+                .fillMaxSize()
+                .background(MaterialTheme.colorScheme.background)
+                .verticalScroll(rememberScrollState())
+                .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Spacer(Modifier.height(8.dp))
@@ -92,40 +93,43 @@ fun ContactScreen() {
                 HorizontalDivider(modifier = Modifier.padding(vertical = 4.dp))
 
                 Text(
-                    text = buildAnnotatedString {
-                        append("¡")
-                        withStyle(SpanStyle(fontWeight = FontWeight.Bold)) {
-                            append(stringResource(Res.string.contact_peño_tæsæk))
-                        }
-                        append(stringResource(Res.string.contact_intro1))
-                    },
+                    text =
+                        buildAnnotatedString {
+                            append("¡")
+                            withStyle(SpanStyle(fontWeight = FontWeight.Bold)) {
+                                append(stringResource(Res.string.contact_peño_tæsæk))
+                            }
+                            append(stringResource(Res.string.contact_intro1))
+                        },
                     style = MaterialTheme.typography.bodyLarge,
                     color = MaterialTheme.colorScheme.onSurface,
                     textAlign = TextAlign.Center,
                 )
 
                 Text(
-                    text = buildAnnotatedString {
-                        append(stringResource(Res.string.contact_intro2_pre))
-                        withStyle(SpanStyle(fontWeight = FontWeight.Bold)) {
-                            append(stringResource(Res.string.contact_intro2_phonetics))
-                        }
-                        append(stringResource(Res.string.contact_intro2_mid))
-                        withStyle(SpanStyle(fontWeight = FontWeight.Bold)) {
-                            append(stringResource(Res.string.contact_intro2_category))
-                        }
-                        append(stringResource(Res.string.contact_intro2_post))
-                    },
+                    text =
+                        buildAnnotatedString {
+                            append(stringResource(Res.string.contact_intro2_pre))
+                            withStyle(SpanStyle(fontWeight = FontWeight.Bold)) {
+                                append(stringResource(Res.string.contact_intro2_phonetics))
+                            }
+                            append(stringResource(Res.string.contact_intro2_mid))
+                            withStyle(SpanStyle(fontWeight = FontWeight.Bold)) {
+                                append(stringResource(Res.string.contact_intro2_category))
+                            }
+                            append(stringResource(Res.string.contact_intro2_post))
+                        },
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     textAlign = TextAlign.Center,
                 )
 
                 Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .background(Sand.copy(alpha = 0.5f), MaterialTheme.shapes.large)
-                        .padding(24.dp),
+                    modifier =
+                        Modifier
+                            .fillMaxWidth()
+                            .background(Sand.copy(alpha = 0.5f), MaterialTheme.shapes.large)
+                            .padding(24.dp),
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.spacedBy(16.dp),
                 ) {
@@ -134,19 +138,21 @@ fun ContactScreen() {
                         style = MaterialTheme.typography.labelSmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                         fontWeight = FontWeight.Bold,
-                        letterSpacing = androidx.compose.ui.unit.TextUnit(
-                            value = 1.5f,
-                            type = androidx.compose.ui.unit.TextUnitType.Sp,
-                        ),
+                        letterSpacing =
+                            androidx.compose.ui.unit.TextUnit(
+                                value = 1.5f,
+                                type = androidx.compose.ui.unit.TextUnitType.Sp,
+                            ),
                         textAlign = TextAlign.Center,
                     )
                     Button(
                         onClick = { uriHandler.openUri("mailto:$CONTACT_EMAIL") },
                         shape = CircleShape,
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = DarkClay,
-                            contentColor = MaterialTheme.colorScheme.onPrimary,
-                        ),
+                        colors =
+                            ButtonDefaults.buttonColors(
+                                containerColor = DarkClay,
+                                contentColor = MaterialTheme.colorScheme.onPrimary,
+                            ),
                         modifier = Modifier.widthIn(min = 200.dp),
                     ) {
                         Text(

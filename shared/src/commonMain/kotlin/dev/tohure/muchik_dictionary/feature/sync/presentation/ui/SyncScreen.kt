@@ -48,11 +48,12 @@ fun SyncScreen(
     when (val state = uiState) {
         SyncUiState.Loading -> SyncLoadingContent(modifier)
         SyncUiState.Done -> Unit
-        is SyncUiState.Error -> SyncErrorContent(
-            message = state.message,
-            onRetry = viewModel::retry,
-            modifier = modifier,
-        )
+        is SyncUiState.Error ->
+            SyncErrorContent(
+                message = state.message,
+                onRetry = viewModel::retry,
+                modifier = modifier,
+            )
     }
 }
 

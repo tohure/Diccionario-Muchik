@@ -16,24 +16,26 @@ data class WordEntryEntity(
     val updatedAt: String,
 )
 
-fun WordEntryEntity.toDomain() = WordEntry(
-    id = id,
-    muchikTerm = muchikTerm,
-    spanishTranslation = spanishTranslation,
-    category = category,
-    emoji = emoji,
-    etymologyNote = etymologyNote,
-    sourceReference = sourceReference,
-    updatedAt = updatedAt,
-)
+fun WordEntryEntity.toDomain() =
+    WordEntry(
+        id = id,
+        muchikTerm = muchikTerm,
+        spanishTranslation = spanishTranslation,
+        category = category,
+        emoji = emoji,
+        etymologyNote = etymologyNote,
+        sourceReference = sourceReference,
+        updatedAt = updatedAt,
+    )
 
-fun WordEntry.toEntity() = WordEntryEntity(
-    id = id,
-    muchikTerm = muchikTerm,
-    spanishTranslation = spanishTranslation,
-    category = category,
-    emoji = emoji,
-    etymologyNote = etymologyNote,
-    sourceReference = sourceReference,
-    updatedAt = updatedAt,
-)
+fun WordEntry.toEntity() =
+    WordEntryEntity(
+        id = id,
+        muchikTerm = muchikTerm,
+        spanishTranslation = spanishTranslation,
+        category = category,
+        emoji = emoji,
+        etymologyNote = etymologyNote,
+        sourceReference = sourceReference,
+        updatedAt = updatedAt,
+    )

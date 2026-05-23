@@ -1,4 +1,5 @@
 @file:OptIn(kotlinx.cinterop.ExperimentalForeignApi::class)
+@file:Suppress("ktlint:standard:indent")
 
 package dev.tohure.muchik_dictionary.core.database
 
@@ -12,14 +13,15 @@ import platform.Foundation.NSFileManager
 import platform.Foundation.NSUserDomainMask
 
 fun getDatabaseBuilder(): RoomDatabase.Builder<AppDatabase> {
-    val documentDirectory = NSFileManager.defaultManager.URLForDirectory(
-        directory = NSDocumentDirectory,
-        inDomain = NSUserDomainMask,
-        appropriateForURL = null,
-        create = false,
-        error = null,
-    )
-    val dbPath = requireNotNull(documentDirectory?.path) + "/muchik.db" // NSUserDomainMask siempre provee path válido; null indicaría corrupción del sistema de archivos
+    val documentDirectory =
+        NSFileManager.defaultManager.URLForDirectory(
+            directory = NSDocumentDirectory,
+            inDomain = NSUserDomainMask,
+            appropriateForURL = null,
+            create = false,
+            error = null,
+        )
+    val dbPath = requireNotNull(documentDirectory?.path) + "/muchik.db"
     return Room.databaseBuilder<AppDatabase>(name = dbPath)
 }
 

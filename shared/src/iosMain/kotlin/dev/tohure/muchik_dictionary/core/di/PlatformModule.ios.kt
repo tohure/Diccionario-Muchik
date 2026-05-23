@@ -1,6 +1,7 @@
 // @file:OptIn requerido para NSFileManager y NSDocumentDirectory de platform.Foundation.
 // ExperimentalForeignApi marca la interop C/ObjC como inestable pero es necesaria para iOS.
 @file:OptIn(kotlinx.cinterop.ExperimentalForeignApi::class)
+@file:Suppress("ktlint:standard:indent")
 
 package dev.tohure.muchik_dictionary.core.di
 
@@ -25,26 +26,28 @@ import platform.Foundation.NSDocumentDirectory
 import platform.Foundation.NSFileManager
 import platform.Foundation.NSUserDomainMask
 
-val platformModule: Module = module {
-    single { getRoomDatabase(getDatabaseBuilder()) }
-    single { get<AppDatabase>().dictionaryDao() }
-    single<DictionaryRepository> { RoomDictionaryRepositoryImpl(get()) }
-    single {
-        val documentDirectory = NSFileManager.defaultManager.URLForDirectory(
-            directory = NSDocumentDirectory,
-            inDomain = NSUserDomainMask,
-            appropriateForURL = null,
-            create = false,
-            error = null,
-        )
-        val path = requireNotNull(documentDirectory?.path) + "/muchik_sync.preferences_pb"
-        PreferenceDataStoreFactory.createWithPath(produceFile = { path.toPath() })
-    }
-    single {
-        HttpClient(Darwin) {
-            install(ContentNegotiation) { json(Json { ignoreUnknownKeys = true }) }
+val platformModule: Module =
+    module {
+        single { getRoomDatabase(getDatabaseBuilder()) }
+        single { get<AppDatabase>().dictionaryDao() }
+        single<DictionaryRepository> { RoomDictionaryRepositoryImpl(get()) }
+        single {
+            val documentDirectory =
+                NSFileManager.defaultManager.URLForDirectory(
+                    directory = NSDocumentDirectory,
+                    inDomain = NSUserDomainMask,
+                    appropriateForURL = null,
+                    create = false,
+                    error = null,
+                )
+            val path = requireNotNull(documentDirectory?.path) + "/muchik_sync.preferences_pb"
+            PreferenceDataStoreFactory.createWithPath(produceFile = { path.toPath() })
         }
+        single {
+            HttpClient(Darwin) {
+                install(ContentNegotiation) { json(Json { ignoreUnknownKeys = true }) }
+            }
+        }
+        single { SyncApiService(get()) }
+        single<SyncRepository> { SyncRepositoryImpl(get(), get(), get()) }
     }
-    single { SyncApiService(get()) }
-    single<SyncRepository> { SyncRepositoryImpl(get(), get(), get()) }
-}
