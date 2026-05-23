@@ -64,13 +64,6 @@ kotlin {
     }
 
     sourceSets {
-        // Source set intermedio para android + ios + jvm.
-        // Solo sqlite-bundled permanece aquí (BundledSQLiteDriver, sin equivalente web).
-        // Room 3, Ktor y DataStore ya están en commonMain. jsMain/wasmJsMain no dependen de esto.
-        val mobileDesktopMain by creating {
-            dependsOn(commonMain.get())
-        }
-
         commonMain.dependencies {
             implementation(libs.compose.runtime)
             implementation(libs.compose.foundation)
@@ -91,31 +84,21 @@ kotlin {
             implementation(libs.ktor.serialization.kotlinx.json)
             implementation(libs.datastore.preferences.core)
         }
-        mobileDesktopMain.dependencies {
-            // sqlite-bundled: BundledSQLiteDriver para android/ios/jvmMain (web usa otro driver)
+
+        androidMain.dependencies {
             implementation(libs.androidx.sqlite.bundled)
+            implementation(libs.koin.android)
+            implementation(libs.ktor.client.okhttp)
         }
 
-        androidMain {
-            dependsOn(mobileDesktopMain)
-            dependencies {
-                implementation(libs.koin.android)
-                implementation(libs.ktor.client.okhttp)
-            }
+        iosMain.dependencies {
+            implementation(libs.androidx.sqlite.bundled)
+            implementation(libs.ktor.client.darwin)
         }
 
-        iosMain {
-            dependsOn(mobileDesktopMain)
-            dependencies {
-                implementation(libs.ktor.client.darwin)
-            }
-        }
-
-        jvmMain {
-            dependsOn(mobileDesktopMain)
-            dependencies {
-                implementation(libs.ktor.client.cio)
-            }
+        jvmMain.dependencies {
+            implementation(libs.androidx.sqlite.bundled)
+            implementation(libs.ktor.client.cio)
         }
 
         commonTest.dependencies {
