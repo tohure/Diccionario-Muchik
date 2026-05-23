@@ -32,6 +32,8 @@ ktlint lee reglas desde `.editorconfig`. El proyecto Compose usa `import android
 ```ini
 [*.kt]
 ktlint_standard_no-wildcard-imports = disabled
+ktlint_standard_function-signature = disabled
+ktlint_standard_trailing-comma-on-call-site = disabled
 indent_size = 4
 max_line_length = 120
 ```
@@ -69,6 +71,17 @@ Jobs en secuencia (lint primero, tests solo si lint pasa):
 
 Los dos jobs corren en `ubuntu-latest`. Se usa `gradle/actions/setup-gradle@v4` para el cache de Gradle.
 
+**Jobs en secuencia:**
+
+| Job | Tarea Gradle |
+|---|---|
+| `lint` | `./gradlew ktlintCheck` |
+| `test` | `./gradlew :shared:jvmTest` |
+| `compile-android` | `./gradlew :shared:compileKotlinAndroid` |
+| `compile-ios` | `./gradlew :shared:compileKotlinIosSimulatorArm64` |
+
+`compile-android` y `compile-ios` dependen de `test` (`needs: test`). iOS compila con el toolchain Kotlin disponible en ubuntu (no requiere Xcode — solo verifica el `commonMain` + `iosMain` source sets vía KGP).
+
 ### Iconos de navegación (Material Symbols)
 
 **Fuente**: [fonts.google.com/icons](https://fonts.google.com/icons) — variante **Filled**, tamaño 24dp, óptica 0, peso 400.  
@@ -101,14 +114,33 @@ Los 7 ítems del menú (`Screen.navItems`) y sus iconos asignados:
 </vector>
 ```
 
-**Cambio en `MuchikNavigation.kt`**: eliminar la función `getIconForScreen()` con los `ImageVector.Builder` manuales. Cada `Screen` obtendrá su recurso mediante `screen.iconRes: DrawableResource` añadido directamente a la sealed class `Screen`.
+**Cambio en `Screen.kt`**: introducir `NavScreen` como subtipo de `Screen` que agrega `iconRes`. `Sync` permanece como `Screen` directo (sin icono). `navItems` pasa a retornar `List<NavScreen>`.
 
 ```kotlin
-sealed class Screen(val route: String, val label: String, val iconRes: DrawableResource) {
-    data object Dictionary : Screen("dictionary", "Diccionario", Res.drawable.ic_nav_dictionary)
-    // ...
+sealed class Screen(val route: String, val label: String) {
+    data object Sync : Screen("sync", "Cargando")
+
+    sealed class NavScreen(route: String, label: String, val iconRes: DrawableResource)
+        : Screen(route, label) {
+        data object Dictionary : NavScreen("dictionary", "Diccionario", Res.drawable.ic_nav_dictionary)
+        data object Meaning    : NavScreen("meaning",    "Significado", Res.drawable.ic_nav_meaning)
+        data object Grammar    : NavScreen("grammar",    "Gramática",   Res.drawable.ic_nav_grammar)
+        data object Numbers    : NavScreen("numbers",    "Números",     Res.drawable.ic_nav_numbers)
+        data object Quiz       : NavScreen("quiz",       "Práctica",    Res.drawable.ic_nav_quiz)
+        data object Credits    : NavScreen("credits",    "Créditos",    Res.drawable.ic_nav_credits)
+        data object Contact    : NavScreen("contact",    "Contacto",    Res.drawable.ic_nav_contact)
+    }
+
+    companion object {
+        val navItems: List<NavScreen> get() = listOf(
+            NavScreen.Dictionary, NavScreen.Meaning, NavScreen.Grammar,
+            NavScreen.Numbers, NavScreen.Quiz, NavScreen.Credits, NavScreen.Contact
+        )
+    }
 }
 ```
+
+**Cambio en `MuchikNavigation.kt`**: reemplazar el tipo `Screen` por `NavScreen` en las firmas de `onNavigate` y en los `forEach`. Eliminar `getIconForScreen()`. Usar `screen.iconRes` directamente con `painterResource(screen.iconRes)`.
 
 ---
 
@@ -127,6 +159,17 @@ T009  Commit final de prueba → hook corre ktlintCheck → push → CI verde
 ```
 
 T001–T006 no tienen dependencias entre sí excepto que T003 debe ir después de T002 (para que el formato respete el `.editorconfig`). T007–T009 son independientes de los anteriores y pueden hacerse en cualquier momento posterior a T001.
+
+---
+
+## Clarifications
+
+### Session 2026-05-22
+
+- Q: ¿El CI debe compilar targets nativos además de correr JVM tests? → A: Sí — jobs adicionales para `:shared:compileKotlinAndroid` y `:shared:compileKotlinIosSimulatorArm64` en secuencia tras `test`.
+- Q: ¿Cómo manejar `iconRes` en `Screen.Sync` (que no es ítem de menú)? → A: Extraer `NavScreen` como subtipo de `Screen`; solo los 7 ítems de navegación extienden `NavScreen` y tienen `iconRes: DrawableResource`. `Sync` permanece como `Screen` directo sin `iconRes`.
+- Q: ¿Qué reglas ktlint adicionales deshabilitar en `.editorconfig` para minimizar el diff de formato? → A: Deshabilitar `function-signature` y `trailing-comma-on-call-site` además de `no-wildcard-imports`.
+- Q: ¿Un commit o varios para el diff de `ktlintFormat`? → A: Un solo commit atómico — `style: aplicar formato ktlint`.
 
 ---
 
