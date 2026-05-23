@@ -1,6 +1,6 @@
 # Quickstart: Diccionario Muchik KMP
 
-**Branch**: `001-migracion-kmp` | **Date**: 2026-05-20
+**Branch**: `001-migracion-kmp` | **Date**: 2026-05-22
 
 ---
 
@@ -30,10 +30,10 @@
    ```properties
    sdk.dir=/Users/<user>/Library/Android/sdk
    SUPABASE_URL=https://<project>.supabase.co
-   SUPABASE_ANON_KEY=<tu-anon-key>
+   SUPABASE_PUBLISHABLE_KEY=<tu-anon-key>
    ```
 
-   > Sin estas claves, la app funciona en modo offline usando el corpus bundleado.
+   > Sin estas claves, la app funciona en modo offline usando el corpus bundleado (414 entradas).
 
 ---
 
@@ -75,8 +75,14 @@ Luego abrir `iosApp/iosApp.xcodeproj` en Xcode y ejecutar en simulador.
 
 ## Etapa 2 — Base de datos local (Room)
 
-Sin configuración adicional. Room se inicializa automáticamente al abrir la app.
-El corpus se carga del JSON bundleado si `SYNC_COMPLETED` es false.
+Sin configuración adicional. Room 3 (androidx.room3) se inicializa automáticamente.
+
+**Flujo de primer arranque:**
+- Si `dao.count() == 0` (primera apertura): la app muestra `SyncScreen` con spinner.
+  - Con red: descarga el corpus completo desde Supabase y persiste en Room.
+  - Sin red: carga el corpus estático bundleado (414 entradas) desde `StaticDictionaryDataSource`.
+- Aperturas posteriores: datos locales disponibles de inmediato (`SyncResult.HasLocalData`).
+  El delta-sync se ejecuta en segundo plano y actualiza entradas con `updated_at > last_sync_at`.
 
 Verificar que la BD se creó correctamente:
 
@@ -92,10 +98,10 @@ adb shell run-as dev.tohure.muchik_dictionary ls databases/
 
 Con las credenciales configuradas en `local.properties`:
 
-1. Abrir la app por primera vez → pantalla de loading descarga el corpus completo.
-2. En aperturas posteriores → datos locales, sin llamadas de red.
-3. Presionar "Actualizar fuentes" en cualquier pantalla → descarga entradas con
-   `updated_at > LAST_SYNC_DATE`.
+1. Abrir la app por primera vez → `SyncScreen` descarga el corpus completo de Supabase.
+2. En aperturas posteriores → datos locales disponibles sin esperar red.
+3. Presionar el botón **↻** en la pantalla de Diccionario → descarga entradas con
+   `updated_at > last_sync_at` (delta-sync).
 
 ---
 
@@ -127,6 +133,21 @@ Con las credenciales configuradas en `local.properties`:
 ```bash
 ./gradlew clean build
 ```
+
+---
+
+## Stack de dependencias clave (commonMain)
+
+| Librería | Versión | Nota |
+|----------|---------|------|
+| Room 3 | `3.0.0-alpha05` | `androidx.room3.*`; FTS5; esquema v2 |
+| DataStore Preferences | `1.3.0-alpha09` | Soporte JS/WASM desde alpha01 |
+| Ktor Client Core | `3.5.0` | Engine por plataforma: OkHttp/Darwin/CIO/JS |
+| Koin | `4.2.1` | DI compartido + `koin-compose-viewmodel` |
+| Compose Multiplatform | `1.11.0` | Material3 `1.11.0-alpha07` |
+| Kotlin | `2.3.21` | KSP `2.3.8` |
+
+`mobileDesktopMain` (intermedio android/ios/jvm): solo `sqlite-bundled` + `EmojiFont.kt`.
 
 ---
 
