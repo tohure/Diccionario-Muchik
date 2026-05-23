@@ -11,12 +11,9 @@ import dev.tohure.muchik_dictionary.feature.sync.data.remote.SyncApiService
 import dev.tohure.muchik_dictionary.feature.sync.data.remote.toEntity
 import dev.tohure.muchik_dictionary.feature.sync.domain.repository.SyncRepository
 import dev.tohure.muchik_dictionary.feature.sync.domain.repository.SyncResult
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.IO
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOn
 
 private val LAST_SYNC_KEY = stringPreferencesKey("last_sync_at")
 
@@ -63,7 +60,7 @@ class SyncRepositoryImpl(
             }
             // Si hay datos locales, ignoramos el error (offline-first)
         }
-    }.flowOn(Dispatchers.IO)
+    }
 
     override fun deltaSyncFlow(): Flow<SyncResult> = flow {
         emit(SyncResult.Syncing)
@@ -78,5 +75,5 @@ class SyncRepositoryImpl(
         } catch (e: Exception) {
             emit(SyncResult.Error(e.message ?: "Error de red"))
         }
-    }.flowOn(Dispatchers.IO)
+    }
 }
