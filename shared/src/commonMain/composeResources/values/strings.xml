@@ -107,6 +107,9 @@
     <string name="sync_error_title">No se pudo cargar el diccionario</string>
     <string name="sync_retry_button">Reintentar</string>
 
+    <!-- Diccionario — detalle -->
+    <string name="dict_source_label">Fuente:</string>
+
     <!-- Accesibilidad -->
     <string name="a11y_loading_dictionary">Cargando diccionario</string>
     <string name="a11y_loading_quiz">Cargando pregunta</string>
