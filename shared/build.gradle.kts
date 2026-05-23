@@ -65,7 +65,7 @@ kotlin {
 
     sourceSets {
         // Source set intermedio para android + ios + jvm.
-        // Ktor y DataStore aún no tienen implementaciones JS/WASM; Room 3 ya está en commonMain.
+        // DataStore no tiene soporte web; Room 3 y Ktor-core ya están en commonMain.
         // jsMain y wasmJsMain no dependen de este conjunto.
         val mobileDesktopMain by creating {
             dependsOn(commonMain.get())
@@ -86,12 +86,12 @@ kotlin {
             implementation(libs.navigation.compose)
             implementation(libs.kotlinx.serialization.json)
             implementation(libs.androidx.room3.runtime)
-        }
-        mobileDesktopMain.dependencies {
-            implementation(libs.androidx.sqlite.bundled)
             implementation(libs.ktor.client.core)
             implementation(libs.ktor.client.content.negotiation)
             implementation(libs.ktor.serialization.kotlinx.json)
+        }
+        mobileDesktopMain.dependencies {
+            implementation(libs.androidx.sqlite.bundled)
             implementation(libs.datastore.preferences.core)
         }
 
@@ -124,6 +124,11 @@ kotlin {
 
         jsMain.dependencies {
             implementation(libs.wrappers.browser)
+            implementation(libs.ktor.client.js)
+        }
+
+        wasmJsMain.dependencies {
+            implementation(libs.ktor.client.cio)
         }
     }
 }
