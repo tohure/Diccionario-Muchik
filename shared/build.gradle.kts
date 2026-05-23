@@ -27,9 +27,6 @@ fun secret(envKey: String, propKey: String = envKey): String =
         .get()
 
 kotlin {
-    // Genera source sets intermedios estándar de KMP (iosMain, nativeMain, appleMain, etc.).
-    // Sin esto, iosMain.get() no existe y el dependsOn de mobileDesktopMain falla.
-    applyDefaultHierarchyTemplate()
 
     android {
         namespace = "dev.tohure.muchik_dictionary.shared"
@@ -53,10 +50,6 @@ kotlin {
     }
 
     jvm()
-
-    js {
-        browser()
-    }
 
     @OptIn(ExperimentalWasmDsl::class)
     wasmJs {
@@ -106,13 +99,8 @@ kotlin {
             implementation(libs.kotlinx.coroutines.test)
         }
 
-        jsMain.dependencies {
-            implementation(libs.wrappers.browser)
-            implementation(libs.ktor.client.js)
-        }
-
         wasmJsMain.dependencies {
-            implementation(libs.ktor.client.cio)
+            implementation(libs.ktor.client.js)
         }
     }
 }
