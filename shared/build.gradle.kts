@@ -27,6 +27,9 @@ fun secret(envKey: String, propKey: String = envKey): String =
         .get()
 
 kotlin {
+    compilerOptions {
+        freeCompilerArgs.add("-Xexpect-actual-classes")
+    }
 
     android {
         namespace = "dev.tohure.muchik_dictionary.shared"
