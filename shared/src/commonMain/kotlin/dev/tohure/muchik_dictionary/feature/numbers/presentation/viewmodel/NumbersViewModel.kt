@@ -8,7 +8,6 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 
 class NumbersViewModel : ViewModel() {
-
     private val _uiState = MutableStateFlow(NumbersUiState())
     val uiState: StateFlow<NumbersUiState> = _uiState.asStateFlow()
 

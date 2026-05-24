@@ -23,16 +23,21 @@ import org.jetbrains.compose.resources.stringResource
 fun EmptyStateView(query: String, modifier: Modifier = Modifier) {
     val emojiFont = LocalEmojiFontFamily.current
     Column(
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(48.dp),
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .padding(48.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
     ) {
         Text(text = "🏺", fontSize = 64.sp, fontFamily = emojiFont)
         Text(
-            text = if (query.isNotBlank()) stringResource(Res.string.dict_empty_no_results, query)
-                   else stringResource(Res.string.dict_empty_empty),
+            text =
+                if (query.isNotBlank()) {
+                    stringResource(Res.string.dict_empty_no_results, query)
+                } else {
+                    stringResource(Res.string.dict_empty_empty)
+                },
             style = MaterialTheme.typography.titleMedium,
             textAlign = TextAlign.Center,
             modifier = Modifier.padding(top = 16.dp),

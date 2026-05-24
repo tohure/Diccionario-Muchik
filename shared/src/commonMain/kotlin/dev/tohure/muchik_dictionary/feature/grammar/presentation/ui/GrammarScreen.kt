@@ -48,9 +48,10 @@ private val OCEAN_DARK = Color(0xFF1E3A8A)
 @Composable
 fun GrammarScreen() {
     LazyColumn(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background),
+        modifier =
+            Modifier
+                .fillMaxSize()
+                .background(MaterialTheme.colorScheme.background),
         contentPadding = PaddingValues(16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
@@ -69,9 +70,10 @@ fun GrammarScreen() {
 @Composable
 private fun GrammarHeader() {
     Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 8.dp),
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .padding(vertical = 8.dp),
     ) {
         Text(
             text = stringResource(Res.string.grammar_title),
@@ -91,15 +93,20 @@ private fun GrammarHeader() {
 
 @Composable
 private fun Block1WordFormation() {
-    data class SuffixEntry(val suffix: String, val label: String, val examples: String)
-
-    val suffixes = listOf(
-        SuffixEntry("-uk", "Sufijo Locativo — lugar", "apuk (aula), siaduk (cama)"),
-        SuffixEntry("-ik", "Sufijo Instrumental — objeto usado", "apik (útiles), akik (lentes)"),
-        SuffixEntry("-(a)pæk", "Sufijo Agente — quien realiza la acción", "apapæk (estudiante)"),
-        SuffixEntry("-ko + pæk", "Agente Causativo — quien hace que otro actúe", "apkopæk (profesor)"),
-        SuffixEntry("-(i)sæk", "Sufijo de Resultado", "læmisæk (la muerte), apisæk (la lección)"),
+    data class SuffixEntry(
+        val suffix: String,
+        val label: String,
+        val examples: String,
     )
+
+    val suffixes =
+        listOf(
+            SuffixEntry("-uk", "Sufijo Locativo — lugar", "apuk (aula), siaduk (cama)"),
+            SuffixEntry("-ik", "Sufijo Instrumental — objeto usado", "apik (útiles), akik (lentes)"),
+            SuffixEntry("-(a)pæk", "Sufijo Agente — quien realiza la acción", "apapæk (estudiante)"),
+            SuffixEntry("-ko + pæk", "Agente Causativo — quien hace que otro actúe", "apkopæk (profesor)"),
+            SuffixEntry("-(i)sæk", "Sufijo de Resultado", "læmisæk (la muerte), apisæk (la lección)"),
+        )
 
     GrammarBlockCard(title = stringResource(Res.string.grammar_block1_title)) {
         Text(
@@ -127,20 +134,22 @@ private fun SuffixItem(suffix: String, label: String, examples: String) {
             style = MaterialTheme.typography.labelSmall,
             fontWeight = FontWeight.Bold,
             color = DarkClay,
-            modifier = Modifier
-                .clip(RoundedCornerShape(4.dp))
-                .background(Sand.copy(alpha = 0.35f))
-                .border(1.dp, DarkClay.copy(alpha = 0.25f), RoundedCornerShape(4.dp))
-                .padding(horizontal = 6.dp, vertical = 2.dp),
+            modifier =
+                Modifier
+                    .clip(RoundedCornerShape(4.dp))
+                    .background(Sand.copy(alpha = 0.35f))
+                    .border(1.dp, DarkClay.copy(alpha = 0.25f), RoundedCornerShape(4.dp))
+                    .padding(horizontal = 6.dp, vertical = 2.dp),
         )
         Text(
-            text = buildAnnotatedString {
-                append(label)
-                append(". ")
-                withStyle(SpanStyle(fontStyle = FontStyle.Italic, color = Clay)) {
-                    append(examples)
-                }
-            },
+            text =
+                buildAnnotatedString {
+                    append(label)
+                    append(". ")
+                    withStyle(SpanStyle(fontStyle = FontStyle.Italic, color = Clay)) {
+                        append(examples)
+                    }
+                },
             style = MaterialTheme.typography.bodySmall,
             modifier = Modifier.weight(1f),
         )
@@ -149,25 +158,31 @@ private fun SuffixItem(suffix: String, label: String, examples: String) {
 
 @Composable
 private fun Block2Greetings() {
-    data class Greeting(val muchik: String, val spanish: String, val highlight: Boolean = false)
-
-    val greetings = listOf(
-        Greeting("¡Peño ænæm!", "¡Buenos días!"),
-        Greeting("¡Peño nerræm!", "¡Buenas tardes!"),
-        Greeting("¡Peño ciamo!", "¡Buena vida / Salud!", highlight = true),
-        Greeting("¡Peño Tæsæk!", "¡Bienvenidos!"),
-        Greeting("Loktopan / Loktopanchi", "Adiós (singular / plural)"),
+    data class Greeting(
+        val muchik: String,
+        val spanish: String,
+        val highlight: Boolean = false,
     )
+
+    val greetings =
+        listOf(
+            Greeting("¡Peño ænæm!", "¡Buenos días!"),
+            Greeting("¡Peño nerræm!", "¡Buenas tardes!"),
+            Greeting("¡Peño ciamo!", "¡Buena vida / Salud!", highlight = true),
+            Greeting("¡Peño Tæsæk!", "¡Bienvenidos!"),
+            Greeting("Loktopan / Loktopanchi", "Adiós (singular / plural)"),
+        )
 
     GrammarBlockCard(title = stringResource(Res.string.grammar_block2_title)) {
         Text(
-            text = buildAnnotatedString {
-                append("Para buenos deseos se usa la raíz ")
-                withStyle(SpanStyle(fontWeight = FontWeight.Bold)) { append("Peñ") }
-                append(" (bueno) unida al sufijo conector ")
-                withStyle(SpanStyle(fontWeight = FontWeight.Bold)) { append("-o") }
-                append(":")
-            },
+            text =
+                buildAnnotatedString {
+                    append("Para buenos deseos se usa la raíz ")
+                    withStyle(SpanStyle(fontWeight = FontWeight.Bold)) { append("Peñ") }
+                    append(" (bueno) unida al sufijo conector ")
+                    withStyle(SpanStyle(fontWeight = FontWeight.Bold)) { append("-o") }
+                    append(":")
+                },
             style = MaterialTheme.typography.bodySmall,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
@@ -186,12 +201,13 @@ private fun GreetingRow(muchik: String, spanish: String, highlight: Boolean) {
     val textColor = if (highlight) Color(0xFF065F46) else MaterialTheme.colorScheme.onSurface
 
     Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clip(RoundedCornerShape(6.dp))
-            .background(bgColor)
-            .border(1.dp, borderColor, RoundedCornerShape(6.dp))
-            .padding(horizontal = 12.dp, vertical = 8.dp),
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .clip(RoundedCornerShape(6.dp))
+                .background(bgColor)
+                .border(1.dp, borderColor, RoundedCornerShape(6.dp))
+                .padding(horizontal = 12.dp, vertical = 8.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
     ) {
         Text(
@@ -211,26 +227,32 @@ private fun GreetingRow(muchik: String, spanish: String, highlight: Boolean) {
 
 @Composable
 private fun Block3Postpositions() {
-    data class Postposition(val word: String, val meaning: String, val example: String)
-
-    val items = listOf(
-        Postposition("nik", "Dentro / En", "An nik — En la casa"),
-        Postposition("cápæc", "Encima", "Mesa cápæc — Sobre la mesa"),
-        Postposition("ssecen", "Debajo", "Hon ssecen — Debajo del árbol"),
-        Postposition("lucæc", "Entre", "Fær lucæc — Entre la tierra"),
-        Postposition("tot", "Con (animado)", "Ef tot — Junto con el padre"),
-        Postposition("fæiñ", "Con (objeto)", "Tonic fæiñ — Con la piedra"),
+    data class Postposition(
+        val word: String,
+        val meaning: String,
+        val example: String,
     )
+
+    val items =
+        listOf(
+            Postposition("nik", "Dentro / En", "An nik — En la casa"),
+            Postposition("cápæc", "Encima", "Mesa cápæc — Sobre la mesa"),
+            Postposition("ssecen", "Debajo", "Hon ssecen — Debajo del árbol"),
+            Postposition("lucæc", "Entre", "Fær lucæc — Entre la tierra"),
+            Postposition("tot", "Con (animado)", "Ef tot — Junto con el padre"),
+            Postposition("fæiñ", "Con (objeto)", "Tonic fæiñ — Con la piedra"),
+        )
 
     GrammarBlockCard(title = stringResource(Res.string.grammar_block3_title)) {
         Text(
-            text = buildAnnotatedString {
-                append("El Muchik usa ")
-                withStyle(SpanStyle(fontWeight = FontWeight.Bold)) { append("posposiciones") }
-                append(" (van ")
-                withStyle(SpanStyle(fontStyle = FontStyle.Italic)) { append("después") }
-                append(" del sustantivo) para indicar ubicación:")
-            },
+            text =
+                buildAnnotatedString {
+                    append("El Muchik usa ")
+                    withStyle(SpanStyle(fontWeight = FontWeight.Bold)) { append("posposiciones") }
+                    append(" (van ")
+                    withStyle(SpanStyle(fontStyle = FontStyle.Italic)) { append("después") }
+                    append(" del sustantivo) para indicar ubicación:")
+                },
             style = MaterialTheme.typography.bodySmall,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
@@ -246,11 +268,12 @@ private fun Block3Postpositions() {
                     style = MaterialTheme.typography.bodySmall,
                     fontWeight = FontWeight.Bold,
                     color = DarkClay,
-                    modifier = Modifier
-                        .clip(RoundedCornerShape(4.dp))
-                        .background(Sand.copy(alpha = 0.35f))
-                        .border(1.dp, DarkClay.copy(alpha = 0.25f), RoundedCornerShape(4.dp))
-                        .padding(horizontal = 6.dp, vertical = 2.dp),
+                    modifier =
+                        Modifier
+                            .clip(RoundedCornerShape(4.dp))
+                            .background(Sand.copy(alpha = 0.35f))
+                            .border(1.dp, DarkClay.copy(alpha = 0.25f), RoundedCornerShape(4.dp))
+                            .padding(horizontal = 6.dp, vertical = 2.dp),
                 )
                 Text(
                     text = item.meaning,
@@ -275,11 +298,12 @@ private fun Block3Postpositions() {
 private fun Block4VerbConjugation() {
     GrammarBlockCard(title = stringResource(Res.string.grammar_block4_title)) {
         Text(
-            text = buildAnnotatedString {
-                append("La marca de persona se engancha ")
-                withStyle(SpanStyle(fontWeight = FontWeight.Bold)) { append("a la primera palabra") }
-                append(" de la frase. Ejemplo con el verbo \"Estar bien\" (Peñ chi):")
-            },
+            text =
+                buildAnnotatedString {
+                    append("La marca de persona se engancha ")
+                    withStyle(SpanStyle(fontWeight = FontWeight.Bold)) { append("a la primera palabra") }
+                    append(" de la frase. Ejemplo con el verbo \"Estar bien\" (Peñ chi):")
+                },
             style = MaterialTheme.typography.bodySmall,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
@@ -292,13 +316,14 @@ private fun Block4VerbConjugation() {
 private fun Block5Syntax() {
     GrammarBlockCard(title = stringResource(Res.string.grammar_block5_title)) {
         Text(
-            text = buildAnnotatedString {
-                append("En Muchik ")
-                withStyle(SpanStyle(fontWeight = FontWeight.Bold)) {
-                    append("el adjetivo siempre precede al sustantivo")
-                }
-                append(". Regla de oro para armar frases descriptivas:")
-            },
+            text =
+                buildAnnotatedString {
+                    append("En Muchik ")
+                    withStyle(SpanStyle(fontWeight = FontWeight.Bold)) {
+                        append("el adjetivo siempre precede al sustantivo")
+                    }
+                    append(". Regla de oro para armar frases descriptivas:")
+                },
             style = MaterialTheme.typography.bodySmall,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
@@ -333,12 +358,13 @@ private fun SyntaxExampleBox(
     resultColor: Color,
 ) {
     Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clip(RoundedCornerShape(8.dp))
-            .background(bgColor)
-            .border(1.dp, borderColor, RoundedCornerShape(8.dp))
-            .padding(12.dp),
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .clip(RoundedCornerShape(8.dp))
+                .background(bgColor)
+                .border(1.dp, borderColor, RoundedCornerShape(8.dp))
+                .padding(12.dp),
     ) {
         Text(
             text = label,
@@ -348,15 +374,16 @@ private fun SyntaxExampleBox(
         )
         Spacer(Modifier.height(6.dp))
         Text(
-            text = buildAnnotatedString {
-                parts.forEachIndexed { index, (muchik, spanish) ->
-                    withStyle(SpanStyle(fontWeight = FontWeight.Bold)) { append(muchik) }
-                    append(" (")
-                    withStyle(SpanStyle(color = MaterialTheme.colorScheme.onSurfaceVariant)) { append(spanish) }
-                    append(")")
-                    if (index < parts.size - 1) append("  +  ")
-                }
-            },
+            text =
+                buildAnnotatedString {
+                    parts.forEachIndexed { index, (muchik, spanish) ->
+                        withStyle(SpanStyle(fontWeight = FontWeight.Bold)) { append(muchik) }
+                        append(" (")
+                        withStyle(SpanStyle(color = MaterialTheme.colorScheme.onSurfaceVariant)) { append(spanish) }
+                        append(")")
+                        if (index < parts.size - 1) append("  +  ")
+                    }
+                },
             style = MaterialTheme.typography.bodySmall,
         )
         Spacer(Modifier.height(6.dp))
@@ -378,9 +405,10 @@ private fun Block6InalienablePossession() {
         titleColor = DarkClay,
     ) {
         Text(
-            text = "Las partes del cuerpo y los miembros de la familia son \"inalienables\": " +
-                "siempre deben ir acompañadas de un posesivo, porque una \"mano\" no existe " +
-                "separada de un cuerpo, ni una \"madre\" sin un hijo.",
+            text =
+                "Las partes del cuerpo y los miembros de la familia son \"inalienables\": " +
+                    "siempre deben ir acompañadas de un posesivo, porque una \"mano\" no existe " +
+                    "separada de un cuerpo, ni una \"madre\" sin un hijo.",
             style = MaterialTheme.typography.bodySmall,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
@@ -412,12 +440,13 @@ private fun PossessionBox(
     borderColor: Color,
 ) {
     Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clip(RoundedCornerShape(6.dp))
-            .background(bgColor)
-            .border(1.dp, borderColor, RoundedCornerShape(6.dp))
-            .padding(12.dp),
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .clip(RoundedCornerShape(6.dp))
+                .background(bgColor)
+                .border(1.dp, borderColor, RoundedCornerShape(6.dp))
+                .padding(12.dp),
     ) {
         Text(
             text = label,
@@ -453,24 +482,26 @@ private fun Block7Loanwords() {
         ) {
             LoanwordBox(
                 title = "Contacto con el Quechua",
-                content = buildAnnotatedString {
-                    append("La palabra quechua ")
-                    withStyle(SpanStyle(fontStyle = FontStyle.Italic)) { append("'wakcha'") }
-                    append(" (pobre/huérfano) fue adoptada y moldeada hasta convertirse en el adjetivo ")
-                    withStyle(SpanStyle(fontWeight = FontWeight.Bold)) { append("Faccia") }
-                    append(".")
-                },
+                content =
+                    buildAnnotatedString {
+                        append("La palabra quechua ")
+                        withStyle(SpanStyle(fontStyle = FontStyle.Italic)) { append("'wakcha'") }
+                        append(" (pobre/huérfano) fue adoptada y moldeada hasta convertirse en el adjetivo ")
+                        withStyle(SpanStyle(fontWeight = FontWeight.Bold)) { append("Faccia") }
+                        append(".")
+                    },
                 modifier = Modifier.weight(1f),
             )
             LoanwordBox(
                 title = "Contacto con el Español",
-                content = buildAnnotatedString {
-                    append("El modismo onomatopéyico ")
-                    withStyle(SpanStyle(fontStyle = FontStyle.Italic)) { append("'michi'") }
-                    append(" para llamar a los felinos fue asimilado al fonetismo local como ")
-                    withStyle(SpanStyle(fontWeight = FontWeight.Bold)) { append("Miss") }
-                    append(" (Gato).")
-                },
+                content =
+                    buildAnnotatedString {
+                        append("El modismo onomatopéyico ")
+                        withStyle(SpanStyle(fontStyle = FontStyle.Italic)) { append("'michi'") }
+                        append(" para llamar a los felinos fue asimilado al fonetismo local como ")
+                        withStyle(SpanStyle(fontWeight = FontWeight.Bold)) { append("Miss") }
+                        append(" (Gato).")
+                    },
                 modifier = Modifier.weight(1f),
             )
         }
@@ -484,11 +515,12 @@ private fun LoanwordBox(
     modifier: Modifier = Modifier,
 ) {
     Column(
-        modifier = modifier
-            .clip(RoundedCornerShape(6.dp))
-            .background(Color.White)
-            .border(1.dp, Color(0xFFBFDBFE), RoundedCornerShape(6.dp))
-            .padding(12.dp),
+        modifier =
+            modifier
+                .clip(RoundedCornerShape(6.dp))
+                .background(Color.White)
+                .border(1.dp, Color(0xFFBFDBFE), RoundedCornerShape(6.dp))
+                .padding(12.dp),
     ) {
         Text(
             text = title,

@@ -4,6 +4,7 @@ import dev.tohure.muchik_dictionary.feature.numbers.presentation.viewmodel.Numbe
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 
-val numbersModule = module {
-    viewModel { NumbersViewModel() }
-}
+val numbersModule =
+    module {
+        viewModel { NumbersViewModel() }
+    }

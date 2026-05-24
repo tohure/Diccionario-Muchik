@@ -28,6 +28,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -36,8 +38,9 @@ import dev.tohure.muchik_dictionary.core.design.Clay
 import dev.tohure.muchik_dictionary.core.design.DarkClay
 import dev.tohure.muchik_dictionary.core.design.LocalEmojiFontFamily
 import dev.tohure.muchik_dictionary.core.design.Ocean
-import androidx.compose.ui.semantics.contentDescription
-import androidx.compose.ui.semantics.semantics
+import dev.tohure.muchik_dictionary.feature.quiz.domain.model.QuizQuestion
+import dev.tohure.muchik_dictionary.feature.quiz.presentation.state.QuizUiState
+import dev.tohure.muchik_dictionary.feature.quiz.presentation.viewmodel.QuizViewModel
 import dictionarymuchik.shared.generated.resources.Res
 import dictionarymuchik.shared.generated.resources.a11y_loading_quiz
 import dictionarymuchik.shared.generated.resources.quiz_correct
@@ -46,9 +49,6 @@ import dictionarymuchik.shared.generated.resources.quiz_next_button
 import dictionarymuchik.shared.generated.resources.quiz_score_label
 import dictionarymuchik.shared.generated.resources.quiz_term_label
 import org.jetbrains.compose.resources.stringResource
-import dev.tohure.muchik_dictionary.feature.quiz.domain.model.QuizQuestion
-import dev.tohure.muchik_dictionary.feature.quiz.presentation.state.QuizUiState
-import dev.tohure.muchik_dictionary.feature.quiz.presentation.viewmodel.QuizViewModel
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
@@ -69,10 +69,11 @@ private fun QuizContent(
     onNextQuestion: () -> Unit,
 ) {
     Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background)
-            .verticalScroll(rememberScrollState()),
+        modifier =
+            Modifier
+                .fillMaxSize()
+                .background(MaterialTheme.colorScheme.background)
+                .verticalScroll(rememberScrollState()),
     ) {
         QuizHeader(
             question = state.question,
@@ -86,13 +87,14 @@ private fun QuizContent(
             if (state.isLoading || state.question == null) {
                 repeat(4) {
                     Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(56.dp)
-                            .background(
-                                MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.4f),
-                                RoundedCornerShape(12.dp),
-                            ),
+                        modifier =
+                            Modifier
+                                .fillMaxWidth()
+                                .height(56.dp)
+                                .background(
+                                    MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.4f),
+                                    RoundedCornerShape(12.dp),
+                                ),
                     )
                 }
             } else {
@@ -136,10 +138,11 @@ private fun QuizHeader(
     val loadingDesc = stringResource(Res.string.a11y_loading_quiz)
 
     Box(
-        modifier = modifier
-            .fillMaxWidth()
-            .background(Brush.horizontalGradient(listOf(DarkClay, Clay)))
-            .padding(24.dp),
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .background(Brush.horizontalGradient(listOf(DarkClay, Clay)))
+                .padding(24.dp),
     ) {
         if (!isLoading && question != null && question.emoji.isNotBlank()) {
             Text(
@@ -153,9 +156,10 @@ private fun QuizHeader(
 
         Column {
             Box(
-                modifier = Modifier
-                    .background(Color.Black.copy(alpha = 0.20f), RoundedCornerShape(20.dp))
-                    .padding(horizontal = 12.dp, vertical = 4.dp),
+                modifier =
+                    Modifier
+                        .background(Color.Black.copy(alpha = 0.20f), RoundedCornerShape(20.dp))
+                        .padding(horizontal = 12.dp, vertical = 4.dp),
             ) {
                 Text(
                     text = stringResource(Res.string.quiz_term_label),
@@ -195,11 +199,12 @@ private fun QuizFeedback(
     val textColor = if (isCorrect) Color(0xFF065F46) else Color(0xFF991B1B)
 
     Column(
-        modifier = modifier
-            .fillMaxWidth()
-            .background(bgColor, RoundedCornerShape(12.dp))
-            .border(1.dp, borderColor, RoundedCornerShape(12.dp))
-            .padding(16.dp),
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .background(bgColor, RoundedCornerShape(12.dp))
+                .border(1.dp, borderColor, RoundedCornerShape(12.dp))
+                .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         if (isCorrect) {
@@ -236,10 +241,11 @@ private fun QuizFooter(
     modifier: Modifier = Modifier,
 ) {
     Row(
-        modifier = modifier
-            .fillMaxWidth()
-            .background(MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f))
-            .padding(horizontal = 20.dp, vertical = 16.dp),
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .background(MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f))
+                .padding(horizontal = 20.dp, vertical = 16.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween,
     ) {
@@ -253,10 +259,11 @@ private fun QuizFooter(
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
             Box(
-                modifier = Modifier
-                    .background(Color(0xFFCCFBF1), CircleShape)
-                    .border(1.dp, Color(0xFF99F6E4), CircleShape)
-                    .padding(horizontal = 14.dp, vertical = 4.dp),
+                modifier =
+                    Modifier
+                        .background(Color(0xFFCCFBF1), CircleShape)
+                        .border(1.dp, Color(0xFF99F6E4), CircleShape)
+                        .padding(horizontal = 14.dp, vertical = 4.dp),
             ) {
                 Text(
                     text = score.toString(),

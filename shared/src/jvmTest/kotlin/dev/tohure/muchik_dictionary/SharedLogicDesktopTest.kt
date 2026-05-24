@@ -11,7 +11,6 @@ import kotlin.test.assertTrue
 // Tests que corren únicamente en el target JVM (Desktop). Complementan commonTest
 // verificando que el código compartido funciona correctamente en el entorno JVM.
 class SharedLogicDesktopTest {
-
     private val repository = DictionaryRepositoryImpl()
 
     @Test

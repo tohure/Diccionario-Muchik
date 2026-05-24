@@ -17,7 +17,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -38,10 +37,13 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dev.tohure.muchik_dictionary.core.design.Clay
 import dev.tohure.muchik_dictionary.core.design.DarkClay
-import dev.tohure.muchik_dictionary.core.design.Gold
 import dev.tohure.muchik_dictionary.core.design.Ocean
 import dev.tohure.muchik_dictionary.core.design.OceanContainer
 import dev.tohure.muchik_dictionary.core.design.Sand
+import dev.tohure.muchik_dictionary.feature.numbers.domain.model.NumberEntry
+import dev.tohure.muchik_dictionary.feature.numbers.domain.model.NumeralClassifier
+import dev.tohure.muchik_dictionary.feature.numbers.presentation.state.NumbersUiState
+import dev.tohure.muchik_dictionary.feature.numbers.presentation.viewmodel.NumbersViewModel
 import dictionarymuchik.shared.generated.resources.Res
 import dictionarymuchik.shared.generated.resources.numbers_age_example
 import dictionarymuchik.shared.generated.resources.numbers_age_note
@@ -57,10 +59,6 @@ import dictionarymuchik.shared.generated.resources.numbers_reference_title
 import dictionarymuchik.shared.generated.resources.numbers_subtitle
 import dictionarymuchik.shared.generated.resources.numbers_title
 import org.jetbrains.compose.resources.stringResource
-import dev.tohure.muchik_dictionary.feature.numbers.domain.model.NumeralClassifier
-import dev.tohure.muchik_dictionary.feature.numbers.domain.model.NumberEntry
-import dev.tohure.muchik_dictionary.feature.numbers.presentation.state.NumbersUiState
-import dev.tohure.muchik_dictionary.feature.numbers.presentation.viewmodel.NumbersViewModel
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
@@ -196,10 +194,11 @@ private fun NumbersHeader() {
 @Composable
 private fun FormulaBar() {
     Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .background(Color(0xFF1E1E2E), MaterialTheme.shapes.medium)
-            .padding(16.dp),
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .background(Color(0xFF1E1E2E), MaterialTheme.shapes.medium)
+                .padding(16.dp),
     ) {
         Text(
             text = stringResource(Res.string.numbers_formula_label),
@@ -239,10 +238,11 @@ private fun FormulaToken(text: String, color: Color) {
 @Composable
 private fun PrefixesCard(modifier: Modifier = Modifier) {
     Column(
-        modifier = modifier
-            .background(Color(0xFFFFFBEB), MaterialTheme.shapes.medium)
-            .border(1.dp, Color(0xFFFDE68A), MaterialTheme.shapes.medium)
-            .padding(16.dp),
+        modifier =
+            modifier
+                .background(Color(0xFFFFFBEB), MaterialTheme.shapes.medium)
+                .border(1.dp, Color(0xFFFDE68A), MaterialTheme.shapes.medium)
+                .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
         Text(
@@ -251,13 +251,19 @@ private fun PrefixesCard(modifier: Modifier = Modifier) {
             fontWeight = FontWeight.SemiBold,
             color = DarkClay,
         )
-        val prefixes = listOf(
-            "Na-" to "10", "Tzhaxlltzha-" to "60",
-            "Pac-" to "20", "Ñite-" to "70",
-            "Çoc-" to "30", "Langæss-" to "80",
-            "Noc-" to "40", "Tap-" to "90",
-            "Exllmætzh-" to "50", "" to "",
-        )
+        val prefixes =
+            listOf(
+                "Na-" to "10",
+                "Tzhaxlltzha-" to "60",
+                "Pac-" to "20",
+                "Ñite-" to "70",
+                "Çoc-" to "30",
+                "Langæss-" to "80",
+                "Noc-" to "40",
+                "Tap-" to "90",
+                "Exllmætzh-" to "50",
+                "" to "",
+            )
         prefixes.chunked(2).forEach { pair ->
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -294,10 +300,11 @@ private fun PrefixesCard(modifier: Modifier = Modifier) {
 @Composable
 private fun AgeApplicationCard(modifier: Modifier = Modifier) {
     Column(
-        modifier = modifier
-            .background(OceanContainer.copy(alpha = 0.3f), MaterialTheme.shapes.medium)
-            .border(1.dp, Ocean.copy(alpha = 0.3f), MaterialTheme.shapes.medium)
-            .padding(16.dp),
+        modifier =
+            modifier
+                .background(OceanContainer.copy(alpha = 0.3f), MaterialTheme.shapes.medium)
+                .border(1.dp, Ocean.copy(alpha = 0.3f), MaterialTheme.shapes.medium)
+                .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
         Text(
@@ -339,11 +346,12 @@ private fun AgeApplicationCard(modifier: Modifier = Modifier) {
 @Composable
 private fun PracticalExampleCard() {
     Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .background(Color(0xFFFFFBEB), MaterialTheme.shapes.medium)
-            .border(1.dp, Color(0xFFFDE68A), MaterialTheme.shapes.medium)
-            .padding(16.dp),
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .background(Color(0xFFFFFBEB), MaterialTheme.shapes.medium)
+                .border(1.dp, Color(0xFFFDE68A), MaterialTheme.shapes.medium)
+                .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp),
     ) {
         Text(
@@ -358,13 +366,29 @@ private fun PracticalExampleCard() {
             verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
             ExampleBlock("Na", "Prefijo\n(10)", Color(0xFFFDE68A))
-            Text("+", color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.align(Alignment.CenterVertically))
+            Text(
+                "+",
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                modifier = Modifier.align(Alignment.CenterVertically)
+            )
             ExampleBlock("pong", "Clasificador\n(Personas)", Color(0xFFFDE68A))
-            Text("+", color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.align(Alignment.CenterVertically))
+            Text(
+                "+",
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                modifier = Modifier.align(Alignment.CenterVertically)
+            )
             ExampleBlock("allo", "Conector", null)
-            Text("+", color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.align(Alignment.CenterVertically))
+            Text(
+                "+",
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                modifier = Modifier.align(Alignment.CenterVertically)
+            )
             ExampleBlock("atput", "Unidad\n(2)", OceanContainer)
-            Text("+", color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.align(Alignment.CenterVertically))
+            Text(
+                "+",
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                modifier = Modifier.align(Alignment.CenterVertically)
+            )
             ExampleBlock("ñofæn", "Sustantivo\n(Hombre)", null)
         }
         Text(
@@ -381,13 +405,13 @@ private fun PracticalExampleCard() {
 private fun ExampleBlock(term: String, label: String, highlight: Color?) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier
-            .background(
-                highlight ?: MaterialTheme.colorScheme.surface,
-                MaterialTheme.shapes.small,
-            )
-            .border(1.dp, MaterialTheme.colorScheme.outlineVariant, MaterialTheme.shapes.small)
-            .padding(horizontal = 8.dp, vertical = 6.dp),
+        modifier =
+            Modifier
+                .background(
+                    highlight ?: MaterialTheme.colorScheme.surface,
+                    MaterialTheme.shapes.small,
+                ).border(1.dp, MaterialTheme.colorScheme.outlineVariant, MaterialTheme.shapes.small)
+                .padding(horizontal = 8.dp, vertical = 6.dp),
     ) {
         Text(
             text = term,
@@ -415,10 +439,11 @@ private fun CounterSection(
     modifier: Modifier = Modifier,
 ) {
     Column(
-        modifier = modifier
-            .background(MaterialTheme.colorScheme.surface, MaterialTheme.shapes.large)
-            .border(1.dp, MaterialTheme.colorScheme.outlineVariant, MaterialTheme.shapes.large)
-            .padding(16.dp),
+        modifier =
+            modifier
+                .background(MaterialTheme.colorScheme.surface, MaterialTheme.shapes.large)
+                .border(1.dp, MaterialTheme.colorScheme.outlineVariant, MaterialTheme.shapes.large)
+                .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp),
     ) {
         SectionTitle("Unidades Básicas (Práctica)")
@@ -441,9 +466,10 @@ private fun NumberReferenceList(
     modifier: Modifier = Modifier,
 ) {
     Column(
-        modifier = modifier
-            .background(MaterialTheme.colorScheme.surface, MaterialTheme.shapes.large)
-            .border(1.dp, MaterialTheme.colorScheme.outlineVariant, MaterialTheme.shapes.large),
+        modifier =
+            modifier
+                .background(MaterialTheme.colorScheme.surface, MaterialTheme.shapes.large)
+                .border(1.dp, MaterialTheme.colorScheme.outlineVariant, MaterialTheme.shapes.large),
     ) {
         // Header fijo (no scrollea)
         Text(
@@ -457,10 +483,11 @@ private fun NumberReferenceList(
 
         // Lista completa con scroll interno
         Column(
-            modifier = Modifier
-                .heightIn(max = 450.dp)
-                .verticalScroll(rememberScrollState())
-                .padding(horizontal = 16.dp, vertical = 8.dp),
+            modifier =
+                Modifier
+                    .heightIn(max = 450.dp)
+                    .verticalScroll(rememberScrollState())
+                    .padding(horizontal = 16.dp, vertical = 8.dp),
             verticalArrangement = Arrangement.spacedBy(0.dp),
         ) {
             numbers.forEachIndexed { index, entry ->
@@ -504,16 +531,18 @@ private fun ReferenceRow(
     val classifierHorizontal = isClassifier && isWide
 
     Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 8.dp),
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .padding(vertical = 8.dp),
         horizontalArrangement = Arrangement.spacedBy(12.dp),
         verticalAlignment = if (classifierHorizontal || !isClassifier) Alignment.CenterVertically else Alignment.Top,
     ) {
         Box(
-            modifier = Modifier
-                .background(Sand.copy(alpha = 0.8f), MaterialTheme.shapes.small)
-                .padding(horizontal = 8.dp, vertical = 4.dp),
+            modifier =
+                Modifier
+                    .background(Sand.copy(alpha = 0.8f), MaterialTheme.shapes.small)
+                    .padding(horizontal = 8.dp, vertical = 4.dp),
             contentAlignment = Alignment.Center,
         ) {
             Text(
@@ -552,12 +581,12 @@ private fun ReferenceRow(
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 fontStyle = FontStyle.Italic,
-                modifier = Modifier
-                    .background(
-                        MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.6f),
-                        MaterialTheme.shapes.small,
-                    )
-                    .padding(horizontal = 6.dp, vertical = 2.dp),
+                modifier =
+                    Modifier
+                        .background(
+                            MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.6f),
+                            MaterialTheme.shapes.small,
+                        ).padding(horizontal = 6.dp, vertical = 2.dp),
             )
         }
     }

@@ -9,4 +9,20 @@ plugins {
     alias(libs.plugins.kotlinMultiplatform) apply false
     alias(libs.plugins.kotlinSerialization) apply false
     alias(libs.plugins.buildkonfig) apply false
+    alias(libs.plugins.ktlint) apply false
+}
+
+subprojects {
+    apply(plugin = "org.jlleitschuh.gradle.ktlint")
+}
+
+tasks.register("setupGitHooks") {
+    notCompatibleWithConfigurationCache("One-time developer setup task")
+    doLast {
+        ProcessBuilder("git", "config", "core.hooksPath", ".githooks")
+            .directory(rootProject.projectDir)
+            .inheritIO()
+            .start()
+            .waitFor()
+    }
 }

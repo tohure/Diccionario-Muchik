@@ -30,7 +30,6 @@ class DictionaryViewModel(
     private val getCategoryCounts: GetCategoryCountsUseCase,
     private val syncRepository: SyncRepository,
 ) : ViewModel() {
-
     private val _uiState = MutableStateFlow(DictionaryUiState())
     val uiState: StateFlow<DictionaryUiState> = _uiState.asStateFlow()
 
@@ -55,14 +54,15 @@ class DictionaryViewModel(
         combine(queryFlow.debounce(150), categoryFlow) { query, category -> query to category }
             .flatMapLatest { (query, category) ->
                 searchWords(query).map { entries ->
-                    if (category == WordCategory.ALL) entries
-                    else entries.filter { it.category == category.displayName }
+                    if (category == WordCategory.ALL) {
+                        entries
+                    } else {
+                        entries.filter { it.category == category.displayName }
+                    }
                 }
-            }
-            .onEach { filtered ->
+            }.onEach { filtered ->
                 _uiState.update { it.copy(isLoading = false, entries = filtered, errorMessage = null) }
-            }
-            .launchIn(viewModelScope)
+            }.launchIn(viewModelScope)
     }
 
     fun onQueryChange(query: String) {
@@ -78,8 +78,12 @@ class DictionaryViewModel(
     fun onViewModeToggle() {
         _uiState.update {
             it.copy(
-                viewMode = if (it.viewMode == DictionaryViewMode.CARDS) DictionaryViewMode.LIST
-                    else DictionaryViewMode.CARDS
+                viewMode =
+                    if (it.viewMode == DictionaryViewMode.CARDS) {
+                        DictionaryViewMode.LIST
+                    } else {
+                        DictionaryViewMode.CARDS
+                    }
             )
         }
     }
@@ -87,18 +91,29 @@ class DictionaryViewModel(
     fun triggerDeltaSync() {
         if (_uiState.value.isSyncing) return
         viewModelScope.launch {
-            syncRepository.deltaSyncFlow()
+            syncRepository
+                .deltaSyncFlow()
                 .catch { _uiState.update { it.copy(isSyncing = false, syncMessage = "Error de red") } }
                 .collect { result ->
                     when (result) {
                         SyncResult.Syncing -> _uiState.update { it.copy(isSyncing = true) }
                         is SyncResult.Done -> {
-                            val msg = if (result.newEntries > 0) "${result.newEntries} términos actualizados"
-                                      else "Ya estás al día"
+                            val msg =
+                                if (result.newEntries > 0) {
+                                    "${result.newEntries} términos actualizados"
+                                } else {
+                                    "Ya estás al día"
+                                }
                             _uiState.update { it.copy(isSyncing = false, syncMessage = msg) }
                             loadCategoryCounts()
                         }
-                        is SyncResult.Error -> _uiState.update { it.copy(isSyncing = false, syncMessage = "Error de red") }
+                        is SyncResult.Error ->
+                            _uiState.update {
+                                it.copy(
+                                    isSyncing = false,
+                                    syncMessage = "Error de red"
+                                )
+                            }
                         else -> Unit
                     }
                 }

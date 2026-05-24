@@ -8,7 +8,6 @@ import kotlinx.coroutines.flow.flowOf
 // Implementación en memoria sobre STATIC_ENTRIES. Usada por web (js/wasmJs) y tests.
 // Android, iOS y Desktop usan RoomDictionaryRepositoryImpl vía platformModule.
 class DictionaryRepositoryImpl : DictionaryRepository {
-
     private val allEntries: List<WordEntry> = STATIC_ENTRIES
 
     override fun observeAll(): Flow<List<WordEntry>> =
@@ -18,11 +17,12 @@ class DictionaryRepositoryImpl : DictionaryRepository {
         if (query.isBlank()) return observeAll()
         val q = query.trim().lowercase()
         return flowOf(
-            allEntries.filter { entry ->
-                entry.muchikTerm.lowercase().contains(q) ||
-                    entry.spanishTranslation.lowercase().contains(q) ||
-                    entry.etymologyNote.lowercase().contains(q)
-            }.sortedBy { it.muchikTerm }
+            allEntries
+                .filter { entry ->
+                    entry.muchikTerm.lowercase().contains(q) ||
+                        entry.spanishTranslation.lowercase().contains(q) ||
+                        entry.etymologyNote.lowercase().contains(q)
+                }.sortedBy { it.muchikTerm }
         )
     }
 

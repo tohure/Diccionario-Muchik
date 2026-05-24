@@ -38,7 +38,10 @@ fun DonutChart(
 ) {
     if (categoryCounts.isEmpty()) return
 
-    val total = categoryCounts.values.sum().coerceAtLeast(1).toFloat() // evita división por cero en los ángulos de arco
+    val total = categoryCounts.values
+        .sum()
+        .coerceAtLeast(1)
+        .toFloat() // evita división por cero en los ángulos de arco
     val entries = categoryCounts.entries.sortedByDescending { it.value }
     val surfaceColor = MaterialTheme.colorScheme.surface
 
@@ -88,7 +91,7 @@ private fun ChartCanvas(
     entries: List<Map.Entry<String, Int>>,
     total: Float,
     surfaceColor: Color,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Canvas(modifier = modifier) {
         val diameter = minOf(size.width, size.height)
@@ -127,9 +130,10 @@ private fun LegendItem(category: String, modifier: Modifier = Modifier) {
         modifier = modifier.padding(vertical = 2.dp),
     ) {
         Box(
-            modifier = Modifier
-                .size(12.dp)
-                .background(categoryColor(category), RoundedCornerShape(3.dp)),
+            modifier =
+                Modifier
+                    .size(12.dp)
+                    .background(categoryColor(category), RoundedCornerShape(3.dp)),
         )
         Text(
             text = category,

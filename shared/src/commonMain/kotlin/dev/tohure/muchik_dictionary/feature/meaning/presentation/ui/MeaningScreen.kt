@@ -38,10 +38,12 @@ fun MeaningScreen() {
     BoxWithConstraints(modifier = Modifier.fillMaxSize()) {
         val isWide = maxWidth > 600.dp
         LazyColumn(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(MaterialTheme.colorScheme.background),
-            contentPadding = androidx.compose.foundation.layout.PaddingValues(16.dp),
+            modifier =
+                Modifier
+                    .fillMaxSize()
+                    .background(MaterialTheme.colorScheme.background),
+            contentPadding = androidx.compose.foundation.layout
+                .PaddingValues(16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
             item { ScreenHeader() }
@@ -72,8 +74,9 @@ private fun ScreenHeader() {
 @Composable
 private fun IntroText() {
     Text(
-        text = "A menudo usamos las palabras \"Mochica\", \"Muchik\" o \"Yunga\" como sinónimos, " +
-            "pero históricamente tienen orígenes, pesos y significados muy distintos.",
+        text =
+            "A menudo usamos las palabras \"Mochica\", \"Muchik\" o \"Yunga\" como sinónimos, " +
+                "pero históricamente tienen orígenes, pesos y significados muy distintos.",
         style = MaterialTheme.typography.bodyLarge,
         color = Clay,
         fontWeight = FontWeight.Medium,
@@ -118,19 +121,24 @@ private fun YungaCard(modifier: Modifier = Modifier) {
                 modifier = Modifier.padding(bottom = 12.dp),
             )
             Text(
-                text = buildAnnotatedString {
-                    append("Cuando los Incas y luego los españoles llegaron a la costa norte del Perú, " +
-                        "llamaron al idioma y a la gente ")
-                    withStyle(SpanStyle(fontWeight = FontWeight.Bold)) { append("\"Yunga\"") }
-                    append(". Sin embargo, esta no es una palabra de nuestro idioma. Es una palabra en ")
-                    withStyle(SpanStyle(fontWeight = FontWeight.Bold)) { append("Quechua") }
-                    append(" (")
-                    withStyle(SpanStyle(fontStyle = FontStyle.Italic)) { append("Yunka") }
-                    append(") que significa \"valle cálido\" o \"tierra de clima caliente\". Era un nombre " +
-                        "geográfico impuesto desde afuera: ")
-                    withStyle(SpanStyle(fontStyle = FontStyle.Italic)) { append("los que viven en el calor") }
-                    append(".")
-                },
+                text =
+                    buildAnnotatedString {
+                        append(
+                            "Cuando los Incas y luego los españoles llegaron a la costa norte del Perú, " +
+                                "llamaron al idioma y a la gente "
+                        )
+                        withStyle(SpanStyle(fontWeight = FontWeight.Bold)) { append("\"Yunga\"") }
+                        append(". Sin embargo, esta no es una palabra de nuestro idioma. Es una palabra en ")
+                        withStyle(SpanStyle(fontWeight = FontWeight.Bold)) { append("Quechua") }
+                        append(" (")
+                        withStyle(SpanStyle(fontStyle = FontStyle.Italic)) { append("Yunka") }
+                        append(
+                            ") que significa \"valle cálido\" o \"tierra de clima caliente\". Era un nombre " +
+                                "geográfico impuesto desde afuera: "
+                        )
+                        withStyle(SpanStyle(fontStyle = FontStyle.Italic)) { append("los que viven en el calor") }
+                        append(".")
+                    },
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurface,
             )
@@ -156,15 +164,19 @@ private fun MochicaCard(modifier: Modifier = Modifier) {
                 modifier = Modifier.padding(bottom = 12.dp),
             )
             Text(
-                text = buildAnnotatedString {
-                    append("Cuando los colonos españoles se asentaron en la región, les costaba pronunciar " +
-                        "los sonidos exactos de los nativos. Escuchaban el término originario \"Muchik\" y lo " +
-                        "asociaron rápidamente al nombre del valle principal que hoy conocemos como ")
-                    withStyle(SpanStyle(fontWeight = FontWeight.Bold)) { append("Moche") }
-                    append(". Al castellanizar la palabra, le añadieron la \"a\" al final, creando el término ")
-                    withStyle(SpanStyle(fontWeight = FontWeight.Bold)) { append("\"Mochica\"") }
-                    append(".")
-                },
+                text =
+                    buildAnnotatedString {
+                        append(
+                            "Cuando los colonos españoles se asentaron en la región, les costaba pronunciar " +
+                                "los sonidos exactos de los nativos. Escuchaban " +
+                                "el término originario \"Muchik\" y lo " +
+                                "asociaron rápidamente al nombre del valle principal que hoy conocemos como "
+                        )
+                        withStyle(SpanStyle(fontWeight = FontWeight.Bold)) { append("Moche") }
+                        append(". Al castellanizar la palabra, le añadieron la \"a\" al final, creando el término ")
+                        withStyle(SpanStyle(fontWeight = FontWeight.Bold)) { append("\"Mochica\"") }
+                        append(".")
+                    },
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurface,
             )
@@ -175,9 +187,10 @@ private fun MochicaCard(modifier: Modifier = Modifier) {
 @Composable
 private fun EtymologyCard(isWide: Boolean) {
     ElevatedCard(
-        modifier = Modifier
-            .fillMaxWidth()
-            .border(2.dp, Gold, MaterialTheme.shapes.large),
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .border(2.dp, Gold, MaterialTheme.shapes.large),
         colors = CardDefaults.elevatedCardColors(containerColor = MaterialTheme.colorScheme.surface),
         elevation = CardDefaults.elevatedCardElevation(defaultElevation = 3.dp),
         shape = MaterialTheme.shapes.large,
@@ -195,13 +208,16 @@ private fun EtymologyCard(isWide: Boolean) {
                 modifier = Modifier.padding(bottom = 12.dp),
             )
             Text(
-                text = buildAnnotatedString {
-                    withStyle(SpanStyle(fontWeight = FontWeight.Bold)) { append("\"Muchik\"") }
-                    append(" es cómo los propios hablantes originarios llamaban a su lengua y a su cultura. " +
-                        "Según los análisis lingüísticos de documentos históricos (como la Lista del Cónsul " +
-                        "Montjoy de 1865 y los registros de F. de la Carrera de 1644), la palabra se compone " +
-                        "de una raíz y un sufijo sumamente reveladores:")
-                },
+                text =
+                    buildAnnotatedString {
+                        withStyle(SpanStyle(fontWeight = FontWeight.Bold)) { append("\"Muchik\"") }
+                        append(
+                            " es cómo los propios hablantes originarios llamaban a su lengua y a su cultura. " +
+                                "Según los análisis lingüísticos de documentos históricos (como la Lista del Cónsul " +
+                                "Montjoy de 1865 y los registros de F. de la Carrera de 1644), la palabra se compone " +
+                                "de una raíz y un sufijo sumamente reveladores:"
+                        )
+                    },
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 textAlign = TextAlign.Center,
@@ -215,7 +231,12 @@ private fun EtymologyCard(isWide: Boolean) {
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
                     RootBox(modifier = Modifier.weight(1f, fill = false))
-                    Text(text = "+", style = MaterialTheme.typography.displaySmall, color = MaterialTheme.colorScheme.outlineVariant, fontWeight = FontWeight.Bold)
+                    Text(
+                        text = "+",
+                        style = MaterialTheme.typography.displaySmall,
+                        color = MaterialTheme.colorScheme.outlineVariant,
+                        fontWeight = FontWeight.Bold
+                    )
                     SuffixBox(modifier = Modifier.weight(1f, fill = false))
                 }
             } else {
@@ -225,7 +246,12 @@ private fun EtymologyCard(isWide: Boolean) {
                     horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
                     RootBox(modifier = Modifier.fillMaxWidth())
-                    Text(text = "+", style = MaterialTheme.typography.titleLarge, color = MaterialTheme.colorScheme.outlineVariant, fontWeight = FontWeight.Bold)
+                    Text(
+                        text = "+",
+                        style = MaterialTheme.typography.titleLarge,
+                        color = MaterialTheme.colorScheme.outlineVariant,
+                        fontWeight = FontWeight.Bold
+                    )
                     SuffixBox(modifier = Modifier.fillMaxWidth())
                 }
             }
@@ -233,14 +259,16 @@ private fun EtymologyCard(isWide: Boolean) {
             Spacer(Modifier.height(20.dp))
 
             Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .background(Sand.copy(alpha = 0.4f), MaterialTheme.shapes.medium)
-                    .padding(16.dp),
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .background(Sand.copy(alpha = 0.4f), MaterialTheme.shapes.medium)
+                        .padding(16.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 Text(
-                    text = "Al unir estas piezas, el consenso de los investigadores nos revela que \"Muchik\" significa literal y poéticamente:",
+                    text = "Al unir estas piezas, el consenso de los investigadores " +
+                        "nos revela que \"Muchik\" significa literal y poéticamente:",
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     textAlign = TextAlign.Center,
@@ -268,10 +296,11 @@ private fun EtymologyCard(isWide: Boolean) {
 @Composable
 private fun RootBox(modifier: Modifier = Modifier) {
     Column(
-        modifier = modifier
-            .background(Sand.copy(alpha = 0.5f), MaterialTheme.shapes.medium)
-            .border(1.dp, Sand, MaterialTheme.shapes.medium)
-            .padding(horizontal = 20.dp, vertical = 16.dp),
+        modifier =
+            modifier
+                .background(Sand.copy(alpha = 0.5f), MaterialTheme.shapes.medium)
+                .border(1.dp, Sand, MaterialTheme.shapes.medium)
+                .padding(horizontal = 20.dp, vertical = 16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Text(
@@ -285,7 +314,8 @@ private fun RootBox(modifier: Modifier = Modifier) {
             text = "LA RAÍZ: \"NOSOTROS\"",
             style = MaterialTheme.typography.labelSmall,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
-            letterSpacing = androidx.compose.ui.unit.TextUnit(2f, androidx.compose.ui.unit.TextUnitType.Sp),
+            letterSpacing = androidx.compose.ui.unit
+                .TextUnit(2f, androidx.compose.ui.unit.TextUnitType.Sp),
             textAlign = TextAlign.Center,
         )
     }
@@ -294,10 +324,11 @@ private fun RootBox(modifier: Modifier = Modifier) {
 @Composable
 private fun SuffixBox(modifier: Modifier = Modifier) {
     Column(
-        modifier = modifier
-            .background(Sand.copy(alpha = 0.5f), MaterialTheme.shapes.medium)
-            .border(1.dp, Sand, MaterialTheme.shapes.medium)
-            .padding(horizontal = 20.dp, vertical = 16.dp),
+        modifier =
+            modifier
+                .background(Sand.copy(alpha = 0.5f), MaterialTheme.shapes.medium)
+                .border(1.dp, Sand, MaterialTheme.shapes.medium)
+                .padding(horizontal = 20.dp, vertical = 16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Text(
@@ -311,7 +342,8 @@ private fun SuffixBox(modifier: Modifier = Modifier) {
             text = "EL SUFIJO: \"PERTENENCIA\"",
             style = MaterialTheme.typography.labelSmall,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
-            letterSpacing = androidx.compose.ui.unit.TextUnit(2f, androidx.compose.ui.unit.TextUnitType.Sp),
+            letterSpacing = androidx.compose.ui.unit
+                .TextUnit(2f, androidx.compose.ui.unit.TextUnitType.Sp),
             textAlign = TextAlign.Center,
         )
     }
@@ -320,14 +352,16 @@ private fun SuffixBox(modifier: Modifier = Modifier) {
 @Composable
 private fun IdentityQuote() {
     Text(
-        text = "Decir \"Yo hablo Muchik\" es, en la mente de nuestros ancestros, " +
-            "una forma de decir: \"Yo hablo lo nuestro\". Una declaración eterna de identidad.",
+        text =
+            "Decir \"Yo hablo Muchik\" es, en la mente de nuestros ancestros, " +
+                "una forma de decir: \"Yo hablo lo nuestro\". Una declaración eterna de identidad.",
         style = MaterialTheme.typography.bodyMedium,
         color = MaterialTheme.colorScheme.onSurfaceVariant,
         fontStyle = FontStyle.Italic,
         textAlign = TextAlign.Center,
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 8.dp),
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp, vertical = 8.dp),
     )
 }

@@ -11,8 +11,9 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
 
-class SyncViewModel(private val syncRepository: SyncRepository) : ViewModel() {
-
+class SyncViewModel(
+    private val syncRepository: SyncRepository,
+) : ViewModel() {
     private val _uiState = MutableStateFlow<SyncUiState>(SyncUiState.Loading)
     val uiState: StateFlow<SyncUiState> = _uiState.asStateFlow()
 
@@ -23,7 +24,8 @@ class SyncViewModel(private val syncRepository: SyncRepository) : ViewModel() {
     private fun startSync() {
         _uiState.value = SyncUiState.Loading
         viewModelScope.launch {
-            syncRepository.syncFlow()
+            syncRepository
+                .syncFlow()
                 .catch { e -> _uiState.value = SyncUiState.Error(e.message ?: "Error de sincronización") }
                 .collect { result ->
                     when (result) {

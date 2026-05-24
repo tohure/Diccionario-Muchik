@@ -23,7 +23,10 @@ dependencies {
 
 android {
     namespace = "dev.tohure.muchik_dictionary"
-    compileSdk = libs.versions.android.compileSdk.get().toInt()
+    compileSdk =
+        libs.versions.android.compileSdk
+            .get()
+            .toInt()
 
     // WORKAROUND: el plugin `com.android.kotlin.multiplatform.library` (experimental de Google) no
     // engacha automáticamente con el pipeline de recursos de Compose Multiplatform (JetBrains).
@@ -31,13 +34,21 @@ android {
     // no los copia al APK en este setup. Se elimina cuando alguno de los dos plugins resuelva
     // la integración nativa
     sourceSets.getByName("main").assets.srcDir(
-        "${project(":shared").layout.buildDirectory.get()}/generated/compose/resourceGenerator/assembledResources/jvmMain"
+        "${project(
+            ":shared"
+        ).layout.buildDirectory.get()}/generated/compose/resourceGenerator/assembledResources/jvmMain"
     )
 
     defaultConfig {
         applicationId = "dev.tohure.muchik_dictionary"
-        minSdk = libs.versions.android.minSdk.get().toInt()
-        targetSdk = libs.versions.android.targetSdk.get().toInt()
+        minSdk =
+            libs.versions.android.minSdk
+                .get()
+                .toInt()
+        targetSdk =
+            libs.versions.android.targetSdk
+                .get()
+                .toInt()
         versionCode = 1
         versionName = "1.0"
     }

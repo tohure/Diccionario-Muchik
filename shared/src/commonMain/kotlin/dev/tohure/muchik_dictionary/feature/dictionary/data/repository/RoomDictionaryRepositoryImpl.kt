@@ -1,16 +1,17 @@
 package dev.tohure.muchik_dictionary.feature.dictionary.data.repository
 
 import dev.tohure.muchik_dictionary.core.database.DictionaryDao
-import dev.tohure.muchik_dictionary.core.database.toEntity
 import dev.tohure.muchik_dictionary.core.database.toDomain
+import dev.tohure.muchik_dictionary.core.database.toEntity
 import dev.tohure.muchik_dictionary.feature.dictionary.domain.model.WordEntry
 import dev.tohure.muchik_dictionary.feature.dictionary.domain.repository.DictionaryRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 
-class RoomDictionaryRepositoryImpl(private val dao: DictionaryDao) : DictionaryRepository {
-
+class RoomDictionaryRepositoryImpl(
+    private val dao: DictionaryDao,
+) : DictionaryRepository {
     private var seeded = false
 
     private suspend fun ensureSeeded() {
@@ -20,10 +21,11 @@ class RoomDictionaryRepositoryImpl(private val dao: DictionaryDao) : DictionaryR
         seeded = true
     }
 
-    override fun observeAll(): Flow<List<WordEntry>> = flow {
-        ensureSeeded()
-        dao.observeAll().collect { emit(it.map { e -> e.toDomain() }) }
-    }
+    override fun observeAll(): Flow<List<WordEntry>> =
+        flow {
+            ensureSeeded()
+            dao.observeAll().collect { emit(it.map { e -> e.toDomain() }) }
+        }
 
     override fun search(query: String): Flow<List<WordEntry>> {
         if (query.isBlank()) return observeAll()

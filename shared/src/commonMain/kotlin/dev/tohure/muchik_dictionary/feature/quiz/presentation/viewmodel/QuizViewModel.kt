@@ -13,7 +13,6 @@ import kotlinx.coroutines.launch
 class QuizViewModel(
     private val generateQuestion: GenerateQuizQuestionUseCase,
 ) : ViewModel() {
-
     private val _uiState = MutableStateFlow(QuizUiState())
     val uiState: StateFlow<QuizUiState> = _uiState.asStateFlow()
 

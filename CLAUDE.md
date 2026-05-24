@@ -1,6 +1,3 @@
-For additional context about technologies to be used, project structure,
-shell commands, and other important information, read the current plan at:
-specs/001-migracion-kmp/plan.md
 # Project: Muchik Dictionary KMP
 
 You are an AI Assistant operating in the development environment of a Software Architect. Your primary goal is to help build and maintain the Muchik Dictionary using Kotlin Multiplatform (KMP) and Compose Multiplatform (CMP).

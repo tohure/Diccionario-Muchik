@@ -1,6 +1,8 @@
 package dev.tohure.muchik_dictionary.feature.dictionary.domain.model
 
-enum class WordCategory(val displayName: String) {
+enum class WordCategory(
+    val displayName: String,
+) {
     ALL("Categorías"),
     EDUCACION("Educación"),
     EXPRESIONES("Expresiones"),
@@ -17,7 +19,8 @@ enum class WordCategory(val displayName: String) {
     OBJETOS("Objetos"),
     ADJETIVOS("Adjetivos"),
     VERBOS("Verbos"),
-    NUMEROS("Números");
+    NUMEROS("Números"),
+    ;
 
     companion object {
         fun fromString(value: String): WordCategory =

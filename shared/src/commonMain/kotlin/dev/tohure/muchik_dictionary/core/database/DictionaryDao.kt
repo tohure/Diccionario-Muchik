@@ -17,10 +17,12 @@ interface DictionaryDao {
     @Query("SELECT * FROM word_entry WHERE category = :category ORDER BY muchikTerm ASC")
     fun observeByCategory(category: String): Flow<List<WordEntryEntity>>
 
-    @Query("""SELECT word_entry.* FROM word_entry
+    @Query(
+        """SELECT word_entry.* FROM word_entry
         INNER JOIN word_entry_fts ON word_entry.rowid = word_entry_fts.rowid
         WHERE word_entry_fts MATCH :query
-        ORDER BY word_entry.muchikTerm ASC""")
+        ORDER BY word_entry.muchikTerm ASC"""
+    )
     fun searchFts(query: String): Flow<List<WordEntryEntity>>
 
     @Query("SELECT COUNT(*) FROM word_entry")
@@ -30,4 +32,7 @@ interface DictionaryDao {
     suspend fun getCategoryCounts(): List<CategoryCount>
 }
 
-data class CategoryCount(val category: String, val cnt: Int)
+data class CategoryCount(
+    val category: String,
+    val cnt: Int,
+)

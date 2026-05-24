@@ -1,5 +1,6 @@
 package dev.tohure.muchik_dictionary.feature.dictionary.presentation.ui
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
@@ -10,6 +11,7 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.MenuDefaults
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -22,6 +24,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import dev.tohure.muchik_dictionary.core.design.ClayLight
+import dev.tohure.muchik_dictionary.core.design.DarkClay
 import dev.tohure.muchik_dictionary.feature.dictionary.domain.model.WordCategory
 
 @Composable
@@ -37,10 +41,11 @@ fun CategoryDropdown(
             onClick = { expanded = true },
             modifier = Modifier.fillMaxWidth(),
             shape = MaterialTheme.shapes.medium,
-            colors = ButtonDefaults.outlinedButtonColors(
-                contentColor = MaterialTheme.colorScheme.onSurface,
-            ),
-            border = ButtonDefaults.outlinedButtonBorder(enabled = true).copy(width = 1.dp)
+            colors =
+                ButtonDefaults.outlinedButtonColors(
+                    contentColor = DarkClay,
+                ),
+            border = BorderStroke(1.dp, ClayLight)
         ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
@@ -57,7 +62,7 @@ fun CategoryDropdown(
                 Text(
                     text = if (expanded) "▲" else "▼",
                     fontSize = 10.sp,
-                    color = MaterialTheme.colorScheme.primary
+                    color = DarkClay
                 )
             }
         }
@@ -65,21 +70,27 @@ fun CategoryDropdown(
         DropdownMenu(
             expanded = expanded,
             onDismissRequest = { expanded = false },
-            modifier = Modifier.width(IntrinsicSize.Min)
+            modifier = Modifier.width(IntrinsicSize.Min),
+            containerColor = MaterialTheme.colorScheme.surface,
         ) {
             WordCategory.entries.forEach { category ->
+                val isSelected = category == selectedCategory
                 DropdownMenuItem(
                     text = {
                         Text(
                             text = category.displayName,
                             style = MaterialTheme.typography.bodyMedium,
-                            fontWeight = if (category == selectedCategory) FontWeight.Bold else FontWeight.Normal
+                            fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal,
+                            color = if (isSelected) DarkClay else MaterialTheme.colorScheme.onSurface,
                         )
                     },
                     onClick = {
                         onCategorySelected(category)
                         expanded = false
                     },
+                    colors = MenuDefaults.itemColors(
+                        textColor = MaterialTheme.colorScheme.onSurface,
+                    ),
                 )
             }
         }

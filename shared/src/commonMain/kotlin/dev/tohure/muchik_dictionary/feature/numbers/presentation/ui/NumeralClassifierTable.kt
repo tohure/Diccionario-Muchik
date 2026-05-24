@@ -41,11 +41,12 @@ private fun ClassifierGroupSection(
     items: List<NumeralClassifier>,
 ) {
     Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .border(1.dp, MaterialTheme.colorScheme.outlineVariant, MaterialTheme.shapes.medium)
-            .background(MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f), MaterialTheme.shapes.medium)
-            .padding(12.dp),
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .border(1.dp, MaterialTheme.colorScheme.outlineVariant, MaterialTheme.shapes.medium)
+                .background(MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f), MaterialTheme.shapes.medium)
+                .padding(12.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -77,9 +78,10 @@ private fun ClassifierRow(
             style = MaterialTheme.typography.bodyMedium,
             fontWeight = FontWeight.Bold,
             color = Ocean,
-            modifier = Modifier
-                .background(Sand.copy(alpha = 0.6f), MaterialTheme.shapes.small)
-                .padding(horizontal = 8.dp, vertical = 2.dp),
+            modifier =
+                Modifier
+                    .background(Sand.copy(alpha = 0.6f), MaterialTheme.shapes.small)
+                    .padding(horizontal = 8.dp, vertical = 2.dp),
         )
         Text(
             text = classifier.description,

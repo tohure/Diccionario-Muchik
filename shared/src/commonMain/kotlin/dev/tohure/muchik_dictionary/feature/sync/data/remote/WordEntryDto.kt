@@ -16,13 +16,14 @@ data class WordEntryDto(
     @SerialName("updated_at") val updatedAt: String,
 )
 
-fun WordEntryDto.toEntity() = WordEntryEntity(
-    id = id,
-    muchikTerm = muchikTerm,
-    spanishTranslation = spanishTranslation,
-    category = category,
-    emoji = emoji,
-    etymologyNote = etymologyNote,
-    sourceReference = sourceReference,
-    updatedAt = updatedAt,
-)
+fun WordEntryDto.toEntity() =
+    WordEntryEntity(
+        id = id,
+        muchikTerm = muchikTerm,
+        spanishTranslation = spanishTranslation,
+        category = category,
+        emoji = emoji,
+        etymologyNote = etymologyNote,
+        sourceReference = sourceReference,
+        updatedAt = updatedAt,
+    )

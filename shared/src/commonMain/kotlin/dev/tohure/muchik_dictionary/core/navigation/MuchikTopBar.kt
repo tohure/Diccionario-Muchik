@@ -1,6 +1,12 @@
 package dev.tohure.muchik_dictionary.core.navigation
 
-import androidx.compose.material3.*
+import androidx.compose.material3.CenterAlignedTopAppBar
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -44,36 +50,39 @@ fun MuchikTopBar(
                 }
             }
         },
-        colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = OffWhite,
-            titleContentColor = DarkClay,
-        ),
+        colors =
+            TopAppBarDefaults.topAppBarColors(
+                containerColor = OffWhite,
+                titleContentColor = DarkClay,
+            ),
     )
 }
 
-private val MenuIcon = ImageVector.Builder(
-    name = "Menu",
-    defaultWidth = 24.dp,
-    defaultHeight = 24.dp,
-    viewportWidth = 24f,
-    viewportHeight = 24f
-).path(fill = SolidColor(Color.Black)) {
-    moveTo(3f, 18f)
-    horizontalLineTo(21f)
-    verticalLineTo(16f)
-    horizontalLineTo(3f)
-    verticalLineTo(18f)
-    close()
-    moveTo(3f, 13f)
-    horizontalLineTo(21f)
-    verticalLineTo(11f)
-    horizontalLineTo(3f)
-    verticalLineTo(13f)
-    close()
-    moveTo(3f, 6f)
-    verticalLineTo(8f)
-    horizontalLineTo(21f)
-    verticalLineTo(6f)
-    horizontalLineTo(3f)
-    close()
-}.build()
+private val MenuIcon =
+    ImageVector
+        .Builder(
+            name = "Menu",
+            defaultWidth = 24.dp,
+            defaultHeight = 24.dp,
+            viewportWidth = 24f,
+            viewportHeight = 24f
+        ).path(fill = SolidColor(Color.Black)) {
+            moveTo(3f, 18f)
+            horizontalLineTo(21f)
+            verticalLineTo(16f)
+            horizontalLineTo(3f)
+            verticalLineTo(18f)
+            close()
+            moveTo(3f, 13f)
+            horizontalLineTo(21f)
+            verticalLineTo(11f)
+            horizontalLineTo(3f)
+            verticalLineTo(13f)
+            close()
+            moveTo(3f, 6f)
+            verticalLineTo(8f)
+            horizontalLineTo(21f)
+            verticalLineTo(6f)
+            horizontalLineTo(3f)
+            close()
+        }.build()

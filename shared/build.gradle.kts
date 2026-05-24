@@ -17,12 +17,14 @@ plugins {
 // providers.fileContents() registra local.properties como input de Configuration Cache.
 // Properties() directo no lo hace: cambios en el archivo no invalidarían el caché.
 val localPropsProvider: Provider<Properties> =
-    providers.fileContents(rootProject.layout.projectDirectory.file("local.properties"))
+    providers
+        .fileContents(rootProject.layout.projectDirectory.file("local.properties"))
         .asText
         .map { text -> Properties().apply { load(text.reader()) } }
 
 fun secret(envKey: String, propKey: String = envKey): String =
-    providers.environmentVariable(envKey)
+    providers
+        .environmentVariable(envKey)
         .orElse(localPropsProvider.map { it.getProperty(propKey, "") }.orElse(""))
         .get()
 
@@ -33,8 +35,14 @@ kotlin {
 
     android {
         namespace = "dev.tohure.muchik_dictionary.shared"
-        compileSdk = libs.versions.android.compileSdk.get().toInt()
-        minSdk = libs.versions.android.minSdk.get().toInt()
+        compileSdk =
+            libs.versions.android.compileSdk
+                .get()
+                .toInt()
+        minSdk =
+            libs.versions.android.minSdk
+                .get()
+                .toInt()
 
         compilerOptions {
             jvmTarget = JvmTarget.JVM_21
@@ -47,7 +55,7 @@ kotlin {
     ).forEach { iosTarget ->
         iosTarget.binaries.framework {
             baseName = "Shared"
-            isStatic = true  // requerido por el linker de Xcode para embeber el framework en el bundle
+            isStatic = true // requerido por el linker de Xcode para embeber el framework en el bundle
             binaryOption("bundleId", "dev.tohure.muchik_dictionary.shared")
         }
     }
@@ -132,4 +140,3 @@ dependencies {
     add("kspIosSimulatorArm64", libs.androidx.room3.compiler)
     add("kspJvm", libs.androidx.room3.compiler)
 }
-
